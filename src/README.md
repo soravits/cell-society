@@ -1,3 +1,3 @@
 # cellsociety 
 
-Put your source code, resources, and property files here.
+Yay. Random changes. Woot woot.

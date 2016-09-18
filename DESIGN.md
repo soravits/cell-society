@@ -2,7 +2,7 @@
 ###Introduction
 The purpose of the program to be written is to animate specific 2D Cellular Autonoma simulations according to a set of rules specified by the user. The primary design goals of the project include optimally encapsulating data, implementing inheritance hierarchies in order to make use of polymorphism, and structuring code in such a way that simulations can easily be added with pre-defined behaviors. The implementation details of each specific simulation will be closed to the other classes, and similarly, the way cell behaviors are defined will be hidden from simulation classes. In a hierarchical style, higher-level classes will have access to and control over lower-level classes through public methods defined in the latter.
 ###Overview
-We intend to create one large main class that, from the input, initiates a different class corresponding to the simulation that the input requests. From this simulation class, we initiate the grid as well as instantiate the proper kind of cells from the main Cell superclass. For each of their simulations, the front-end includes a screen as well as many buttons that will toggle different options and restrictions for the simulation. From the back-end, the program will take in the user XML input as well as different numbers/parameters inputted from the front-end display and create a function that changes the cells. Finally, the UI gets updated to reflect the changes that were processed in the back end. 
+We intend to create one large main class that instantiates an instance of a controller class. This class facilitates the different simulations according to the user's input. From the simulation classes, we initiate the grid as well as instantiate the proper kind of cells inheriting the main Cell superclass. For each of their simulations, the front-end includes a screen as well as many buttons that will toggle different options and restrictions for the simulation. From the back-end, the program will take in the user XML input as well as different numbers/parameters inputted from the front-end display and create a function that changes the cells. Finally, the UI gets updated to reflect the changes that were processed in the back end. 
 
 **Overall:**
 1. Create a main class that takes in XML data or somehow determines which simulation to start -> starts that simulation
@@ -26,15 +26,17 @@ We intend to create one large main class that, from the input, initiates a diffe
 
 ###User Interface
 
+The user interface consists of three main parts. The first is the main menu, which has buttons that allow the user
+to scan the current XML file, choose the desired type of simulation, and move to the next scene. This scene displays
+the parameters for the simulation as read by the XML and gives the user the ability to change parameter values before the simulation begins. Once the user presses the button to start the simulation, the scene changes to the simulation page, which contains buttons to control the simulations, such as start, stop, and reset as well as a physical representation of the grid itself, containing the cells the define the state of the simulation. These will be dependent on the current simulation being run.
+
 ![User Selection Menu:](https://lh3.googleusercontent.com/-PlrUD9xaABw/V93tQRMolSI/AAAAAAAAAMU/uYLwNz2c8lEB9Zhv2IrhlHVLitRg8A4zQCLcB/s0/UI1.png "UI1.png")
 
 ![User sets parameters for selected simulation](https://lh3.googleusercontent.com/-42KxXlJeUFM/V93y6vYRoCI/AAAAAAAAAM0/aoi4KZtSVwYAbsKP68UlzAQkStUCYGskQCLcB/s0/UI2.png "UI2.png")
 
 ![Simulation view](https://lh3.googleusercontent.com/-IcZHhRv4xeU/V93zY8eV9hI/AAAAAAAAAM8/7pgrc5UMScIbZV9yQvGOs_lHnc2bR25egCLcB/s0/UI3.jpg "UI3.jpg")
 
-
-
-The user selection will be limited to just valid inputs (for example, you can't have 110% as a threshold, or negative values for the grid size). If the user fails to input values in certain places, such as the grid size, the program will use a default value and notify the user of all the fields for which a value was not selected.
+The user selection will be limited to just valid inputs (for example, you can't have 110% as a threshold, or negative values for the grid size). If the user fails to input valid parameter values through the XML, such as the grid    size, the program will use a default value and notify the user of all the fields for which a value was not selected. Rather than display an error message in response to bad input data, these default parameters will be shown and can be edited in the second part of the user interface shown above.
 
 
 ###Design Details

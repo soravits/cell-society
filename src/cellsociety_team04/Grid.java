@@ -1,27 +1,70 @@
 package cellsociety_team04;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Grid {
+public abstract class Grid {
+	protected Cell[][] grid;
+	protected int rowLength;
+	protected Pane rootElement;
+	protected Simulation sim;
+	protected int initialX;
+	protected int initialY;
+	protected int sizeOfCell;
+	
 	public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY){
-		Rectangle[][] grid = new Rectangle[rowLength][rowLength];
-		for(int i=0; i<grid.length;i++){
-			for(int j=0;j<grid[0].length;j++){
-				Rectangle block = new Rectangle(sizeOfCell * (i) + initialX,sizeOfCell*(j) + initialY,sizeOfCell,sizeOfCell);
-				block.setFill(Color.WHITE);
-				block.setStroke(Color.BLUE);
-				block.setStrokeWidth(2);
-				
-				grid[i][j] = block;
-				rootElement.getChildren().add(block);
-			}
-		}
-		
-		
+		this.grid = new GameOfLifeCell[rowLength][rowLength];
+		this.rootElement = rootElement;
+		this.rowLength = rowLength;		
+		this.sizeOfCell = sizeOfCell;
+		this.initialX = initialX;
+		this.initialY = initialY;
 	}
 	
+	public abstract void initializeGrid();
 	
+	public void giveSimulationProfile(Simulation sim){
+		this.sim = sim;;
+	}
+	
+	public void setUpButtons(){
+		// START SIMULATION BUTTON BELOW
+		Button startSim = new Button("Start Simulation");
+		startSim.setStyle(
+				"-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
+				"-fx-background-radius: 20;" + 
+				"-fx-text-fill: white;"		
+		);
+		startSim.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				sim.startSimulation();
+			}
+		});
+		startSim.setTranslateX(Simulation.SIMULATION_WINDOW_WIDTH/3);
+		startSim.setTranslateY(Simulation.SIMULATION_WINDOW_HEIGHT/3 * 2);
+		rootElement.getChildren().add(startSim);
+		
+		// END SIMULATION BUTTON BELOW
+		Button endSim = new Button("Stop Simulation");
+		endSim.setStyle(
+				"-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
+				"-fx-background-radius: 20;" + 
+				"-fx-text-fill: white;"		
+		);
+		endSim.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				sim.stopSimulation();
+			}
+		});
+		endSim.setTranslateX(Simulation.SIMULATION_WINDOW_WIDTH/3 * 2);
+		endSim.setTranslateY(Simulation.SIMULATION_WINDOW_HEIGHT/3 * 2);
+		rootElement.getChildren().add(endSim);
+	}
 	
 }

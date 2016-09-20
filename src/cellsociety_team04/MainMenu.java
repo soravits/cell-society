@@ -31,9 +31,8 @@ import javafx.util.Duration;
 public class MainMenu {
 	public static final int mainMenuWIDTHOFSCREEN = 1300;
 	public static final int mainMenuHEIGHTOFSCREEN = 750;	
-	public static final int FRAMES_PER_SECOND = 30;
-	public static final int MILLISECOND_DELAY = 250 / FRAMES_PER_SECOND;
-	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+
+	public static final int DimensionsOfGrid = 10;
 	public static Stage stage;
 
 	public MainMenu(Stage s){
@@ -93,14 +92,14 @@ public class MainMenu {
 			
 			setOnMouseReleased(event ->{
 				bg.setFill(gradient);
-				
 
-				if(Name.equals("FOREST FIRE")){
-					Simulation mySim = new Simulation(10);
+				if(Name.equals("FOREST FIRE") || Name.equals("GAME OF LIFE") || Name.equals("SEGREGATION") || Name.equals("PREDATOR PREY")){
+					Simulation mySim = new GameOfLifeSimulation(DimensionsOfGrid);
 					scene = mySim.init(stage);
 					stage.setScene(scene);
 			        stage.show();
 				}
+				 
 				
 			});		
 		}//Closes MenuItem Object

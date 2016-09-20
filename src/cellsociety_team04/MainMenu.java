@@ -97,7 +97,7 @@ public class MainMenu {
 
 				if(Name.equals("FOREST FIRE")){
 					Simulation mySim = new Simulation(10);
-					scene = mySim.init(stage,false);
+					scene = mySim.init(stage);
 					stage.setScene(scene);
 			        stage.show();
 				}

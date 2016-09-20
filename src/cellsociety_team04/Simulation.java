@@ -25,7 +25,7 @@ public class Simulation{
 		
 	}
 	
-	public Scene init (Stage s, boolean isHardMode) {
+	public Scene init (Stage s) {
     	stage = s;
         myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
         int lengthOfGridInPixels = gridLength * cellSize - cellSize;

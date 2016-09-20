@@ -1,4 +1,4 @@
-package balloonDodge;
+package cellsociety_team04;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,7 +127,8 @@ public class MainMenu {
 				new MenuItem("FOREST FIRE"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
-				new MenuItem("GAME OF LIFE"));
+				new MenuItem("GAME OF LIFE"),
+				new MenuItem("READ XML FILE"));
 		optionList.setTranslateX(200);
 		optionList.setTranslateY(350);
 		gameWindow.getChildren().add(optionList);

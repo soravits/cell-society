@@ -35,10 +35,6 @@ public class MainMenu {
 	public static final int MILLISECOND_DELAY = 250 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 	public static Stage stage;
-	
-	private HashMap<String,String> IconToDescriptionMap = new HashMap<String,String>();
-	private Rectangle infoFullWindow;
-	private Button clearInfoWindowButton;
 
 	public MainMenu(Stage s){
 		 stage= s;		
@@ -101,7 +97,7 @@ public class MainMenu {
 
 				if(Name.equals("FOREST FIRE")){
 					Simulation mySim = new Simulation(10);
-					scene = mySim.init(stage,false);
+					scene = mySim.init(stage);
 					stage.setScene(scene);
 			        stage.show();
 				}
@@ -115,7 +111,6 @@ public class MainMenu {
 	 */
 	public Parent setUpWindow() {
 		Pane gameWindow = new Pane();
-		setUpMap();
 		gameWindow.setPrefSize(mainMenuWIDTHOFSCREEN,mainMenuHEIGHTOFSCREEN);
 		Image background = new Image(getClass().getClassLoader().getResourceAsStream("BackgroundCellSoc.jpg")); 
 		ImageView backgrondImageMainScreen = new ImageView(background);
@@ -138,15 +133,6 @@ public class MainMenu {
 		gameWindow.getChildren().add(optionList);
 		
 		return gameWindow;
-	}
-		
-	private void setUpMap(){
-		IconToDescriptionMap.put("wb_life.png", "LIFE&Gives you an additional life! Most rare Power Up");
-		IconToDescriptionMap.put("wb_speed.png", "SPEED UP&Slows the balloons down --- Can be good or bad, doesn't accelerate\n" + "balloon generation so it prevents accumulation of balloons");
-		IconToDescriptionMap.put("wb_slow.png", "SLOW DOWN&Speeds up balloons --- Can be good or bad, doesn't accelerate\n" + "balloon generation so they're easier to dodge but accumulate easily");
-		IconToDescriptionMap.put("wb_armor.png", "ARMOR&Temporarily shields your monkey, making it immune to all\n" + "balloons for 2.5 seconds, turns red when about to expire");
-		IconToDescriptionMap.put("wb_big.png", "BIG&Makes your monkey bigger, generally bad but you can get \nit to challenge yourself");
-		IconToDescriptionMap.put("wb_small.png", "SMALL&Makes your monkey smaller, good! Can only stack up to 3x");
 	}
 	
 	private static class BigGameNameText extends StackPane{

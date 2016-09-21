@@ -30,8 +30,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainMenu {
-	public static final int mainMenuWIDTHOFSCREEN = 1300;
-	public static final int mainMenuHEIGHTOFSCREEN = 750;	
+	public static final int mainMenuWIDTHOFSCREEN = 1800;
+	public static final int mainMenuHEIGHTOFSCREEN = 900;	
 
 	public static final int DimensionsOfGrid = 10;
 	public static Stage stage;
@@ -52,7 +52,8 @@ public class MainMenu {
 		private Scene scene = null;
 		private KeyFrame frame = null;
 		public MenuItem(String Name) {	
-			LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, CycleMethod.NO_CYCLE, 
+			LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
+					CycleMethod.NO_CYCLE, 
 				new Stop[]{
 						new Stop(0, Color.WHITE),
 			            new Stop(0.15, Color.TURQUOISE),
@@ -94,7 +95,8 @@ public class MainMenu {
 			setOnMouseReleased(event ->{
 				bg.setFill(gradient);
 
-				if(Name.equals("FOREST FIRE") || Name.equals("GAME OF LIFE") || Name.equals("SEGREGATION") || Name.equals("PREDATOR PREY")){
+				if(Name.equals("FOREST FIRE") || Name.equals("GAME OF LIFE") 
+						|| Name.equals("SEGREGATION") || Name.equals("PREDATOR PREY")){
 					Simulation mySim = new GameOfLifeSimulation(DimensionsOfGrid);
 					scene = mySim.init(stage);
 					stage.setScene(scene);
@@ -107,12 +109,14 @@ public class MainMenu {
 	}//Closes MenuItem Declaration
 	
 	/**
-	 * Sets up background, big text, as well as all of the option boxes and Instructions window
+	 * Sets up background, big text, as well as all of the option boxes and 
+	 * Instructions window
 	 */
 	public Parent setUpWindow() {
 		Pane gameWindow = new Pane();
 		gameWindow.setPrefSize(mainMenuWIDTHOFSCREEN,mainMenuHEIGHTOFSCREEN);
-		Image background = new Image(getClass().getClassLoader().getResourceAsStream("BackgroundCellSoc.jpg")); 
+		Image background = new Image(getClass().getClassLoader()
+				.getResourceAsStream("BackgroundCellSoc.jpg")); 
 		ImageView backgrondImageMainScreen = new ImageView(background);
 		backgrondImageMainScreen.setFitWidth(mainMenuWIDTHOFSCREEN);
 		backgrondImageMainScreen.setFitHeight(mainMenuHEIGHTOFSCREEN);;
@@ -140,7 +144,8 @@ public class MainMenu {
 		public BigGameNameText(String Name){
 			Text titleText = new Text(Name);
 			titleText.setFont(Font.font("Rockwell", FontWeight.BOLD,60));
-			LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, CycleMethod.NO_CYCLE, 
+			LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
+					CycleMethod.NO_CYCLE, 
 					new Stop[]{
 							new Stop(0, Color.WHITE),
 				            new Stop(0.15, Color.TURQUOISE),

@@ -87,6 +87,8 @@ public class GameOfLifeSimulation extends Simulation{
 		return myGrid.getCell(row,column).getStatusCode();
 	}
 	
+	
+	// do we need this method still?
 	public void startSimulation(){
 		beginSimulation();
 		/*long startingTime = System.currentTimeMillis();

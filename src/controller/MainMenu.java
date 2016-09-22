@@ -29,8 +29,8 @@ import xml.FireXMLFactory;
 import xml.XMLParser;
 
 public class MainMenu {
-    public static final int MAIN_MENU_WIDTH = 1800;
-    public static final int MAIN_MENU_HEIGHT = 900;	
+    public static final int MAIN_MENU_WIDTH = 700;
+    public static final int MAIN_MENU_HEIGHT = 600;	
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
@@ -122,7 +122,7 @@ public class MainMenu {
         Image background = new Image(getClass().getClassLoader()
                                      .getResourceAsStream("BackgroundCellSoc.jpg")); 
         ImageView backgrondImageMainScreen = new ImageView(background);
-        backgrondImageMainScreen.setFitWidth(MAIN_MENU_WIDTH);
+        backgrondImageMainScreen.setFitWidth(MAIN_MENU_WIDTH+50);
         backgrondImageMainScreen.setFitHeight(MAIN_MENU_HEIGHT);;
         gameWindow.getChildren().add(backgrondImageMainScreen); 
 

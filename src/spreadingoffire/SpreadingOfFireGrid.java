@@ -1,5 +1,6 @@
 package spreadingoffire;
 
+import base.Cell;
 import base.Grid;
 import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
@@ -16,7 +17,7 @@ public class SpreadingOfFireGrid extends Grid{
     public void initializeGrid() {
             for(int i=0; i<grid.length;i++){
                     for(int j=0;j<grid[0].length;j++){
-                            GameOfLifeCell gridCell = new GameOfLifeCell(sizeOfCell, rootElement, sizeOfCell 
+                            Cell gridCell = new Cell(sizeOfCell, rootElement, sizeOfCell 
                                             * (i) + initialX,sizeOfCell* (j) + initialY);
                             gridCell.fillCellWithColors();
                             gridCell.addToScene();

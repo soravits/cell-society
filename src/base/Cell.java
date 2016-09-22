@@ -14,11 +14,13 @@ public class Cell {
 		this.block = new Rectangle(xCoord,yCoord,sizeOfCell,sizeOfCell);
 	}
 	
-	//public abstract void checkSurroundingCells();
-	
-	//public abstract void fillCellWithColors();
-	/*
-	 * @Override
+	public void fillCellWithColors() {
+		block.setFill(Color.WHITE);
+		block.setStroke(Color.BLACK);
+		block.setStrokeWidth(2);
+	}
+
+	 /* @Override
 		public void fillCellWithColors() {
 			block.setFill(Color.WHITE); //Main Color
 			block.setStroke(Color.BLUE); // Border Color

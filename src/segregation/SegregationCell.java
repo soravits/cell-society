@@ -1,0 +1,20 @@
+package segregation;
+
+import base.Cell;
+import javafx.scene.layout.Pane;
+
+public class SegregationCell extends Cell{
+
+	public SegregationCell(int sizeOfCell, Pane rootElement, int xCoord,
+			int yCoord) {
+		super(sizeOfCell, rootElement, xCoord, yCoord);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void fillCellWithColors() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

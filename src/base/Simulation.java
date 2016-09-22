@@ -14,6 +14,7 @@ public abstract class Simulation{
 	public static final int SIMULATION_WINDOW_HEIGHT = 800;
 
 	protected int gridLength;
+	protected int totalCells = gridLength * gridLength;
 	protected Stage stage;
 	protected Scene myScene;
 	protected Pane rootElement = new Pane();

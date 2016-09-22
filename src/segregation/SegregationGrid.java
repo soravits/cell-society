@@ -1,7 +1,9 @@
 package segregation;
 
+import base.Cell;
 import base.Grid;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class SegregationGrid extends Grid{
 
@@ -10,8 +12,8 @@ public class SegregationGrid extends Grid{
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
 	}
 	
-	public SegregationCell getCell(int row, int column){
-		return (SegregationCell) grid[row][column];
+	public Cell getCell(int row, int column){
+		return (Cell) grid[row][column];
 	}
 
 	@Override
@@ -20,4 +22,14 @@ public class SegregationGrid extends Grid{
 		
 	}
 
+	
+    public void updateCell(int x, int y, int cellState){
+        if(cellState == 0){
+            grid[x][y].setColor(Color.WHITE);
+        }else if(cellState == 1){
+            grid[x][y].setColor(Color.BLUE);
+        }else{
+            grid[x][y].setColor(Color.RED);
+        }
+    }
 }

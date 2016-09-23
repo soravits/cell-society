@@ -127,8 +127,7 @@ public class MainMenu {
      * Sets up background, big text, as well as all of the option boxes and 
      * Instructions window
      */
-    public Parent setUpWindow() {
-    	System.out.println("window set");
+    public Parent setUpWindow(){
         Pane gameWindow = new Pane();
         gameWindow.setPrefSize(MAIN_MENU_WIDTH,MAIN_MENU_HEIGHT);
         Image background = new Image(getClass().getClassLoader()

@@ -26,6 +26,7 @@ public class Segregation extends Simulation{
     private static final int EMPTY = 0;
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
+    private int numberOfUnsatisfied;
     private Random random = new Random();
 	
 	public Segregation(int gridLength, double threshold, double percentA, 
@@ -169,7 +170,9 @@ public class Segregation extends Simulation{
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
+		setSatisfiedGrid();
 		updateState();
+		if(numberOfUnsatisfied == 0) animation.stop();
 	}
 	
 	//don't know if we should implement it so that a dissatisfied cell can leave its position and immediately have
@@ -201,6 +204,8 @@ public class Segregation extends Simulation{
 			myGrid.switchCells(unhappySpots.get(i), emptySpots.get(destinationIndex));
 			emptySpots.remove(destinationIndex);
 		}
+		
+		numberOfUnsatisfied = unhappySpots.size();
 	}
 
 }

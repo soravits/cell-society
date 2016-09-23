@@ -27,6 +27,7 @@ public class Segregation extends Simulation{
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
     private int numberOfUnsatisfied;
+    private int totalSteps = 0;
     private Random random = new Random();
 	
 	public Segregation(int gridLength, double threshold, double percentA, 
@@ -112,6 +113,14 @@ public class Segregation extends Simulation{
 		}
 	}
 	
+	
+	/**
+	 * MUST CHANGE THIS
+	 * WORST METHOD EVER BUT IT WORKS
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public int setSatisfiedState(int i, int j){
 		Cell current = myGrid.getCell(i, j);
 		Paint color = current.getColor();
@@ -181,6 +190,7 @@ public class Segregation extends Simulation{
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
+		totalSteps++;
 		setSatisfiedGrid();
 		updateState();
 		if(numberOfUnsatisfied == 0) animation.stop();
@@ -217,6 +227,7 @@ public class Segregation extends Simulation{
 		}
 		
 		numberOfUnsatisfied = unhappySpots.size();
+		myGrid.updateStats(totalSteps, numberOfUnsatisfied);
 	}
 
 }

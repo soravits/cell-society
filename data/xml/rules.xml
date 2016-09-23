@@ -10,4 +10,6 @@
 		<percentageB>0.5</percentageB>
 		<percentageEmpty>0.4</percentageEmpty>
 	</Simulation>
+	<Simulation SimulationType="Game Of Life">
+	</Simulation>
 </Simulation>

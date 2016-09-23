@@ -29,6 +29,11 @@ public class Cell {
 		}
 	 */
 	
+	public void setBorder(Color color){
+		block.setStroke(color);
+		block.setStrokeWidth(2);
+	}
+	
 	public void setColor(Color color){
 	    block.setFill(color);
 	}

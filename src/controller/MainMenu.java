@@ -99,15 +99,17 @@ public class MainMenu {
                 bg.setFill(gradient);
                 Simulation mySim = null;
                 XMLParser parser = new XMLParser();
-               /* switch(Name){
+                switch(Name){
                     case "FOREST FIRE":
-                    	
+                    	FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
                     case "GAME OF LIFE":
-                        
-                }*/
-                GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
-                mySim = new GameOfLifeSimulation(GoLFactory.getGridSize());
+                      GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
+                      mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
+                      break;
+                }
+                
                 scene = mySim.init(stage);
                 stage.setScene(scene);
                 stage.show();

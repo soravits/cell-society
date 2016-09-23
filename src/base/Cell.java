@@ -32,6 +32,11 @@ public class Cell {
 	    block.setFill(color);
 	}
 	
+	public void setBorder(Color color){
+		block.setStroke(color);
+		block.setStrokeWidth(2);
+	}
+	
 	public void addToScene(){
 		rootElement.getChildren().add(block);
 	}

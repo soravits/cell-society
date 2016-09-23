@@ -30,9 +30,11 @@ public class GameOfLifeSimulation extends Simulation{
         int marginTop = SIMULATION_WINDOW_HEIGHT/8;
         
         this.myGrid = new GameOfLifeGrid(gridLength,Cell.cellSize,rootElement,marginOnSidesOfGrid,marginTop);
+        deadOrAlive = new boolean[gridLength][gridLength];
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
+        setInitialEnvironment();
 
         return myScene;
 	}
@@ -54,22 +56,24 @@ public class GameOfLifeSimulation extends Simulation{
  
 	@Override
 	public void step() {
+		updateStateOfCells();
 		updateCellStatus();
 	}
 	
     public void setInitialEnvironment(){
 		for (boolean[] row: deadOrAlive){
 		    Arrays.fill(row, false);
-		    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
-		    deadOrAlive[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
-		    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
-		    deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
-		    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
 		}
+		deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
+	    deadOrAlive[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
+	    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
+	    deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
+	    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
+		updateCellStatus();
     }
     
 	public void updateCellStatus(){
-		updateStateOfCells();
+		//updateStateOfCells();
 		for(int i = 0; i<gridLength;i++){
 			for(int j=0; j<gridLength;j++){
 				if(deadOrAlive[i][j] == true){

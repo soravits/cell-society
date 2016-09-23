@@ -18,6 +18,7 @@ public class GameOfLifeGrid extends Grid{
 	        }
 	        else{
 	        	grid[row][col].setColor(Color.BLACK);
+	        	grid[row][col].setBorder(Color.WHITE);
 	        }
 	    }
 

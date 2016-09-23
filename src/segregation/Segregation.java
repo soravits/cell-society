@@ -12,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -20,8 +21,12 @@ public class Segregation extends Simulation{
     private Timeline animation;
     private int[][] cellSatisfied;
     private double satisfyThresh, percA, percB, percEmpty;
+    private static final int EMPTY = 0;
+    private static final int SATISFIED = 1;
+    private static final int UNSATISFIED = 2;
 	
-	public Segregation(int gridLength, double threshold, double percentA, double percentB, double percentEmpty) {
+	public Segregation(int gridLength, double threshold, double percentA, 
+			double percentB, double percentEmpty) {
 		super(gridLength);
 		this.satisfyThresh = threshold;
 		this.percA = percentA;
@@ -86,9 +91,51 @@ public class Segregation extends Simulation{
 	public void setSatisfiedGrid(){
 		for(int i = 0; i < gridLength; i++){
 			for(int j = 0; j < gridLength; j++){
-				
+				cellSatisfied[i][j] = setSatisfiedState(i, j);
 			}
 		}
+	}
+	
+	public int setSatisfiedState(int i, int j){
+		Cell current = myGrid.getCell(i, j);
+		Paint color = current.getColor();
+		int sameColor = 0;
+		int totalNeighbors = 0;
+		
+		//if the cell is uninhabited, can't be satisfied or unsatisfied
+		if(color.equals(Color.WHITE)){
+			return EMPTY;
+		}
+		
+		//checks north
+		if(myGrid.getCell(i - 1, j) != null){
+			totalNeighbors++;
+			if(myGrid.getCell(i - 1, j).getColor().equals(color))
+				sameColor++;
+		}
+		//checks south
+		if(myGrid.getCell(i + 1, j) != null){
+			totalNeighbors++;
+			if(myGrid.getCell(i + 1, j).getColor().equals(color))
+				sameColor++;
+		}
+		//checks east
+		if(myGrid.getCell(i, j - 1) != null){
+			totalNeighbors++;
+			if(myGrid.getCell(i, j - 1).getColor().equals(color))
+				sameColor++;
+		}
+		//checks west
+		if(myGrid.getCell(i, j + 1) != null){
+			totalNeighbors++;
+			if(myGrid.getCell(i, j + 1).getColor().equals(color))
+				sameColor++;
+		}
+		
+		if((double) sameColor / (double) totalNeighbors >= satisfyThresh) 
+			return 1;
+		
+		return 2;
 	}
 
 	@Override
@@ -98,7 +145,11 @@ public class Segregation extends Simulation{
 	}
 	
 	public void updateState(){
+		//make a list of empty spots
 		
+		//make a list of dissatisfied cells
+		
+		//randomly place dissatisfied cells into empty spots
 	}
 
 }

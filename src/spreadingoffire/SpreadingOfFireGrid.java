@@ -19,7 +19,6 @@ public class SpreadingOfFireGrid extends Grid{
                     for(int j=0;j<grid[0].length;j++){
                             Cell gridCell = new Cell(sizeOfCell, rootElement, sizeOfCell 
                                             * (i) + initialX,sizeOfCell* (j) + initialY);
-                            gridCell.fillCellWithColors();
                             gridCell.addToScene();
                             grid[i][j] = gridCell;                          
                     }

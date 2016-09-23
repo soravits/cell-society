@@ -67,6 +67,7 @@ public class Segregation extends Simulation{
         myGrid.setSimulationProfile(this);
         cellSatisfied = new int[gridLength][gridLength];
         setInitialEnvironment();
+        setSatisfiedGrid();
 
         return myScene;
 	}
@@ -94,6 +95,7 @@ public class Segregation extends Simulation{
 		for(int i = 0; i < gridLength; i++){
 			for(int j = 0; j < gridLength; j++){
 				cellSatisfied[i][j] = setSatisfiedState(i, j);
+//				System.out.println(setSatisfiedState(i, j));
 			}
 		}
 	}
@@ -110,49 +112,49 @@ public class Segregation extends Simulation{
 		}
 		
 		//checks north
-		if(myGrid.getCell(i - 1, j) != null && !myGrid.getCell(i - 1, j).getColor().equals(Color.WHITE)){
+		if(i > 0 && myGrid.getCell(i - 1, j) != null && !myGrid.getCell(i - 1, j).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i - 1, j).getColor().equals(color))
 				sameColor++;
 		}
 		//checks south
-		if(myGrid.getCell(i + 1, j) != null && !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && myGrid.getCell(i + 1, j) != null && !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j).getColor().equals(color))
 				sameColor++;
 		}
 		//checks west
-		if(myGrid.getCell(i, j - 1) != null && !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
+		if(j > 0 && myGrid.getCell(i, j - 1) != null && !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks east
-		if(myGrid.getCell(i, j + 1) != null && !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
+		if(j < gridLength - 1 && myGrid.getCell(i, j + 1) != null && !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i, j + 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks northwest
-		if(myGrid.getCell(i - 1, j - 1) != null && !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
+		if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null && !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
-			if(myGrid.getCell(i - 1, j + 1).getColor().equals(color))
+			if(myGrid.getCell(i - 1, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks southwest
-		if(myGrid.getCell(i + 1, j - 1) != null && !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null && !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks northeast
-		if(myGrid.getCell(i - 1, j + 1) != null && !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
+		if(i > 0 && j < gridLength - 1 && myGrid.getCell(i - 1, j + 1) != null && !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i - 1, j + 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks southeast
-		if(myGrid.getCell(i + 1, j + 1) != null && !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && j < gridLength - 1 && myGrid.getCell(i + 1, j + 1) != null && !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j + 1).getColor().equals(color))
 				sameColor++;
@@ -184,11 +186,14 @@ public class Segregation extends Simulation{
 				if (cellSatisfied[i][j] == EMPTY || cellSatisfied[i][j] == UNSATISFIED){
 					emptySpots.add(new Point(i, j));
 				}
-				else if(cellSatisfied[i][j] == UNSATISFIED){
+				if(cellSatisfied[i][j] == UNSATISFIED){
 					unhappySpots.add(new Point(i, j));
+//					System.out.println("add unsatisfied");
 				}
 			}
 		}
+		System.out.println("Original emptyspots = " + emptySpots.size());
+		System.out.println("Original unhappy spots = " + unhappySpots.size());
 		
 		//randomly place dissatisfied cells into empty spots
 		for(int i = 0; i < unhappySpots.size(); i++){

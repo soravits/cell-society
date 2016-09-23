@@ -6,12 +6,10 @@ public class FireXMLFactory extends SimulationXMLFactory{
 
     public FireXMLFactory (Element rootElement) {
         super(rootElement);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public String getSimulationType () {
-        // TODO Auto-generated method stub
         return "Spreading of Fire";
     }
     

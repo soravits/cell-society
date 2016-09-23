@@ -40,7 +40,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     @Override
     public void stopSimulation () {
-        // TODO Auto-generated method stub
         animation.stop();
     }
 
@@ -52,7 +51,7 @@ public class SpreadingOfFireSimulation extends Simulation{
         int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
         int marginTop = SIMULATION_WINDOW_HEIGHT/8;
 
-        this.myGrid = new SpreadingOfFireGrid(gridLength,Cell.cellSize,rootElement,marginOnSidesOfGrid,marginTop);
+        this.myGrid = new SpreadingOfFireGrid(gridLength,Cell.cellSize,rootElement,marginOnSidesOfGrid - 50, marginTop - 50);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -120,7 +119,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     @Override
     public void step () {
-        // TODO Auto-generated method stub
         updateState();
     }
 

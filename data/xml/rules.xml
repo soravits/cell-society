@@ -8,6 +8,6 @@
 		<satisfyThresh>0.5</satisfyThresh>
 		<percentageA>0.5</percentageA>
 		<percentageB>0.5</percentageB>
-		<percentageEmpty>0.1</percentageEmpty>
+		<percentageEmpty>0.4</percentageEmpty>
 	</Simulation>
 </Simulation>

@@ -33,7 +33,7 @@ public class Segregation extends Simulation{
 			double percentB, double percentEmpty) {
 		super(gridLength);
 		this.satisfyThresh = threshold;
-		this.percA = percentA;
+		this.percA = percentA * (1 - percentEmpty);
 		this.percB = percentB;
 		this.percEmpty = percentEmpty;
 	}
@@ -75,21 +75,32 @@ public class Segregation extends Simulation{
 	
 	public void setInitialEnvironment(){
 		int cellType;
+		int blue = 0;
+		int red = 0; 
+		int empty = 0;
 		for(int i = 0; i < gridLength; i++){
 			for(int j = 0; j < gridLength; j++){
 				int cellLottery = random.nextInt(100);
+				//40
 				if(cellLottery <= (percEmpty * 100)){ //if the cell is white
 					cellType = 0;
+					empty++;
 				}
+				//
 				else if (cellLottery <= ((percEmpty + percA) * 100)){ //if the cell is blue
 					cellType = 1;
+					blue++;
 				}
-				else
+				else{
 					cellType = 2;
-				
+					red++;
+				}
 				myGrid.updateCell(i, j, cellType);
 			}
 		}
+		System.out.println("Number empty = " + empty);
+		System.out.println("Number blue = " + blue);
+		System.out.println("Number red = " + red);
 	}
 	
 	public void setSatisfiedGrid(){
@@ -195,8 +206,8 @@ public class Segregation extends Simulation{
 				}
 			}
 		}
-		System.out.println("Original emptyspots = " + emptySpots.size());
-		System.out.println("Original unhappy spots = " + unhappySpots.size());
+//		System.out.println("Original emptyspots = " + emptySpots.size());
+//		System.out.println("Original unhappy spots = " + unhappySpots.size());
 		
 		//randomly place dissatisfied cells into empty spots
 		for(int i = 0; i < unhappySpots.size(); i++){

@@ -2,6 +2,7 @@ package base;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class Cell {
@@ -32,9 +33,12 @@ public class Cell {
 	    block.setFill(color);
 	}
 	
-	public void setBorder(Color color){
-		block.setStroke(color);
-		block.setStrokeWidth(2);
+	public void setColor(Paint color){
+	    block.setFill(color);
+	}
+	
+	public Paint getColor(){
+		return block.getFill();
 	}
 	
 	public void addToScene(){

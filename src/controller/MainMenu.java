@@ -25,8 +25,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadingoffire.SpreadingOfFireSimulation;
+import segregation.Segregation;
 import xml.FireXMLFactory;
-import xml.GameOfLifeXMLFactory;
+import xml.SegregationXMLFactory;
 import xml.XMLParser;
 
 public class MainMenu {
@@ -99,15 +100,20 @@ public class MainMenu {
                 bg.setFill(gradient);
                 Simulation mySim = null;
                 XMLParser parser = new XMLParser();
+                if(Name == null){
+                	System.out.println("null");
+                }
+                
                 switch(Name){
                     case "FOREST FIRE":
                     	FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
-                    case "GAME OF LIFE":
-                      GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
-                      mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
-                      break;
+                    case "SEGREGATION":
+                        SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),
+                        		segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
+                        break;
                 }
                 
                 scene = mySim.init(stage);
@@ -122,7 +128,7 @@ public class MainMenu {
      * Sets up background, big text, as well as all of the option boxes and 
      * Instructions window
      */
-    public Parent setUpWindow() {
+    public Parent setUpWindow(){
         Pane gameWindow = new Pane();
         gameWindow.setPrefSize(MAIN_MENU_WIDTH,MAIN_MENU_HEIGHT);
         Image background = new Image(getClass().getClassLoader()

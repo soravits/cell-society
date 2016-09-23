@@ -31,6 +31,10 @@ public class Cell {
 	    block.setFill(color);
 	}
 	
+	public void setColor(Paint color){
+	    block.setFill(color);
+	}
+	
 	public Paint getColor(){
 		return block.getFill();
 	}

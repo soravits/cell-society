@@ -2,6 +2,7 @@ package segregation;
 
 import gameoflife.GameOfLifeCell;
 
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -9,6 +10,7 @@ import base.Cell;
 import base.Grid;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class SegregationGrid extends Grid{
 
@@ -35,13 +37,10 @@ public class SegregationGrid extends Grid{
 		
 	}
 	
-	//how should i make this work
-	public void randomize(){
-		for(int i = 0; i < rowLength; i++){
-			Collections.shuffle(Arrays.asList(grid[i]));
-		}
-		Collections.shuffle(Arrays.asList(grid));
-		
+	public void switchCells(Point p1, Point p2){
+		Paint destination = grid[p2.x][p2.y].getColor(); //store destination color
+		grid[p2.x][p2.y].setColor(grid[p1.x][p1.y].getColor()); //update destination color with mover
+		grid[p1.x][p1.y].setColor(destination); //update mover start position with destination original color
 	}
 
 	

@@ -25,6 +25,9 @@ public class SegregationXMLFactory extends SimulationXMLFactory{
     public double getPercB(){
         return Double.parseDouble(getTextValue("percentageB"));
     }
+    public double getPercEmpty(){
+        return Double.parseDouble(getTextValue("percentageEmpty"));
+    }
     
 
 }

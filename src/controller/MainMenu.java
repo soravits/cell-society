@@ -27,6 +27,7 @@ import javafx.util.Duration;
 import spreadingoffire.SpreadingOfFireSimulation;
 import segregation.Segregation;
 import xml.FireXMLFactory;
+import xml.GameOfLifeXMLFactory;
 import xml.SegregationXMLFactory;
 import xml.XMLParser;
 
@@ -109,6 +110,10 @@ public class MainMenu {
                     	FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
+                    case "GAME OF LIFE":
+                    	GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
+                    	mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
+                    	break;
                     case "SEGREGATION":
                         SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),

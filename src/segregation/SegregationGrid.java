@@ -1,5 +1,8 @@
 package segregation;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import base.Cell;
 import base.Grid;
 import javafx.scene.layout.Pane;
@@ -19,6 +22,15 @@ public class SegregationGrid extends Grid{
 	@Override
 	public void initializeGrid() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	//how should i make this work
+	public void randomize(){
+		for(int i = 0; i < rowLength; i++){
+			Collections.shuffle(Arrays.asList(grid[i]));
+		}
+		Collections.shuffle(Arrays.asList(grid));
 		
 	}
 

@@ -24,11 +24,11 @@ public class Segregation extends Simulation{
     // 1 is group 1
     // 2 is group 2
 	
-	public Segregation(int gridLength, double threshold, double percentA, double percentB, double percentEmpty) {
+	public Segregation(int gridLength, double threshold, double percentA, double percentEmpty) {
 		super(gridLength);
 		this.satisfyThresh = threshold;
 		this.percA = percentA;
-		this.percB = percentB;
+//		this.percB = percentB;
 		this.percEmpty = percentEmpty;
 	}
 
@@ -96,7 +96,7 @@ public class Segregation extends Simulation{
             }
         }
         
-        
+        myGrid.randomize();
 	}
 	
 

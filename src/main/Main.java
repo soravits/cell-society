@@ -12,7 +12,7 @@ public class Main extends Application{
 		stage = primaryStage;
 		Scene scene = new Scene(new MainMenu(primaryStage).setUpWindow());
 		primaryStage.setTitle("Cell Society");
-		primaryStage.setScene(scene);;
+		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	

@@ -40,7 +40,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     @Override
     public void stopSimulation () {
-        // TODO Auto-generated method stub
         animation.stop();
     }
 
@@ -120,7 +119,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     @Override
     public void step () {
-        // TODO Auto-generated method stub
         updateState();
     }
 

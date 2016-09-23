@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadingoffire.SpreadingOfFireSimulation;
 import xml.FireXMLFactory;
+import xml.GameOfLifeXMLFactory;
 import xml.XMLParser;
 
 public class MainMenu {
@@ -100,10 +101,15 @@ public class MainMenu {
                 XMLParser parser = new XMLParser();
                 switch(Name){
                     case "FOREST FIRE":
-                        FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
-                        mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch());
+                    	FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
+                    case "GAME OF LIFE":
+                      GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
+                      mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
+                      break;
                 }
+                
                 scene = mySim.init(stage);
                 stage.setScene(scene);
                 stage.show();

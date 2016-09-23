@@ -1,5 +1,7 @@
 package segregation;
 
+import gameoflife.GameOfLifeCell;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -21,7 +23,15 @@ public class SegregationGrid extends Grid{
 
 	@Override
 	public void initializeGrid() {
-		// TODO Auto-generated method stub
+        for(int i=0; i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                    Cell gridCell = new Cell(sizeOfCell, rootElement, sizeOfCell 
+                                    * (i) + initialX,sizeOfCell* (j) + initialY);
+//                    gridCell.fillCellWithColors();
+                    gridCell.addToScene();
+                    grid[i][j] = gridCell;                          
+            }
+    }      
 		
 	}
 	

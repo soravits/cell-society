@@ -6,9 +6,9 @@
 	</Simulation>
 	<Simulation SimulationType="Segregation">
 		<satisfyThresh>0.5</satisfyThresh>
-		<percentageA>0.5</percentageA>
-		<percentageB>0.5</percentageB>
-		<percentageEmpty>0.4</percentageEmpty>
+		<percentageA>0.7</percentageA>
+		<percentageB>0.3</percentageB>
+		<percentageEmpty>0.2</percentageEmpty>
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
 	</Simulation>

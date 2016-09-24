@@ -25,5 +25,5 @@ public abstract class SimulationXMLFactory extends XMLFactory {
         return Integer.parseInt(getTextValue("gridSize"));
     }
 
-    public abstract String getSimulationType ();
+    public abstract String getSimulationType();
 }

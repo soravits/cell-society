@@ -2,6 +2,7 @@ package base;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class Cell {
@@ -14,11 +15,13 @@ public class Cell {
 		this.block = new Rectangle(xCoord,yCoord,sizeOfCell,sizeOfCell);
 	}
 	
-	//public abstract void checkSurroundingCells();
-	
-	//public abstract void fillCellWithColors();
-	/*
-	 * @Override
+	public void fillCellWithColors() {
+		block.setFill(Color.WHITE);
+		block.setStroke(Color.BLACK);
+		block.setStrokeWidth(2);
+	}
+
+	 /* @Override
 		public void fillCellWithColors() {
 			block.setFill(Color.WHITE); //Main Color
 			block.setStroke(Color.BLUE); // Border Color
@@ -26,8 +29,21 @@ public class Cell {
 		}
 	 */
 	
+	public void setBorder(Color color){
+		block.setStroke(color);
+		block.setStrokeWidth(2);
+	}
+	
 	public void setColor(Color color){
 	    block.setFill(color);
+	}
+	
+	public void setColor(Paint color){
+	    block.setFill(color);
+	}
+	
+	public Paint getColor(){
+		return block.getFill();
 	}
 	
 	public void addToScene(){

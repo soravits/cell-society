@@ -147,12 +147,12 @@ public abstract class Grid {
      */
     public void setUpButtons(){
         // START SIMULATION BUTTON BELOW
+    	String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
+                "-fx-background-radius: 20;" + 
+                "-fx-text-fill: white;";
+    	
         Button startSim = new Button("Start");
-        startSim.setStyle(
-                          "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
-                                  "-fx-background-radius: 20;" + 
-                                  "-fx-text-fill: white;"               
-                );
+        startSim.setStyle(buttonFill);
         startSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -165,11 +165,7 @@ public abstract class Grid {
 
         // STEP SIMULATION BUTTON BELOW
         Button stepSim = new Button("Step");
-        stepSim.setStyle(
-                         "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
-                                 "-fx-background-radius: 20;" + 
-                                 "-fx-text-fill: white;"               
-                );
+        stepSim.setStyle(buttonFill);
         stepSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -182,11 +178,7 @@ public abstract class Grid {
 
         // PAUSE SIMULATION BUTTON BELOW
         Button pauseSim = new Button("Pause");
-        pauseSim.setStyle(
-                          "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
-                                  "-fx-background-radius: 20;" + 
-                                  "-fx-text-fill: white;"               
-                );
+        pauseSim.setStyle(buttonFill);
         pauseSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -199,11 +191,7 @@ public abstract class Grid {
 
         // RESUME SIMULATION BUTTON BELOW
         Button resumeSim = new Button("Resume");
-        resumeSim.setStyle(
-                           "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
-                                   "-fx-background-radius: 20;" + 
-                                   "-fx-text-fill: white;"         
-                );
+        resumeSim.setStyle(buttonFill);
         resumeSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

@@ -15,37 +15,35 @@ public class SegregationXMLFactory extends SimulationXMLFactory{
         super(rootElement);
     }
 
-    /* (non-Javadoc)
-     * @see xml.SimulationXMLFactory#getSimulationType()
-     */
+
     @Override
     public String getSimulationType() {
         return "Segregation";
     }
 
     /**
-     * @return
+     * @return double value for percentage of identical neighbors to satisfy a cell
      */
     public double getSatisfyThreshold(){
-        return Double.parseDouble(getTextValue("satisfyThresh")); //not sure of the variable naming
+        return Double.parseDouble(getTextValue("satisfyThresh"));
     }
 
     /**
-     * @return
+     * @return percentage of inhabited cells that will be type A
      */
     public double getPercA(){
         return Double.parseDouble(getTextValue("percentageA"));
     }
     
     /**
-     * @return
+     * @return percentage of inhabited cells that will be type B
      */
     public double getPercB(){
         return Double.parseDouble(getTextValue("percentageB"));
     }
     
     /**
-     * @return
+     * @return percentage of grid that is empty
      */
     public double getPercEmpty(){
         return Double.parseDouble(getTextValue("percentageEmpty"));

@@ -10,6 +10,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
+ * This is the Grid class for segregation. 
+ * It's responsible for some specific behaviors such as switching cells,
+ * setting and updating the statistics, etc.
  * @author Delia
  *
  */
@@ -31,7 +34,7 @@ public class SegregationGrid extends Grid{
     /**
      * @param row
      * @param column
-     * @return
+     * @return cell located at those coordinates
      */
     public Cell getCell(int row, int column){
         return (Cell) getGrid()[row][column];
@@ -39,6 +42,8 @@ public class SegregationGrid extends Grid{
     
     /* (non-Javadoc)
      * @see base.Grid#initializeGrid()
+     * maybe we should put this in the superclass and have separate methods 
+     * in each of our grids that call this. 
      */
     @Override
     public void initializeGrid() {
@@ -69,18 +74,19 @@ public class SegregationGrid extends Grid{
     }
     
     /**
-     * 
+     * Sets the text that will display grid statistics
      */
     public void setStats(){
         stats = new Text(60, 50, "Round \nUnsatisfied Cells");
         stats.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
-        stats.setFill(Color.BLACK);
+        stats.setFill(Color.WHITE);
         getRootElement().getChildren().add(stats);
     }
     
     /**
-     * @param stepNumber
-     * @param numberUnsatisfied
+     * Updates the stats for the grid
+     * @param stepNumber			Which step in the simulation it is
+     * @param numberUnsatisfied		Number of cells that aren't satisfied
      */
     public void updateStats(int stepNumber, int numberUnsatisfied){
         String currentStat = "Round " + stepNumber + "\nUnsatisfied Cells " + numberUnsatisfied;
@@ -88,6 +94,7 @@ public class SegregationGrid extends Grid{
     }
     
     /**
+     * Sets the color of cell at those coordinates based on its state
      * @param x
      * @param y
      * @param cellState
@@ -96,8 +103,8 @@ public class SegregationGrid extends Grid{
         if(cellState == 0)
             getGrid()[x][y].setColor(Color.WHITE);
         else if(cellState == 1)
-            getGrid()[x][y].setColor(Color.BLUE);
+            getGrid()[x][y].setColor(Color.DARKBLUE);
         else
-            getGrid()[x][y].setColor(Color.GREEN);
+            getGrid()[x][y].setColor(Color.LIMEGREEN);
     }
 }

@@ -1,18 +1,14 @@
 package spreadingoffire;
 
-import java.util.Random;
-
-import segregation.SegregationGrid;
-import base.Cell;
 import base.Simulation;
-import controller.MainMenu;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
+/**
+ * @author Soravit
+ *
+ */
 public class SpreadingOfFireSimulation extends Simulation{
 
     private double probCatch;
@@ -22,30 +18,46 @@ public class SpreadingOfFireSimulation extends Simulation{
     // 1 is tree
     // 2 is burning tree
 
+    /**
+     * @param gridLength
+     * @param probCatch
+     */
     public SpreadingOfFireSimulation(int gridLength, double probCatch) {
         super(gridLength);
         this.probCatch = probCatch;
     }
 
+    /* (non-Javadoc)
+     * @see base.Simulation#init(javafx.stage.Stage)
+     */
     @Override
     public Scene init (Stage s) {
-        stage = s;
-        myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-        this.myGrid = new SpreadingOfFireGrid(gridLength, cellSize, rootElement, leftMargin, topMargin);
+        setStage(s);
+        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), getLeftMargin(), getTopMargin());
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
-        cellStates = new int[gridLength][gridLength];
+        cellStates = new int[getGridLength()][getGridLength()];
         setInitialEnvironment();
 
-        return myScene;
+        return getMyScene();
     }
 
+    /**
+     * @param x
+     * @param y
+     */
     public void spawnTree(int x, int y){
         cellStates[x][y] = 1;
         myGrid.updateCell(x,y,1);
     }
 
+    /**
+     * @param x
+     * @param y
+     * @param forceBurn
+     */
     public void burnTree(int x, int y, boolean forceBurn){
         double rand = Math.random();
         if(rand < probCatch || forceBurn){
@@ -54,17 +66,24 @@ public class SpreadingOfFireSimulation extends Simulation{
         }
     }
 
+    /**
+     * @param x
+     * @param y
+     */
     public void clearCell(int x, int y){
         cellStates[x][y] = 0;
         myGrid.updateCell(x,y,0);
     }
 
+    /* (non-Javadoc)
+     * @see base.Simulation#setInitialEnvironment()
+     */
     public void setInitialEnvironment(){
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0;j<gridLength; j++){
-                if(i == 0 || i == gridLength-1 || j == 0 || j == gridLength-1){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0;j<getGridLength(); j++){
+                if(i == 0 || i == getGridLength()-1 || j == 0 || j == getGridLength()-1){
                     clearCell(i,j);
-                }else if(i == gridLength/2 && j == gridLength/2){
+                }else if(i == getGridLength()/2 && j == getGridLength()/2){
                     burnTree(i,j,true);
                 }else{
                     spawnTree(i,j);
@@ -74,9 +93,12 @@ public class SpreadingOfFireSimulation extends Simulation{
         }
     }
 
+    /**
+     * 
+     */
     public void updateState(){
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0; j<gridLength; j++){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0; j<getGridLength(); j++){
                 if(cellStates[i][j] == 1){
                     if(cellStates[i-1][j] == 2){
                         burnTree(i,j,false);
@@ -94,8 +116,8 @@ public class SpreadingOfFireSimulation extends Simulation{
             }
         }
 
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0; j<gridLength; j++){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0; j<getGridLength(); j++){
                 if(cellStates[i][j] == 2){
                     clearCell(i,j);
                 } else if(cellStates[i][j] == 3){
@@ -105,6 +127,9 @@ public class SpreadingOfFireSimulation extends Simulation{
         }
     }
 
+    /* (non-Javadoc)
+     * @see base.Simulation#step()
+     */
     @Override
     public void step () {
         updateState();

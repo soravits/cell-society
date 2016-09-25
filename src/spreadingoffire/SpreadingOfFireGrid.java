@@ -28,7 +28,7 @@ public class SpreadingOfFireGrid extends Grid{
     public void updateCell(int x, int y, int cellState){
         if(cellState == 0){
             grid[x][y].setColor(Color.YELLOW);
-        }else if(cellState == 1){
+        }else if(cellState == 1 || cellState == 3){
             grid[x][y].setColor(Color.FORESTGREEN);
         }else{
             grid[x][y].setColor(Color.BROWN);

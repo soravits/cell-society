@@ -31,11 +31,7 @@ public class SpreadingOfFireSimulation extends Simulation{
     public Scene init (Stage s) {
         stage = s;
         myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-//        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
-//        int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
-//        int marginTop = SIMULATION_WINDOW_HEIGHT/8;
-
-        this.myGrid = new SpreadingOfFireGrid(gridLength, cellSize, rootElement, marginOnSidesOfGrid, marginTop);
+        this.myGrid = new SpreadingOfFireGrid(gridLength, cellSize, rootElement, leftMargin, topMargin);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);

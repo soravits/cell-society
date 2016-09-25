@@ -11,20 +11,36 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 /**
+ * This is the Segregation class of Cell Society. 
+ * This runs the simulation for a grid that consists of 2 cell types, red and blue, and empty spots.
+ * The cells will move into empty spots based on a set of criteria determining whether they are 
+ * "satisfied" or not, thus eventually forming clusters of cells that are similar.
+ * 
+ * This models segregation within communities that are composed of different types. 
  * @author Delia
  *
  */
 public class Segregation extends Simulation{
+
+    private static final int EMPTY = 0;
+    private static final int SATISFIED = 1;
+    private static final int UNSATISFIED = 2;
+    
     private SegregationGrid myGrid;
     private Timeline animation;
     private int[][] cellSatisfied;
     private double satisfyThresh, percA, percEmpty;
-    private static final int EMPTY = 0;
-    private static final int UNSATISFIED = 2;
     private int numberOfUnsatisfied;
     private int totalSteps = 0;
     private Random random = new Random();
     
+    /**
+     * @param gridLength
+     * @param threshold
+     * @param percentA
+     * @param percentB
+     * @param percentEmpty
+     */
     public Segregation(int gridLength, double threshold, double percentA, 
                        double percentB, double percentEmpty) {
         super(gridLength);
@@ -33,15 +49,13 @@ public class Segregation extends Simulation{
         this.percEmpty = percentEmpty;
     }
     
-    /* (non-Javadoc)
-     * @see base.Simulation#init(javafx.stage.Stage)
-     */
+
     @Override
-    
     public Scene init(Stage s) {
         setStage(s);
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
-        this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), getLeftMargin(), getTopMargin());
+        this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
+        		getLeftMargin(), getTopMargin());
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -52,6 +66,7 @@ public class Segregation extends Simulation{
     }
     
     
+
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()
      */
@@ -60,10 +75,12 @@ public class Segregation extends Simulation{
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
                 int cellLottery = random.nextInt(100);
-                if(cellLottery <= (percEmpty * 100)){ //if the cell is white
+                //if the cell is white
+                if(cellLottery <= (percEmpty * 100)){
                     cellType = 0;
                 }
-                else if (cellLottery <= ((percEmpty + percA) * 100)){ //if the cell is blue
+                //if the cell is blue
+                else if (cellLottery <= ((percEmpty + percA) * 100)){
                     cellType = 1;
                 }
                 else{
@@ -81,7 +98,6 @@ public class Segregation extends Simulation{
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
                 cellSatisfied[i][j] = setSatisfiedState(i, j);
-                //				System.out.println(setSatisfiedState(i, j));
             }
         }
     }
@@ -109,50 +125,57 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks south
-        if(i < getGridLength() - 1 && myGrid.getCell(i + 1, j) != null && !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
+        if(i < getGridLength() - 1 && myGrid.getCell(i + 1, j) != null 
+        		&& !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i + 1, j).getColor().equals(color))
                 sameColor++;
         }
         //checks west
-        if(j > 0 && myGrid.getCell(i, j - 1) != null && !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
+        if(j > 0 && myGrid.getCell(i, j - 1) != null 
+        		&& !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i, j - 1).getColor().equals(color))
                 sameColor++;
         }
         //checks east
-        if(j < getGridLength() - 1 && myGrid.getCell(i, j + 1) != null && !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
+        if(j < getGridLength() - 1 && myGrid.getCell(i, j + 1) != null 
+        		&& !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i, j + 1).getColor().equals(color))
                 sameColor++;
         }
         //checks northwest
-        if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null && !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)){
+        if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null 
+        		&& !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i - 1, j - 1).getColor().equals(color))
                 sameColor++;
         }
         //checks southwest
-        if(i < getGridLength() - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null && !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
+        if(i < getGridLength() - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null 
+        		&& !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i + 1, j - 1).getColor().equals(color))
                 sameColor++;
         }
         //checks northeast
-        if(i > 0 && j < getGridLength() - 1 && myGrid.getCell(i - 1, j + 1) != null && !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
+        if(i > 0 && j < getGridLength() - 1 && myGrid.getCell(i - 1, j + 1) != null 
+        		&& !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i - 1, j + 1).getColor().equals(color))
                 sameColor++;
         }
         //checks southeast
-        if(i < getGridLength() - 1 && j < getGridLength() - 1 && myGrid.getCell(i + 1, j + 1) != null && !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
+        if(i < getGridLength() - 1 && j < getGridLength() - 1 && myGrid.getCell(i + 1, j + 1) != null 
+        		&& !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
             totalNeighbors++;
             if(myGrid.getCell(i + 1, j + 1).getColor().equals(color))
                 sameColor++;
         }
         if((double) sameColor / (double) totalNeighbors >= satisfyThresh) 
-            return 1;
-        return 2;
+            return SATISFIED;
+        return UNSATISFIED;
     }
     
     /* (non-Javadoc)
@@ -160,7 +183,6 @@ public class Segregation extends Simulation{
      */
     @Override
     public void step() {
-        // TODO Auto-generated method stub
         totalSteps++;
         setSatisfiedGrid();
         updateState();
@@ -183,7 +205,6 @@ public class Segregation extends Simulation{
                 }
                 if(cellSatisfied[i][j] == UNSATISFIED){
                     unhappySpots.add(new Point(i, j));
-                    //					System.out.println("add unsatisfied");
                 }
             }
         }

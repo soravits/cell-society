@@ -44,9 +44,9 @@ public class SegregationGrid extends Grid{
     public void initializeGrid() {
         for(int i = 0; i < getGrid().length; i++){
             for(int j = 0; j < getGrid()[0].length; j++){
-                Cell gridCell = new Cell(getSizeOfCell(), getRootElement(),
-                                         getSizeOfCell() * (i) + getInitialX(), getSizeOfCell()* (j) + getInitialY());
-                //                    getGrid()Cell.fillCellWithColors();
+                Cell gridCell = new Cell(getSizeOfCell(), getRootElement(), 
+                		getSizeOfCell() * (i) + getInitialX(), 
+                		getSizeOfCell()* (j) + getInitialY());
                 gridCell.addToScene();
                 getGrid()[i][j] = gridCell;                          
             }
@@ -55,13 +55,17 @@ public class SegregationGrid extends Grid{
     }
     
     /**
-     * @param p1
-     * @param p2
+     * Switches two cells on the grid.
+     * Stores the destination color as local Paint object
+     * Sets destination color with color of moving cell
+     * Updates original position of mover with stored destination color
+     * @param p1	coordinates of point that is moving
+     * @param p2	coordinates of point that is destination
      */
     public void switchCells(Point p1, Point p2){
-        Paint destination = getGrid()[p2.x][p2.y].getColor(); //store destination color
-        getGrid()[p2.x][p2.y].setColor(getGrid()[p1.x][p1.y].getColor()); //update destination color with mover
-        getGrid()[p1.x][p1.y].setColor(destination); //update mover start position with destination original color
+        Paint destination = getGrid()[p2.x][p2.y].getColor();
+        getGrid()[p2.x][p2.y].setColor(getGrid()[p1.x][p1.y].getColor());
+        getGrid()[p1.x][p1.y].setColor(destination);
     }
     
     /**
@@ -89,12 +93,11 @@ public class SegregationGrid extends Grid{
      * @param cellState
      */
     public void updateCell(int x, int y, int cellState){
-        if(cellState == 0){
+        if(cellState == 0)
             getGrid()[x][y].setColor(Color.WHITE);
-        }else if(cellState == 1){
+        else if(cellState == 1)
             getGrid()[x][y].setColor(Color.BLUE);
-        }else{
+        else
             getGrid()[x][y].setColor(Color.RED);
-        }
     }
 }

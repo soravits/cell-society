@@ -12,11 +12,11 @@ public class FireXMLFactory extends SimulationXMLFactory{
     public String getSimulationType () {
         return "Spreading of Fire";
     }
-    
+
     public double getProbCatch(){
         return Double.parseDouble(getTextValue("probCatch"));
     }
-    
+
 
 
 }

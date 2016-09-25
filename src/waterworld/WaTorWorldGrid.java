@@ -1,15 +1,10 @@
 package waterworld;
 
-import base.Cell;
 import base.Grid;
 import javafx.scene.layout.Pane;
 import waterworld.WaTorWorldCell.State;
 
 public class WaTorWorldGrid extends Grid{
-
-    public Cell[][] getGrid(){
-        return grid;
-    }
 
     public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
                           int initialX, int initialY) {
@@ -19,17 +14,17 @@ public class WaTorWorldGrid extends Grid{
 
     @Override
     public void initializeGrid() {
-        for(int i=0; i<grid.length;i++){
-            for(int j=0;j<grid[0].length;j++){
-                WaTorWorldCell gridCell = new WaTorWorldCell(sizeOfCell, rootElement, sizeOfCell 
-                                                             * (i) + initialX,sizeOfCell* (j) + initialY, State.EMPTY);
+        for(int i=0; i<getGrid().length;i++){
+            for(int j=0;j<getGrid()[0].length;j++){
+                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
+                                                             * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
                 gridCell.addToScene();
-                grid[i][j] = gridCell;                          
+                getGrid()[i][j] = gridCell;                          
             }
         } 
     }
 
     public WaTorWorldCell getCell(int x, int y){
-        return (WaTorWorldCell) grid[x][y];
+        return (WaTorWorldCell) getGrid()[x][y];
     }
 }

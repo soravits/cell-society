@@ -12,7 +12,7 @@ public class GameOfLifeXMLFactory extends SimulationXMLFactory{
     public String getSimulationType () {
         return "Game Of Life";
     }
-    
+
 }
-    
+
 

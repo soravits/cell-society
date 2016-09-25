@@ -1,34 +1,43 @@
 package base;
 
-import gameoflife.GameOfLifeCell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public abstract class Grid {
-    protected Cell[][] grid;
-    protected int rowLength;
-    protected Pane rootElement;
-    protected Simulation sim;
-    protected int initialX;
+    private Cell[][] grid;
+    private int rowLength;
+    private Pane rootElement;
+    private Simulation sim;
+    private int initialX;
+    private int initialY;
+    private int sizeOfCell;
+    
+    public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY){
+        this.grid = new Cell[rowLength][rowLength];
+        this.rootElement = rootElement;
+        this.rowLength = rowLength;           
+        this.sizeOfCell = sizeOfCell;
+        this.rootElement = rootElement;
+        this.initialX = initialX;
+        this.initialY = initialY;
+    }
+    
+    public Cell[][] getGrid(){
+        return grid;
+    }
 
     public void setGrid (Cell[][] grid) {
         this.grid = grid;
     }
 
-    protected int initialY;
-    protected int sizeOfCell;
+    public Pane getRootElement () {
+        return rootElement;
+    }
 
-    public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY){
-        this.grid = new Cell[rowLength][rowLength];
+    public void setRootElement (Pane rootElement) {
         this.rootElement = rootElement;
-        this.rowLength = rowLength;		
-        this.sizeOfCell = sizeOfCell;
-        this.initialX = initialX;
-        this.initialY = initialY;
     }
 
     public abstract void initializeGrid();
@@ -37,13 +46,45 @@ public abstract class Grid {
         this.sim = sim;;
     }
 
+    public int getInitialX () {
+        return initialX;
+    }
+
+    public void setInitialX (int initialX) {
+        this.initialX = initialX;
+    }
+
+    public int getRowLength () {
+        return rowLength;
+    }
+
+    public void setRowLength (int rowLength) {
+        this.rowLength = rowLength;
+    }
+
+    public int getInitialY () {
+        return initialY;
+    }
+
+    public void setInitialY (int initialY) {
+        this.initialY = initialY;
+    }
+
+    public int getSizeOfCell () {
+        return sizeOfCell;
+    }
+
+    public void setSizeOfCell (int sizeOfCell) {
+        this.sizeOfCell = sizeOfCell;
+    }
+    
     public void setUpButtons(){
         // START SIMULATION BUTTON BELOW
         Button startSim = new Button("Start");
         startSim.setStyle(
                           "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
                                   "-fx-background-radius: 20;" + 
-                                  "-fx-text-fill: white;"		
+                                  "-fx-text-fill: white;"               
                 );
         startSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -77,7 +118,7 @@ public abstract class Grid {
         pauseSim.setStyle(
                           "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
                                   "-fx-background-radius: 20;" + 
-                                  "-fx-text-fill: white;"		
+                                  "-fx-text-fill: white;"               
                 );
         pauseSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override

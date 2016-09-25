@@ -2,7 +2,6 @@ package spreadingoffire;
 
 import base.Cell;
 import base.Grid;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -15,23 +14,23 @@ public class SpreadingOfFireGrid extends Grid{
 
     @Override
     public void initializeGrid() {
-            for(int i=0; i<grid.length;i++){
-                    for(int j=0;j<grid[0].length;j++){
-                            Cell gridCell = new Cell(sizeOfCell, rootElement, sizeOfCell 
-                                            * (i) + initialX,sizeOfCell* (j) + initialY);
+            for(int i=0; i<getGrid().length;i++){
+                    for(int j=0;j<getGrid()[0].length;j++){
+                            Cell gridCell = new Cell(getSizeOfCell(), getRootElement(), getSizeOfCell()
+                                            * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
                             gridCell.addToScene();
-                            grid[i][j] = gridCell;                          
+                            getGrid()[i][j] = gridCell;                          
                     }
             }       
     }
     
     public void updateCell(int x, int y, int cellState){
         if(cellState == 0){
-            grid[x][y].setColor(Color.YELLOW);
+            getGrid()[x][y].setColor(Color.YELLOW);
         }else if(cellState == 1 || cellState == 3){
-            grid[x][y].setColor(Color.FORESTGREEN);
+            getGrid()[x][y].setColor(Color.FORESTGREEN);
         }else{
-            grid[x][y].setColor(Color.BROWN);
+            getGrid()[x][y].setColor(Color.BROWN);
         }
     }
     

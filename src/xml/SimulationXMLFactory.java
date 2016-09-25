@@ -20,7 +20,7 @@ public abstract class SimulationXMLFactory extends XMLFactory {
     public boolean isValidFile () {
         return Objects.equals(getAttribute("SimulationType"), getSimulationType());
     }
-    
+
     public int getGridSize(){
         return Integer.parseInt(getTextValue("gridSize"));
     }

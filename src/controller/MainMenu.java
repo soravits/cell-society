@@ -4,7 +4,6 @@ package controller;
 import base.Simulation;
 import gameoflife.GameOfLifeSimulation;
 import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import spreadingoffire.SpreadingOfFireSimulation;
 import waterworld.WaTorWorldSimulation;
 import segregation.Segregation;
@@ -57,7 +55,6 @@ public class MainMenu {
 
     public class MenuItem extends StackPane{
         private Scene scene = null;
-        private KeyFrame frame = null;
         public MenuItem(String Name) {	
             LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
                                                          CycleMethod.NO_CYCLE, 
@@ -104,31 +101,31 @@ public class MainMenu {
                 Simulation mySim = null;
                 XMLParser parser = new XMLParser();
                 if(Name == null){
-                	System.out.println("null");
+                    System.out.println("null");
                 }
-                
+
                 switch(Name){
                     case "FOREST FIRE":
-                    	FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
+                        FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
                     case "GAME OF LIFE":
-                    	GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
-                    	mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
-                    	break;
+                        GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
+                        break;
                     case "SEGREGATION":
                         SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),
-                        		segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
+                                                segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
                         break;
-                        
+
                     case "PREDATOR PREY":
                         WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new WaTorWorldSimulation(WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), WWXMLFactory.getFracShark(),
                                                          WWXMLFactory.getFishBreedTime(), WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
                         break;
                 }
-                
+
                 scene = mySim.init(stage);
                 stage.setScene(scene);
                 stage.show();

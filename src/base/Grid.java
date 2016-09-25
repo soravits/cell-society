@@ -39,7 +39,7 @@ public abstract class Grid {
 
     public void setUpButtons(){
         // START SIMULATION BUTTON BELOW
-        Button startSim = new Button("Start Simulation");
+        Button startSim = new Button("Start");
         startSim.setStyle(
                           "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
                                   "-fx-background-radius: 20;" + 
@@ -55,21 +55,55 @@ public abstract class Grid {
         startSim.setTranslateY(200);
         rootElement.getChildren().add(startSim);
 
-        // END SIMULATION BUTTON BELOW
-        Button endSim = new Button("Stop Simulation");
-        endSim.setStyle(
-                        "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
-                                "-fx-background-radius: 20;" + 
-                                "-fx-text-fill: white;"		
+        // STEP SIMULATION BUTTON BELOW
+        Button stepSim = new Button("Step");
+        stepSim.setStyle(
+                         "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
+                                 "-fx-background-radius: 20;" + 
+                                 "-fx-text-fill: white;"               
                 );
-        endSim.setOnAction(new EventHandler<ActionEvent>() {
+        stepSim.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                sim.step();
+            }
+        });
+        stepSim.setTranslateX(20);
+        stepSim.setTranslateY(250);
+        rootElement.getChildren().add(stepSim);
+
+        // PAUSE SIMULATION BUTTON BELOW
+        Button pauseSim = new Button("Pause");
+        pauseSim.setStyle(
+                          "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
+                                  "-fx-background-radius: 20;" + 
+                                  "-fx-text-fill: white;"		
+                );
+        pauseSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sim.stopSimulation();
             }
         });
-        endSim.setTranslateX(20);
-        endSim.setTranslateY(400);
-        rootElement.getChildren().add(endSim);
+        pauseSim.setTranslateX(20);
+        pauseSim.setTranslateY(300);
+        rootElement.getChildren().add(pauseSim);
+
+        // RESUME SIMULATION BUTTON BELOW
+        Button resumeSim = new Button("Resume");
+        resumeSim.setStyle(
+                           "-fx-background-color: linear-gradient(#ff5400, #be1d00);" + 
+                                   "-fx-background-radius: 20;" + 
+                                   "-fx-text-fill: white;"         
+                );
+        resumeSim.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                sim.resumeSimulation();
+            }
+        });
+        resumeSim.setTranslateX(20);
+        resumeSim.setTranslateY(350);
+        rootElement.getChildren().add(resumeSim);
     }
 }

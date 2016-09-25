@@ -3,6 +3,8 @@ package base;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
@@ -129,6 +131,15 @@ public abstract class Grid {
      */
     public void setSizeOfCell (int sizeOfCell) {
         this.sizeOfCell = sizeOfCell;
+    }
+    
+    public void setBackground(int width, int height){
+    	Image background = new Image(getClass().getClassLoader()
+                .getResourceAsStream("BackgroundCellSoc.jpg")); 
+		ImageView backgrondImageMainScreen = new ImageView(background);
+		backgrondImageMainScreen.setFitWidth(width + 50);
+		backgrondImageMainScreen.setFitHeight(height);
+		rootElement.getChildren().add(backgrondImageMainScreen);
     }
     
     /**

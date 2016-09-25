@@ -56,6 +56,7 @@ public class Segregation extends Simulation{
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
         		getLeftMargin(), getTopMargin());
+        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);

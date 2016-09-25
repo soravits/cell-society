@@ -72,7 +72,7 @@ public class SegregationGrid extends Grid{
      * 
      */
     public void setStats(){
-        stats = new Text(60, 70, "Round \nUnsatisfied Cells");
+        stats = new Text(60, 50, "Round \nUnsatisfied Cells");
         stats.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         stats.setFill(Color.BLACK);
         getRootElement().getChildren().add(stats);
@@ -98,6 +98,6 @@ public class SegregationGrid extends Grid{
         else if(cellState == 1)
             getGrid()[x][y].setColor(Color.BLUE);
         else
-            getGrid()[x][y].setColor(Color.RED);
+            getGrid()[x][y].setColor(Color.GREEN);
     }
 }

@@ -15,7 +15,7 @@ import javafx.util.Duration;
 public class GameOfLifeSimulation extends Simulation{
 	private GameOfLifeGrid myGrid;
 	private boolean[][] deadOrAlive;
-    private Timeline animation;
+	private boolean[][] DoATimeBuffer;
 	
 	public GameOfLifeSimulation(int gridLength) {
 		super(gridLength);
@@ -25,12 +25,13 @@ public class GameOfLifeSimulation extends Simulation{
 	public Scene init(Stage s) {
 		stage = s;
         myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-//        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
-//        int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
-//        int marginTop = SIMULATION_WINDOW_HEIGHT/8;
+        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
+        int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
+        int marginTop = SIMULATION_WINDOW_HEIGHT/8;
         
-        this.myGrid = new GameOfLifeGrid(gridLength, cellSize, rootElement, marginOnSidesOfGrid, marginTop);
+        this.myGrid = new GameOfLifeGrid(gridLength,cellSize,rootElement,marginOnSidesOfGrid,marginTop);
         deadOrAlive = new boolean[gridLength][gridLength];
+        DoATimeBuffer = new boolean[gridLength][gridLength];
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -38,21 +39,7 @@ public class GameOfLifeSimulation extends Simulation{
 
         return myScene;
 	}
-	
-   @Override
-    public void startSimulation() {
-        KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
-                                      e -> step());
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
 
-    @Override
-    public void stopSimulation () {
-        animation.stop();
-    }
  
 	@Override
 	public void step() {
@@ -64,23 +51,42 @@ public class GameOfLifeSimulation extends Simulation{
 		for (boolean[] row: deadOrAlive){
 		    Arrays.fill(row, false);
 		}
+		for (boolean[] row: DoATimeBuffer){
+		    Arrays.fill(row, false);
+		}
 		deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
 	    deadOrAlive[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
 	    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
 	    deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
 	    deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
+	    
+	    DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2] = true;
+	    DoATimeBuffer[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
+	    DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
+	    DoATimeBuffer[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
+	    DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
 		updateCellStatus();
     }
     
 	public void updateCellStatus(){
-		//updateStateOfCells();
+		for(int i = 0; i<gridLength;i++){
+			for(int j=0; j<gridLength;j++){
+				if(DoATimeBuffer[i][j] == true){
+					deadOrAlive[i][j] = true;
+				}
+				else{
+					deadOrAlive[i][j] = false;
+				}
+			}
+		}
+		
 		for(int i = 0; i<gridLength;i++){
 			for(int j=0; j<gridLength;j++){
 				if(deadOrAlive[i][j] == true){
 					reviveCell(i,j);
 				}
 				else{
-					killCell(i,j);	
+					killCell(i,j);
 				}
 			}
 		}	
@@ -96,13 +102,14 @@ public class GameOfLifeSimulation extends Simulation{
 	
 	public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
 		if(deadOrAlive[row][column] == true){
+			DoATimeBuffer[row][column] = true;
 			if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)){
-				deadOrAlive[row][column] = false;
+				DoATimeBuffer[row][column] = false;
 			}
 		}
 		else{
 			if((aliveSurroundingCells == 3)){
-				deadOrAlive[row][column] = true;
+				DoATimeBuffer[row][column] = true;
 			}
 		}
 	}

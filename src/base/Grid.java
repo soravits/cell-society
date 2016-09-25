@@ -51,8 +51,8 @@ public abstract class Grid {
                 sim.startSimulation();
             }
         });
-        startSim.setTranslateX(Simulation.SIMULATION_WINDOW_WIDTH / 2 - 70);
-        startSim.setTranslateY(Simulation.SIMULATION_WINDOW_HEIGHT / 15);
+        startSim.setTranslateX(20);
+        startSim.setTranslateY(200);
         rootElement.getChildren().add(startSim);
 
         // END SIMULATION BUTTON BELOW
@@ -68,8 +68,8 @@ public abstract class Grid {
                 sim.stopSimulation();
             }
         });
-        endSim.setTranslateX((Simulation.SIMULATION_WINDOW_WIDTH / 2) + 100);
-        endSim.setTranslateY(Simulation.SIMULATION_WINDOW_HEIGHT / 15);
+        endSim.setTranslateX(20);
+        endSim.setTranslateY(400);
         rootElement.getChildren().add(endSim);
     }
 }

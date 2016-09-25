@@ -12,4 +12,11 @@
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
 	</Simulation>
+		<Simulation SimulationType="WaTor World">
+		<fracFish>0.4</fracFish>
+		<fracShark>0.1</fracShark>
+		<fishBreedTime>3</fishBreedTime>
+		<sharkBreedTime>20</sharkBreedTime>
+		<starveTime>3</starveTime>
+	</Simulation>
 </Simulation>

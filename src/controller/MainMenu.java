@@ -25,10 +25,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import spreadingoffire.SpreadingOfFireSimulation;
+import waterworld.WaTorWorldSimulation;
 import segregation.Segregation;
 import xml.FireXMLFactory;
 import xml.GameOfLifeXMLFactory;
 import xml.SegregationXMLFactory;
+import xml.WaTorWorldXMLFactory;
 import xml.XMLParser;
 
 public class MainMenu {
@@ -118,6 +120,12 @@ public class MainMenu {
                         SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),
                         		segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
+                        break;
+                        
+                    case "PREDATOR PREY":
+                        WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new WaTorWorldSimulation(WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), WWXMLFactory.getFracShark(),
+                                                         WWXMLFactory.getFishBreedTime(), WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
                         break;
                 }
                 

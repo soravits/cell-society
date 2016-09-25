@@ -1,17 +1,9 @@
 package spreadingoffire;
 
-import java.util.Random;
-
-import segregation.SegregationGrid;
-import base.Cell;
 import base.Simulation;
-import controller.MainMenu;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class SpreadingOfFireSimulation extends Simulation{
 
@@ -29,16 +21,16 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     @Override
     public Scene init (Stage s) {
-        stage = s;
-        myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-        this.myGrid = new SpreadingOfFireGrid(gridLength, cellSize, rootElement, leftMargin, topMargin);
+        setStage(s);
+        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), getLeftMargin(), getTopMargin());
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
-        cellStates = new int[gridLength][gridLength];
+        cellStates = new int[getGridLength()][getGridLength()];
         setInitialEnvironment();
 
-        return myScene;
+        return getMyScene();
     }
 
     public void spawnTree(int x, int y){
@@ -60,11 +52,11 @@ public class SpreadingOfFireSimulation extends Simulation{
     }
 
     public void setInitialEnvironment(){
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0;j<gridLength; j++){
-                if(i == 0 || i == gridLength-1 || j == 0 || j == gridLength-1){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0;j<getGridLength(); j++){
+                if(i == 0 || i == getGridLength()-1 || j == 0 || j == getGridLength()-1){
                     clearCell(i,j);
-                }else if(i == gridLength/2 && j == gridLength/2){
+                }else if(i == getGridLength()/2 && j == getGridLength()/2){
                     burnTree(i,j,true);
                 }else{
                     spawnTree(i,j);
@@ -75,8 +67,8 @@ public class SpreadingOfFireSimulation extends Simulation{
     }
 
     public void updateState(){
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0; j<gridLength; j++){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0; j<getGridLength(); j++){
                 if(cellStates[i][j] == 1){
                     if(cellStates[i-1][j] == 2){
                         burnTree(i,j,false);
@@ -94,8 +86,8 @@ public class SpreadingOfFireSimulation extends Simulation{
             }
         }
 
-        for(int i = 0; i<gridLength; i++){
-            for(int j = 0; j<gridLength; j++){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0; j<getGridLength(); j++){
                 if(cellStates[i][j] == 2){
                     clearCell(i,j);
                 } else if(cellStates[i][j] == 3){

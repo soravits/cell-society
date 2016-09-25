@@ -38,7 +38,4 @@ public class GameOfLifeCell extends Cell{
         }
         return isAlive;
     }
-
-
-
 }

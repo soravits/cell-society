@@ -6,9 +6,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class Cell {
-    protected Pane rootElement;
-    protected Rectangle block;
-    public static final int cellSize = 25;
+    private Pane rootElement;
+    private Rectangle block;
+    public static final double STROKE_WIDTH = 2;
 
     public Cell(int sizeOfCell,Pane rootElement,int xCoord,int yCoord){
         this.rootElement = rootElement;
@@ -18,20 +18,12 @@ public class Cell {
     public void fillCellWithColors() {
         block.setFill(Color.WHITE);
         block.setStroke(Color.BLACK);
-        block.setStrokeWidth(2);
+        block.setStrokeWidth(STROKE_WIDTH);
     }
-
-    /* @Override
-		public void fillCellWithColors() {
-			block.setFill(Color.WHITE); //Main Color
-			block.setStroke(Color.BLUE); // Border Color
-			block.setStrokeWidth(2);
-		}
-     */
 
     public void setBorder(Color color){
         block.setStroke(color);
-        block.setStrokeWidth(2);
+        block.setStrokeWidth(STROKE_WIDTH);
     }
 
     public void setColor(Color color){

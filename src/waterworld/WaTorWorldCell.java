@@ -1,9 +1,6 @@
 package waterworld;
 
 import base.Cell;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -64,9 +61,4 @@ public class WaTorWorldCell extends Cell{
             setColor(Color.YELLOW);
         }
     }
-    
-
-
-
-
 }

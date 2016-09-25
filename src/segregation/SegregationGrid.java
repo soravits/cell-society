@@ -1,10 +1,7 @@
 package segregation;
 
-import gameoflife.GameOfLifeCell;
 
 import java.awt.Point;
-import java.util.Arrays;
-import java.util.Collections;
 
 import base.Cell;
 import base.Grid;

@@ -2,14 +2,11 @@ package segregation;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import spreadingoffire.SpreadingOfFireGrid;
 import controller.MainMenu;
 import base.Cell;
 import base.Simulation;
-import gameoflife.GameOfLifeCell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
@@ -38,6 +35,7 @@ public class Segregation extends Simulation{
 		this.percB = percentB;
 		this.percEmpty = percentEmpty;
 	}
+	
 	@Override
 	public void startSimulation() {
         KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
@@ -51,18 +49,13 @@ public class Segregation extends Simulation{
 
 	@Override
 	public void stopSimulation() {
-		// TODO Auto-generated method stub
 		animation.stop();
 	}
 
 	@Override
 	public Scene init(Stage s) {
         stage = s;
-        myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-//        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
-//        int cellSize = GRID_DIMENSION / gridLength;
-        
-
+        myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE); 
         this.myGrid = new SegregationGrid(gridLength, cellSize, rootElement, marginOnSidesOfGrid, marginTop);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
@@ -76,39 +69,27 @@ public class Segregation extends Simulation{
 	
 	public void setInitialEnvironment(){
 		int cellType;
-		int blue = 0;
-		int red = 0; 
-		int empty = 0;
 		for(int i = 0; i < gridLength; i++){
 			for(int j = 0; j < gridLength; j++){
 				int cellLottery = random.nextInt(100);
-				//40
-				if(cellLottery <= (percEmpty * 100)){ //if the cell is white
+				if(cellLottery <= (percEmpty * 100)){
 					cellType = 0;
-					empty++;
 				}
-				//
-				else if (cellLottery <= ((percEmpty + percA) * 100)){ //if the cell is blue
+				else if (cellLottery <= ((percEmpty + percA) * 100)){
 					cellType = 1;
-					blue++;
 				}
 				else{
 					cellType = 2;
-					red++;
 				}
 				myGrid.updateCell(i, j, cellType);
 			}
 		}
-		System.out.println("Number empty = " + empty);
-		System.out.println("Number blue = " + blue);
-		System.out.println("Number red = " + red);
 	}
 	
 	public void setSatisfiedGrid(){
 		for(int i = 0; i < gridLength; i++){
 			for(int j = 0; j < gridLength; j++){
 				cellSatisfied[i][j] = setSatisfiedState(i, j);
-//				System.out.println(setSatisfiedState(i, j));
 			}
 		}
 	}
@@ -139,66 +120,69 @@ public class Segregation extends Simulation{
 				sameColor++;
 		}
 		//checks south
-		if(i < gridLength - 1 && myGrid.getCell(i + 1, j) != null && !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && myGrid.getCell(i + 1, j) != null 
+				&& !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j).getColor().equals(color))
 				sameColor++;
 		}
 		//checks west
-		if(j > 0 && myGrid.getCell(i, j - 1) != null && !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
+		if(j > 0 && myGrid.getCell(i, j - 1) != null 
+				&& !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks east
-		if(j < gridLength - 1 && myGrid.getCell(i, j + 1) != null && !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
+		if(j < gridLength - 1 && myGrid.getCell(i, j + 1) != null 
+				&& !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i, j + 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks northwest
-		if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null && !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)){
+		if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null 
+				&& !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i - 1, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks southwest
-		if(i < gridLength - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null && !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null 
+				&& !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j - 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks northeast
-		if(i > 0 && j < gridLength - 1 && myGrid.getCell(i - 1, j + 1) != null && !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
+		if(i > 0 && j < gridLength - 1 && myGrid.getCell(i - 1, j + 1) != null 
+				&& !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i - 1, j + 1).getColor().equals(color))
 				sameColor++;
 		}
 		//checks southeast
-		if(i < gridLength - 1 && j < gridLength - 1 && myGrid.getCell(i + 1, j + 1) != null && !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
+		if(i < gridLength - 1 && j < gridLength - 1 && myGrid.getCell(i + 1, j + 1) != null 
+				&& !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)){
 			totalNeighbors++;
 			if(myGrid.getCell(i + 1, j + 1).getColor().equals(color))
 				sameColor++;
 		}
 		
 		if((double) sameColor / (double) totalNeighbors >= satisfyThresh) 
-			return 1;
+			return SATISFIED;
 		
-		return 2;
+		return UNSATISFIED;
 	}
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
 		totalSteps++;
 		setSatisfiedGrid();
 		updateState();
 		if(numberOfUnsatisfied == 0) animation.stop();
 	}
 	
-	//don't know if we should implement it so that a dissatisfied cell can leave its position and immediately have
-	//that spot filled by another previously dissatisfied cell. Or can we make it so that dissatisfied cells can only
-	//go to spots that are currently empty and not inhabited by another dissatisfied cell?
 	public void updateState(){
 		//make a list of empty spots
 		ArrayList<Point> emptySpots = new ArrayList<>();
@@ -212,12 +196,9 @@ public class Segregation extends Simulation{
 				}
 				if(cellSatisfied[i][j] == UNSATISFIED){
 					unhappySpots.add(new Point(i, j));
-//					System.out.println("add unsatisfied");
 				}
 			}
 		}
-//		System.out.println("Original emptyspots = " + emptySpots.size());
-//		System.out.println("Original unhappy spots = " + unhappySpots.size());
 		
 		//randomly place dissatisfied cells into empty spots
 		for(int i = 0; i < unhappySpots.size(); i++){

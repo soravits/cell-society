@@ -38,22 +38,6 @@ public class Segregation extends Simulation{
 		this.percB = percentB;
 		this.percEmpty = percentEmpty;
 	}
-	@Override
-	public void startSimulation() {
-        KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
-                e -> step());
-		animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
-	}
-
-
-	@Override
-	public void stopSimulation() {
-		// TODO Auto-generated method stub
-		animation.stop();
-	}
 
 	@Override
 	public Scene init(Stage s) {

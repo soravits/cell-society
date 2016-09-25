@@ -15,7 +15,6 @@ import javafx.util.Duration;
 public class GameOfLifeSimulation extends Simulation{
 	private GameOfLifeGrid myGrid;
 	private boolean[][] deadOrAlive;
-    private Timeline animation;
 	
 	public GameOfLifeSimulation(int gridLength) {
 		super(gridLength);
@@ -29,7 +28,7 @@ public class GameOfLifeSimulation extends Simulation{
         int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
         int marginTop = SIMULATION_WINDOW_HEIGHT/8;
         
-        this.myGrid = new GameOfLifeGrid(gridLength,Cell.cellSize,rootElement,marginOnSidesOfGrid,marginTop);
+        this.myGrid = new GameOfLifeGrid(gridLength,cellSize,rootElement,marginOnSidesOfGrid,marginTop);
         deadOrAlive = new boolean[gridLength][gridLength];
         myGrid.initializeGrid();
         myGrid.setUpButtons();
@@ -38,21 +37,7 @@ public class GameOfLifeSimulation extends Simulation{
 
         return myScene;
 	}
-	
-   @Override
-    public void startSimulation() {
-        KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
-                                      e -> step());
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
 
-    @Override
-    public void stopSimulation () {
-        animation.stop();
-    }
  
 	@Override
 	public void step() {

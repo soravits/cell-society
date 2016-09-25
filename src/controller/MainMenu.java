@@ -3,7 +3,6 @@ package controller;
 
 import base.Simulation;
 import gameoflife.GameOfLifeSimulation;
-import javafx.animation.KeyFrame;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,16 +30,23 @@ import xml.SegregationXMLFactory;
 import xml.WaTorWorldXMLFactory;
 import xml.XMLParser;
 
+/**
+ * @author Brian, Delia, Soravit
+ *
+ */
 public class MainMenu {
     public static final int MAIN_MENU_WIDTH = 700;
     public static final int MAIN_MENU_HEIGHT = 600;	
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    private static final String xmlFileRoot = "data/xml/rules.xml";
 
     public static int DimensionsOfGrid = 10;
     public static Stage stage;
-    private static final String xmlFileRoot = "data/xml/rules.xml";
 
+    /**
+     * @param s
+     */
     public MainMenu(Stage s){
         stage= s;		
     }
@@ -53,8 +59,15 @@ public class MainMenu {
         stage.setScene(new Scene(setUpWindow()));
     }
 
+    /**
+     * @author Brian
+     *
+     */
     public class MenuItem extends StackPane{
         private Scene scene = null;
+        /**
+         * @param Name
+         */
         public MenuItem(String Name) {	
             LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
                                                          CycleMethod.NO_CYCLE, 
@@ -166,7 +179,14 @@ public class MainMenu {
         return gameWindow;
     }
 
+    /**
+     * @author Brian
+     *
+     */
     private static class BigGameNameText extends StackPane{
+        /**
+         * @param Name
+         */
         public BigGameNameText(String Name){
             Text titleText = new Text(Name);
             titleText.setFont(Font.font("Rockwell", FontWeight.BOLD,60));
@@ -187,7 +207,14 @@ public class MainMenu {
         }
     }
 
+    /**
+     * @author Brian
+     *
+     */
     private static class OptionContainer extends VBox{
+        /**
+         * @param items
+         */
         public OptionContainer(MenuItem...items) {
             getChildren().add(createline());
 
@@ -196,6 +223,9 @@ public class MainMenu {
             }
         }
 
+        /**
+         * @return
+         */
         private Line createline() {
             Line sep = new Line();
             sep.setEndX(300);

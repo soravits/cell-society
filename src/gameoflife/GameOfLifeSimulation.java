@@ -6,15 +6,25 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * @author Brian
+ *
+ */
 public class GameOfLifeSimulation extends Simulation{
     private GameOfLifeGrid myGrid;
     private boolean[][] deadOrAlive;
     private boolean[][] DoATimeBuffer;
 
+    /**
+     * @param gridLength
+     */
     public GameOfLifeSimulation(int gridLength) {
         super(gridLength);
     }
 
+    /* (non-Javadoc)
+     * @see base.Simulation#init(javafx.stage.Stage)
+     */
     @Override
     public Scene init(Stage s) {
         setStage(s);
@@ -32,12 +42,18 @@ public class GameOfLifeSimulation extends Simulation{
     }
 
 
+    /* (non-Javadoc)
+     * @see base.Simulation#step()
+     */
     @Override
     public void step() {
         updateStateOfCells();
         updateCellStatus();
     }
 
+    /* (non-Javadoc)
+     * @see base.Simulation#setInitialEnvironment()
+     */
     public void setInitialEnvironment(){
         for (boolean[] row: deadOrAlive){
             Arrays.fill(row, false);
@@ -59,6 +75,9 @@ public class GameOfLifeSimulation extends Simulation{
         updateCellStatus();
     }
 
+    /**
+     * 
+     */
     public void updateCellStatus(){
         for(int i = 0; i<getGridLength();i++){
             for(int j=0; j<getGridLength();j++){
@@ -83,14 +102,27 @@ public class GameOfLifeSimulation extends Simulation{
         }	
     }
 
+    /**
+     * @param row
+     * @param col
+     */
     private void killCell(int row, int col){
         myGrid.updateCell(row,col,false);
     }
 
+    /**
+     * @param row
+     * @param col
+     */
     private void reviveCell(int row, int col){
         myGrid.updateCell(row,col,true);
     }
 
+    /**
+     * @param row
+     * @param column
+     * @param aliveSurroundingCells
+     */
     public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
         if(deadOrAlive[row][column] == true){
             DoATimeBuffer[row][column] = true;
@@ -105,6 +137,9 @@ public class GameOfLifeSimulation extends Simulation{
         }
     }
 
+    /**
+     * 
+     */
     public void updateStateOfCells(){
         for(int i = 0; i<getGridLength();i++){
             for(int j=0; j<getGridLength();j++){
@@ -115,6 +150,11 @@ public class GameOfLifeSimulation extends Simulation{
         }
     }
 
+    /**
+     * @param row
+     * @param column
+     * @return
+     */
     private int checkNearbyCells(int row, int column){
         int aliveNearbyCells = 0;
         //BE CAREFUL, THIS ALGORITHM's DIAGANOL DETECTION DEPENDS ON FOUR SIDED BOUNDARIES
@@ -150,6 +190,11 @@ public class GameOfLifeSimulation extends Simulation{
         return aliveNearbyCells;
     }
 
+    /**
+     * @param row
+     * @param column
+     * @return
+     */
     private int ifAliveReturn1(int row, int column){
         if(deadOrAlive[row][column] == true){
             return 1;

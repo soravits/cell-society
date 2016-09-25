@@ -43,7 +43,8 @@ public class WaTorWorldSimulation extends Simulation{
      * @param sharkBreedTime
      * @param starveTime
      */
-    public WaTorWorldSimulation(int gridLength, double fracFish, double fracShark, int fishBreedTime, int sharkBreedTime, int starveTime) {
+    public WaTorWorldSimulation(int gridLength, double fracFish, double fracShark, int fishBreedTime, 
+    		int sharkBreedTime, int starveTime) {
         super(gridLength);
         this.setGridLength(gridLength);
         this.fracFish = fracFish;
@@ -58,7 +59,9 @@ public class WaTorWorldSimulation extends Simulation{
         setStage(s);
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + 80);
-        this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),getLeftMargin(), getTopMargin());
+        this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),
+        		getLeftMargin(), getTopMargin());
+        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);

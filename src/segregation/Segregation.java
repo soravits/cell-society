@@ -56,6 +56,7 @@ public class Segregation extends Simulation{
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
         		getLeftMargin(), getTopMargin());
+        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -92,7 +93,10 @@ public class Segregation extends Simulation{
     }
     
     /**
-     * 
+     * Loop that sets 2D array with 0, 1, or 2 for each possible state
+     * 0 = empty
+     * 1 = satisfied
+     * 2 = unsatisfied
      */
     public void setSatisfiedGrid(){
         for(int i = 0; i < getGridLength(); i++){
@@ -107,7 +111,7 @@ public class Segregation extends Simulation{
      * WORST METHOD EVER BUT IT WORKS
      * @param i
      * @param j
-     * @return
+     * @return int value indicating cell's state
      */
     public int setSatisfiedState(int i, int j){
         Cell current = myGrid.getCell(i, j);
@@ -191,7 +195,11 @@ public class Segregation extends Simulation{
     
     
     /**
-     * 
+     * Looks through cellsatisfied array and adds all empty and unsatisfied cells to arraylist.
+     * Unsatisfied cells also count as empty because they're guaranteed to move in the next step,
+     * thus leaving their spot open. 
+     * Adds all unsatisfied cells to their own arraylist.
+     * Loops through unsatisfied arraylist and calls switch method on each one
      */
     public void updateState(){
         //make a list of empty spots

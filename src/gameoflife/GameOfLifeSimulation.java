@@ -30,7 +30,9 @@ public class GameOfLifeSimulation extends Simulation{
         setStage(s);
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
 
-        this.myGrid = new GameOfLifeGrid(getGridLength(),getCellSize(),getRootElement(),getLeftMargin(),getTopMargin());
+        this.myGrid = new GameOfLifeGrid(getGridLength(),getCellSize(),getRootElement(),
+        		getLeftMargin(),getTopMargin());
+        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         deadOrAlive = new boolean[getGridLength()][getGridLength()];
         DoATimeBuffer = new boolean[getGridLength()][getGridLength()];
         myGrid.initializeGrid();

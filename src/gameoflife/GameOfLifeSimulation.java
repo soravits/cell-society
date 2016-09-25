@@ -25,11 +25,11 @@ public class GameOfLifeSimulation extends Simulation{
 	public Scene init(Stage s) {
 		stage = s;
         myScene = new Scene(rootElement, SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE);  
-        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
-        int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
-        int marginTop = SIMULATION_WINDOW_HEIGHT/8;
+//        int lengthOfGridInPixels = gridLength * Cell.cellSize - 100;
+//        int marginOnSidesOfGrid = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
+//        int marginTop = SIMULATION_WINDOW_HEIGHT/8;
         
-        this.myGrid = new GameOfLifeGrid(gridLength,Cell.cellSize,rootElement,marginOnSidesOfGrid,marginTop);
+        this.myGrid = new GameOfLifeGrid(gridLength, cellSize, rootElement, marginOnSidesOfGrid, marginTop);
         deadOrAlive = new boolean[gridLength][gridLength];
         myGrid.initializeGrid();
         myGrid.setUpButtons();

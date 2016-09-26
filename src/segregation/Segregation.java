@@ -190,7 +190,7 @@ public class Segregation extends Simulation{
         totalSteps++;
         setSatisfiedGrid();
         updateState();
-        if(numberOfUnsatisfied == 0) animation.stop();
+        if(numberOfUnsatisfied == 0) stopSimulation();
     }
     
     
@@ -199,7 +199,7 @@ public class Segregation extends Simulation{
      * Unsatisfied cells also count as empty because they're guaranteed to move in the next step,
      * thus leaving their spot open. 
      * Adds all unsatisfied cells to their own arraylist.
-     * Loops through unsatisfied arraylist and calls switch method on each one
+     * Loops through unsatisfied arraylist and calls switch method on each one.
      */
     public void updateState(){
         //make a list of empty spots

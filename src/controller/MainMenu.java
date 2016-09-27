@@ -116,32 +116,41 @@ public class MainMenu {
                 if(Name == null){
                     System.out.println("null");
                 }
+                String stageTitle = "";
 
                 switch(Name){
                     case "FOREST FIRE":
+                    	stageTitle = Name;
                         FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
                     case "GAME OF LIFE":
+                    	stageTitle = Name;
                         GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
                         break;
                     case "SEGREGATION":
+                    	stageTitle = Name;
                         SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),
                                                 segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
                         break;
 
                     case "PREDATOR PREY":
+                    	stageTitle = Name;
                         WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new WaTorWorldSimulation(WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), WWXMLFactory.getFracShark(),
                                                          WWXMLFactory.getFishBreedTime(), WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
                         break;
                 }
-
-                scene = mySim.init(stage);
-                stage.setScene(scene);
-                stage.show();
+                Parent root;
+                Stage stageNew = new Stage();
+                stageNew.setTitle(stageTitle);
+                scene = mySim.init(stageNew);
+                stageNew.setScene(scene);
+                stageNew.show();
+                /*scene = mySim.init(stage);
+                stage.setScene(scene);*/
 
             });		
         }//Closes MenuItem Object

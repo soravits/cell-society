@@ -37,7 +37,7 @@ public class SegregationGrid extends Grid{
      * @return cell located at those coordinates
      */
     public Cell getCell(int row, int column){
-        return (Cell) getGrid()[row][column];
+        return getGrid()[row][column];
     }
     
     /* (non-Javadoc)

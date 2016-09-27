@@ -2,6 +2,7 @@ package gameoflife;
 
 import java.util.Arrays;
 import base.Simulation;
+import gameoflife.GameOfLifeCell.States;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -36,7 +37,6 @@ public class GameOfLifeSimulation extends Simulation{
     
     private GameOfLifeGrid myGrid;
     private boolean[][] deadOrAlive;
-    private boolean[][] DoATimeBuffer;
 
     /**
      * @param gridLength
@@ -51,14 +51,14 @@ public class GameOfLifeSimulation extends Simulation{
     @Override
     public Scene init(Stage s) {
         setStage(s);
+        makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new GameOfLifeGrid(getGridLength(),getCellSize(),getRootElement(),
-        		getLeftMargin(),getTopMargin());
+        		getLeftMargin(),getTopMargin(),this);
         
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         deadOrAlive = new boolean[getGridLength()][getGridLength()];
-        DoATimeBuffer = new boolean[getGridLength()][getGridLength()];
         myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -150,26 +150,26 @@ public class GameOfLifeSimulation extends Simulation{
      * @see base.Simulation#setInitialEnvironment()
      */
     public void setInitialEnvironment(){
-    	numberAlive = 5;
+    	numberAlive = 0;
     	numberDead = (int) Math.pow(getGridLength(), 2)-numberAlive;
     	
         for (boolean[] row: deadOrAlive){
             Arrays.fill(row, false);
         }
-        for (boolean[] row: DoATimeBuffer){
-            Arrays.fill(row, false);
-        }
-        deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
+
+        /*deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
         deadOrAlive[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
         deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
         deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
         deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
+        
+        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 - 1).reviveCell();
+        
+        myGrid.getCell(deadOrAlive.length/2-1, deadOrAlive.length/2).reviveCell();
+        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 + 1).reviveCell();
+        myGrid.getCell(deadOrAlive.length/2+1, deadOrAlive.length/2).reviveCell();
+        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2).reviveCell();*/
 
-        DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2] = true;
-        DoATimeBuffer[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
-        DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
-        DoATimeBuffer[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
-        DoATimeBuffer[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
         updateCellUI();
         createGraph();
     }
@@ -178,18 +178,7 @@ public class GameOfLifeSimulation extends Simulation{
      * 
      */
     public void updateCellUI(){
-        for(int i = 0; i<getGridLength();i++){
-            for(int j=0; j<getGridLength();j++){
-                if(DoATimeBuffer[i][j] == true){
-                    deadOrAlive[i][j] = true;
-                }
-                else{
-                    deadOrAlive[i][j] = false;
-                }
-            }
-        }
-
-        for(int i = 0; i<getGridLength();i++){
+       for(int i = 0; i<getGridLength();i++){
             for(int j=0; j<getGridLength();j++){
                 if(deadOrAlive[i][j] == true){
                     reviveCell(i,j);
@@ -207,6 +196,7 @@ public class GameOfLifeSimulation extends Simulation{
      */
     private void killCell(int row, int col){
         myGrid.updateCell(row,col,false);
+        myGrid.getCell(row, col).killCell();
     }
 
     /**
@@ -215,6 +205,11 @@ public class GameOfLifeSimulation extends Simulation{
      */
     private void reviveCell(int row, int col){
         myGrid.updateCell(row,col,true);
+        myGrid.getCell(row, col).reviveCell();
+    }
+    
+    private boolean isAlive(int row, int col){
+    	return (myGrid.getCell(row, col).getState() == States.ALIVE);
     }
 
     /**
@@ -223,19 +218,44 @@ public class GameOfLifeSimulation extends Simulation{
      * @param aliveSurroundingCells
      */
     public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
-        if(deadOrAlive[row][column] == true){
-            DoATimeBuffer[row][column] = true;
+        if(isAlive(row,column)){
             if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)){
             	numberDead++;
             	numberAlive--;
-                DoATimeBuffer[row][column] = false;
+            	deadOrAlive[row][column] = false;
             }
         }
         else{
             if((aliveSurroundingCells == 3)){
             	numberDead--;
             	numberAlive++;
-                DoATimeBuffer[row][column] = true;
+            	deadOrAlive[row][column] = true;
+            }
+        }
+    }
+    
+    private boolean manuallyModified(int row,int col){
+    	return (myGrid.getCell(row, col).isManuallyModified());
+    }
+    
+    private void noLongerModified(int row, int col){
+    	myGrid.getCell(row, col).noLongerManuallyModified();
+    }
+    
+    public void updateStateOnClick(){
+    	for(int i = 0; i<getGridLength();i++){
+            for(int j=0; j<getGridLength();j++){
+                if(isAlive(i,j) && manuallyModified(i,j)){
+                	noLongerModified(i,j);
+                	deadOrAlive[i][j] = true;
+                	numberDead--;
+                	numberAlive++;
+                }
+                else if (manuallyModified(i,j)){
+                	noLongerModified(i,j);
+                	numberDead++;
+                	numberAlive--;
+                }
             }
         }
     }
@@ -286,7 +306,7 @@ public class GameOfLifeSimulation extends Simulation{
         if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)){
         	return 0;
         }
-        if(deadOrAlive[row][column] == true){
+        if(((GameOfLifeCell) myGrid.getCell(row,column)).getState() == States.ALIVE){
             return 1;
         }
         return 0;

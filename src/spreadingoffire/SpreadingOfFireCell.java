@@ -1,14 +1,10 @@
-package gameoflife;
+package spreadingoffire;
 
 import base.Cell;
 import javafx.scene.layout.Pane;
 
-/**
- * @author Brian
- *
- */
-public class GameOfLifeCell extends Cell{
-    public enum States{ALIVE, DEAD};
+public class SpreadingOfFireCell extends Cell{
+	public enum States{FIRE, DEAD, ALIVE};
     private States states;
     private boolean manuallyModified = false;
     
@@ -18,9 +14,9 @@ public class GameOfLifeCell extends Cell{
      * @param xCoord
      * @param yCoord
      */
-    public GameOfLifeCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
+    public SpreadingOfFireCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
         super(sizeOfCell, rootElement, xCoord, yCoord);
-        this.states= States.DEAD;
+        this.states= States.ALIVE;
     }
     
     public void setAsManuallyModified(){
@@ -38,15 +34,19 @@ public class GameOfLifeCell extends Cell{
     /**
      * 
      */
-    public void killCell(){
-        this.states = States.DEAD;
+    public void burn(){
+        this.states = States.FIRE;
     }
 
     /**
      * 
      */
-    public void reviveCell(){
+    public void spawn(){
         this.states = States.ALIVE;
+    }
+    
+    public void burnout(){
+    	this.states = States.DEAD;
     }
 
     /**

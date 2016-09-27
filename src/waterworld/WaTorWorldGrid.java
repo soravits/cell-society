@@ -1,7 +1,9 @@
 package waterworld;
 
 import base.Grid;
+import base.Simulation;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
 
 /**
@@ -9,7 +11,7 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class WaTorWorldGrid extends Grid{
-
+	private WaTorWorldSimulation sim;
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -18,8 +20,9 @@ public class WaTorWorldGrid extends Grid{
      * @param initialY
      */
     public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                          int initialX, int initialY) {
+                          int initialX, int initialY, WaTorWorldSimulation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+        this.sim = sim;
     }
 
     /* (non-Javadoc)
@@ -32,9 +35,26 @@ public class WaTorWorldGrid extends Grid{
                 WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
                                                              * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell;                          
+                getGrid()[i][j] = gridCell; 
+                setUpListener(gridCell);
             }
         } 
+    }
+    
+    private void setUpListener(WaTorWorldCell gridCell){
+    	gridCell.returnBlock().setOnMousePressed(event ->{
+    		if(gridCell.getState() == State.EMPTY){
+        		gridCell.setState(State.FISH);
+        	}
+        	else if(gridCell.getState() == State.FISH){
+        		gridCell.setState(State.SHARK);
+        	}
+        	else{
+        		gridCell.setState(State.EMPTY);
+        	}
+    		sim.updateState();
+        	sim.updateGraph();
+		});
     }
 
     /**

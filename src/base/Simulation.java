@@ -16,6 +16,8 @@ public abstract class Simulation{
     public static final int SIMULATION_WINDOW_WIDTH = 700;
     public static final int SIMULATION_WINDOW_HEIGHT = 700;
     public static final int GRID_DIMENSION = 500;
+    public static final int dimensionsOfCellCounterBox = 100;
+    public static final int marginBoxTop = 20;
 
     private int gridLength;
     private int cellSize;

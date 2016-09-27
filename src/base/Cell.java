@@ -11,8 +11,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class Cell {
     private Pane rootElement;
-    private Rectangle block;
-    public static final double STROKE_WIDTH = 2;
+    public Rectangle block;
+    public static final double STROKE_WIDTH = 1;
 
     /**
      * @param sizeOfCell
@@ -24,7 +24,11 @@ public class Cell {
         this.rootElement = rootElement;
         this.block = new Rectangle(xCoord,yCoord,sizeOfCell,sizeOfCell);
     }
-
+    
+    //TODO: Make this abstract when all cells have their own thing
+    public Rectangle returnBlock(){
+    	return this.block;
+    }
     /**
      * 
      */

@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import spreadingoffire.SpreadingOfFireCell.States;
 
 /**
  * @author Soravit
@@ -57,10 +58,11 @@ public class SpreadingOfFireSimulation extends Simulation{
     @Override
     public Scene init (Stage s) {
         setStage(s);
+        makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin());
+        		getLeftMargin(), getTopMargin(),this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
@@ -78,6 +80,41 @@ public class SpreadingOfFireSimulation extends Simulation{
         cellStates[x][y] = 1;
         myGrid.updateCell(x,y,1);
         numberAlive++;
+        myGrid.getCell(x, y).spawn();
+    }
+    
+    public void checkUpdatedStatesAfterManualMod(){
+        for(int i = 0; i<getGridLength(); i++){
+            for(int j = 0; j<getGridLength(); j++){
+            	if(manuallyModified(i,j)){
+            		States cellState = myGrid.getCell(i, j).getState();
+            		noLongerModified(i,j);
+            		if(cellState == States.FIRE){
+                    	cellStates[i][j] = 2;
+                    	numberFire++;
+                    	numberAlive--;
+                    }
+                    else if (cellState == States.DEAD){
+                    	cellStates[i][j] = 0;
+                    	numberDead++;
+                    	numberFire--;
+                    }
+                    else{
+                    	cellStates[i][j] = 1;
+                    	numberAlive++;
+                    	numberDead--;
+                    }
+            	}
+            }
+        }
+    }
+    
+    private boolean manuallyModified(int row,int col){
+    	return (myGrid.getCell(row, col).isManuallyModified());
+    }
+    
+    private void noLongerModified(int row, int col){
+    	myGrid.getCell(row, col).noLongerManuallyModified();
     }
 
     /**
@@ -88,6 +125,7 @@ public class SpreadingOfFireSimulation extends Simulation{
     public void burnTree(int x, int y, boolean forceBurn){
         double rand = Math.random();
         if(rand < probCatch || forceBurn){
+        	myGrid.getCell(x, y).burn();
             cellStates[x][y] = 3;
             myGrid.updateCell(x,y,2);
             numberFire++;
@@ -102,6 +140,7 @@ public class SpreadingOfFireSimulation extends Simulation{
     public void clearCell(int x, int y){
         cellStates[x][y] = 0;
         myGrid.updateCell(x,y,0);
+        myGrid.getCell(x, y).burnout();
         numberDead++;
         if(numberFire>0){
         	numberFire--;

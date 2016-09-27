@@ -70,10 +70,11 @@ public class WaTorWorldSimulation extends Simulation{
     @Override
     public Scene init (Stage s) {
         setStage(s);
+        makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),
-        		getLeftMargin(), getTopMargin());
+        		getLeftMargin(), getTopMargin(),this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();

@@ -2,15 +2,18 @@ package gameoflife;
 
 import base.Cell;
 import base.Grid;
+import gameoflife.GameOfLifeCell.States;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import waterworld.WaTorWorldCell;
+import waterworld.WaTorWorldCell.State;
 
 /**
  * @author Brian
  *
  */
 public class GameOfLifeGrid extends Grid{
-
+	private GameOfLifeSimulation sim;
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -19,8 +22,13 @@ public class GameOfLifeGrid extends Grid{
      * @param initialY
      */
     public GameOfLifeGrid(int rowLength, int sizeOfCell, Pane rootElement, 
-                          int initialX, int initialY) {
+                          int initialX, int initialY, GameOfLifeSimulation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+        this.sim = sim;
+    }
+    
+    public GameOfLifeCell getCell(int row, int col){
+    	return (GameOfLifeCell) getGrid()[row][col];
     }
 
     /**
@@ -31,6 +39,7 @@ public class GameOfLifeGrid extends Grid{
     public void updateCell(int row, int col, boolean cellstate){
         if(cellstate){
             getGrid()[row][col].setColor(Color.WHITE);
+            getGrid()[row][col].setBorder(Color.WHITE);
         }
         else{
             getGrid()[row][col].setColor(Color.BLACK);
@@ -45,12 +54,29 @@ public class GameOfLifeGrid extends Grid{
     public void initializeGrid() {
         for(int i=0; i<getGrid().length;i++){
             for(int j=0;j<getGrid()[0].length;j++){
-                Cell gridCell = new Cell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
+                GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
                                          * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell;				
+                getGrid()[i][j] = gridCell;		
+                setUpListener(gridCell);
             }
         }	
+    }
+    
+    private void setUpListener(GameOfLifeCell gridCell){
+    	gridCell.returnBlock().setOnMousePressed(event ->{
+    		gridCell.setAsManuallyModified();
+    		if(gridCell.getState() == States.ALIVE){
+        		gridCell.killCell();
+        		gridCell.setColor(Color.BLACK);
+        	}
+    		else{
+    			gridCell.reviveCell();
+    			gridCell.setColor(Color.WHITE);
+    		}
+    		sim.updateStateOnClick();
+        	sim.updateGraph();
+		});
     }
 }

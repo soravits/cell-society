@@ -144,12 +144,9 @@ public abstract class Simulation{
     public Pane getRootElement () {
         return rootElement;
     }
-
-    /**
-     * @param rootElement
-     */
-    public void setRootElement (Pane rootElement) {
-        this.rootElement = rootElement;
+    
+    public void makeNewRootElement(){
+    	this.rootElement = new Pane();
     }
 
     /**

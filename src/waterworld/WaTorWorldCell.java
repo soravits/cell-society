@@ -3,6 +3,7 @@ package waterworld;
 import base.Cell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  * @author Soravit
@@ -29,7 +30,7 @@ public class WaTorWorldCell extends Cell{
 		super(sizeOfCell, rootElement, xCoord, yCoord);
 		this.currState = currState;
 	}
-
+	 
     /**
      * @return
      */

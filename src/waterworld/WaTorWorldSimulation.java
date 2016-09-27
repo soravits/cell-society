@@ -12,6 +12,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import waterworld.WaTorWorldCell.State;
 
@@ -20,6 +22,15 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class WaTorWorldSimulation extends Simulation{
+	private static final String fish = "Fish: ";
+	private static final String shark = "Shark: ";
+	private static final String sea = "Sea: ";
+	
+	private static final Text numSea = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 3*marginBoxTop,sea);
+    private static final Text numShark = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,shark);
+    private static final Text numFish = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,fish);
+
+    
 
     private WaTorWorldGrid myGrid;
     private double fracFish;
@@ -29,10 +40,12 @@ public class WaTorWorldSimulation extends Simulation{
     private int starveTime;
 
     private int fishCount;
+    private int seaCount;
     private int sharkCount;
 
     private XYChart.Series fishSeries;
     private XYChart.Series sharkSeries;
+    private XYChart.Series seaSeries;
     private int stepCount = 0;
 
     /**
@@ -58,7 +71,7 @@ public class WaTorWorldSimulation extends Simulation{
     public Scene init (Stage s) {
         setStage(s);
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
-        setTopMargin(getTopMargin() + 80);
+        setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),
         		getLeftMargin(), getTopMargin());
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
@@ -99,12 +112,15 @@ public class WaTorWorldSimulation extends Simulation{
                 if(((WaTorWorldCell) grid[i][j]).getState() == State.SHARK){
                     updateShark(i,j);
                     sharkCount++;
+                    seaCount--;
                 } else if (((WaTorWorldCell) grid[i][j]).getState() == State.FISH){
                     updateFish(i,j);
                     fishCount++;
+                    seaCount--;
                 }
             }
         }
+        seaCount = (int) Math.pow(getGridLength(), 2) - sharkCount - fishCount;
     }
 
     /**
@@ -271,17 +287,40 @@ public class WaTorWorldSimulation extends Simulation{
         fishSeries = new XYChart.Series();
         fishSeries.setName("Fish");
         sharkSeries = new XYChart.Series();
-        sharkSeries.setName("Sharks");
+        sharkSeries.setName("Shark");
+        seaSeries = new XYChart.Series();
+        seaSeries.setName("Sea");
+        
         
         //populating the series with data
         //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(fishSeries);
         lineChart.getData().add(sharkSeries);
-        lineChart.setLayoutX(100);
+        lineChart.getData().add(seaSeries);
+        
+        lineChart.setLayoutX(25);
         lineChart.setPrefSize(500, 100);
         lineChart.setLegendVisible(true);
         lineChart.setLegendSide(Side.RIGHT);
         getRootElement().getChildren().add(lineChart);
+        
+        
+        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + 2*marginBoxTop, (dimensionsOfCellCounterBox/5),dimensionsOfCellCounterBox*3/2,dimensionsOfCellCounterBox);
+        cellCounter.setFill(Color.WHITE);
+        cellCounter.setStyle(
+			    "-fx-background-radius: 8,7,6;" + 
+			    "-fx-background-insets: 0,1,2;" +
+			    "-fx-text-fill: black;" +
+			    "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
+		);
+        getRootElement().getChildren().add(cellCounter);
+        numSea.setFill(Color.BLUE);
+        numShark.setFill(Color.GOLD);
+        numFish.setFill(Color.GREEN);
+        updateText();
+        getRootElement().getChildren().add(numSea);
+        getRootElement().getChildren().add(numShark);
+        getRootElement().getChildren().add(numFish);
     }
 
     /**
@@ -290,8 +329,15 @@ public class WaTorWorldSimulation extends Simulation{
     public void updateGraph(){
         fishSeries.getData().add(new XYChart.Data(stepCount, fishCount));
         sharkSeries.getData().add(new XYChart.Data(stepCount, sharkCount));
+        seaSeries.getData().add(new XYChart.Data(stepCount, seaCount));
+        updateText();
     }
-
+    
+    private void updateText(){
+    	numSea.setText(sea + seaCount);
+    	numShark.setText(shark + sharkCount);
+    	numFish.setText(fish + fishCount);
+    }
 
     @Override
     public void step () {

@@ -77,7 +77,8 @@ public class SegregationGrid extends Grid{
      * Sets the text that will display grid statistics
      */
     public void setStats(){
-        stats = new Text(60, 50, "Round \nUnsatisfied Cells");
+    	//stats = new Text(60, 150, "Round \nUnsatisfied Cells");
+        stats = new Text(75, 155, "Round");
         stats.setFont(Font.font ("Verdana", FontWeight.BOLD, 20));
         stats.setFill(Color.WHITE);
         getRootElement().getChildren().add(stats);
@@ -89,8 +90,9 @@ public class SegregationGrid extends Grid{
      * @param numberUnsatisfied		Number of cells that aren't satisfied
      */
     public void updateStats(int stepNumber, int numberUnsatisfied){
-        String currentStat = "Round " + stepNumber + "\nUnsatisfied Cells " + numberUnsatisfied;
-        stats.setText(currentStat);
+        //String currentStat = "Round " + stepNumber + "\nUnsatisfied Cells " + numberUnsatisfied;
+    	String currentStat = "Round " + stepNumber;
+    	stats.setText(currentStat);
     }
     
     /**

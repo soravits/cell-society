@@ -49,6 +49,8 @@ public class MainMenu {
      */
     public MainMenu(Stage s){
         stage= s;		
+        stage.setResizable(false);
+        stage.sizeToScene();
     }
 
     /**

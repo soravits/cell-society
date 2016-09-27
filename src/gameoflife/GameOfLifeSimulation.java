@@ -195,7 +195,7 @@ public class GameOfLifeSimulation extends Simulation{
      * @param col
      */
     private void killCell(int row, int col){
-        myGrid.updateCell(row,col,false);
+        myGrid.updateCell(row,col);
         myGrid.getCell(row, col).killCell();
     }
 
@@ -204,7 +204,7 @@ public class GameOfLifeSimulation extends Simulation{
      * @param col
      */
     private void reviveCell(int row, int col){
-        myGrid.updateCell(row,col,true);
+        myGrid.updateCell(row,col);
         myGrid.getCell(row, col).reviveCell();
     }
     
@@ -245,17 +245,19 @@ public class GameOfLifeSimulation extends Simulation{
     public void updateStateOnClick(){
     	for(int i = 0; i<getGridLength();i++){
             for(int j=0; j<getGridLength();j++){
-                if(isAlive(i,j) && manuallyModified(i,j)){
-                	noLongerModified(i,j);
-                	deadOrAlive[i][j] = true;
-                	numberDead--;
-                	numberAlive++;
-                }
-                else if (manuallyModified(i,j)){
-                	noLongerModified(i,j);
-                	numberDead++;
-                	numberAlive--;
-                }
+            	if(manuallyModified(i,j)){
+	                if(isAlive(i,j)){
+	                	noLongerModified(i,j);
+	                	deadOrAlive[i][j] = true;
+	                	numberDead--;
+	                	numberAlive++;
+	                }
+	                else{
+	                	noLongerModified(i,j);
+	                	numberDead++;
+	                	numberAlive--;
+	                }
+            	}
             }
         }
     }

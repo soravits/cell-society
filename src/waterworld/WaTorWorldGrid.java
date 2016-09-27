@@ -43,6 +43,7 @@ public class WaTorWorldGrid extends Grid{
     
     private void setUpListener(WaTorWorldCell gridCell){
     	gridCell.returnBlock().setOnMousePressed(event ->{
+    		gridCell.setAsManuallyModified();
     		if(gridCell.getState() == State.EMPTY){
         		gridCell.setState(State.FISH);
         	}
@@ -52,7 +53,8 @@ public class WaTorWorldGrid extends Grid{
         	else{
         		gridCell.setState(State.EMPTY);
         	}
-    		sim.updateState();
+    		gridCell.updateColor();
+    		//sim.manuallyModifyStateOfGrid();
         	sim.updateGraph();
 		});
     }

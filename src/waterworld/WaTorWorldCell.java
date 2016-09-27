@@ -13,6 +13,7 @@ public class WaTorWorldCell extends Cell{
     
     private int breedTime;
     private int starveTime = -1;
+    private boolean manuallyModified = false;
     
     public enum State{EMPTY, FISH, SHARK};
     
@@ -30,6 +31,19 @@ public class WaTorWorldCell extends Cell{
 		super(sizeOfCell, rootElement, xCoord, yCoord);
 		this.currState = currState;
 	}
+	
+    
+    public void setAsManuallyModified(){
+    	this.manuallyModified = true;
+    }
+    
+    public boolean isManuallyModified(){
+    	return manuallyModified;
+    }
+    
+    public void noLongerManuallyModified(){
+    	this.manuallyModified = false;
+    }
 	 
     /**
      * @return

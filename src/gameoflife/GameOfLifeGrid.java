@@ -36,15 +36,15 @@ public class GameOfLifeGrid extends Grid{
      * @param col
      * @param cellstate
      */
-    public void updateCell(int row, int col, boolean cellstate){
-        if(cellstate){
+    public void updateCell(int row, int col){
+    	GameOfLifeCell myCell = getCell(row,col);
+        if(myCell.getState() == States.ALIVE){
             getGrid()[row][col].setColor(Color.WHITE);
-            getGrid()[row][col].setBorder(Color.WHITE);
         }
         else{
             getGrid()[row][col].setColor(Color.BLACK);
-            getGrid()[row][col].setBorder(Color.WHITE);
         }
+        getGrid()[row][col].setBorder(Color.WHITE);
     }
 
     /* (non-Javadoc)

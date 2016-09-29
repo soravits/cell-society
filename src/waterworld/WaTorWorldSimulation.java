@@ -95,11 +95,11 @@ public class WaTorWorldSimulation extends Simulation{
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
                 double rand = Math.random();
-                if(rand < fracFish){
+                if(rand < fracFish) {
                     breedFish(i, j);
                 }else if(rand > fracFish && rand < fracFish + fracShark){
                     breedShark(i, j);
-                }else{
+                }else {
                     killCell(i, j);
                 }
             }

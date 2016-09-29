@@ -70,7 +70,7 @@ public class UserInput {
         readXML.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                sim.startSimulation();
+//                sim.startSimulation();
             }
         });
         readXML.setTranslateX(20);

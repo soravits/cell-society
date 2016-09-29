@@ -109,45 +109,50 @@ public class MainMenu {
                 bg.setFill(Color.DARKVIOLET);
             });
 
-            setOnMouseReleased(event -> {
+            setOnMouseReleased(event ->{
                 bg.setFill(gradient);
                 Simulation mySim = null;
                 XMLParser parser = new XMLParser();
-                if(Name == null) {
+                if(Name == null){
                     System.out.println("null");
                 }
+                String stageTitle = "";
 
-                switch(Name) {
+                switch(Name){
                     case "FOREST FIRE":
+                    	stageTitle = Name;
                         FireXMLFactory factory = new FireXMLFactory(parser.getRootElement(xmlFileRoot));
-                        mySim = new SpreadingOfFireSimulation(factory.getGridSize(), factory.getProbCatch()); 
+                        mySim = new SpreadingOfFireSimulation(factory.getGridSize(),factory.getProbCatch()); 
                         break;
-                    case "GAME OF LIFE": //GOL should be changed for consistency
-                        GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
-                        		parser.getRootElement(xmlFileRoot));
+                    case "GAME OF LIFE":
+                    	stageTitle = Name;
+                        GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new GameOfLifeSimulation(GoLFactory.getGridSize()); 
                         break;
                     case "SEGREGATION":
-                        SegregationXMLFactory segfactory = new SegregationXMLFactory(
-                        		parser.getRootElement(xmlFileRoot));
+                    	stageTitle = Name;
+                        SegregationXMLFactory segfactory = new SegregationXMLFactory(parser.getRootElement(xmlFileRoot));
                         mySim = new Segregation(segfactory.getGridSize(), segfactory.getSatisfyThreshold(),
-                                     segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());
+                                                segfactory.getPercA(), segfactory.getPercB(), segfactory.getPercEmpty());//factory.getGridSize(),factory.getProbCatch());
                         break;
 
                     case "PREDATOR PREY":
-                        WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(
-                        		parser.getRootElement(xmlFileRoot));
-                        mySim = new WaTorWorldSimulation(WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), 
-                        		WWXMLFactory.getFracShark(), WWXMLFactory.getFishBreedTime(), 
-                        		WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
+                    	stageTitle = Name;
+                        WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(parser.getRootElement(xmlFileRoot));
+                        mySim = new WaTorWorldSimulation(WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), WWXMLFactory.getFracShark(),
+                                                         WWXMLFactory.getFishBreedTime(), WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
                         break;
                 }
+                Parent root;
+                Stage stageNew = new Stage();
+                stageNew.setTitle(stageTitle);
+                scene = mySim.init(stageNew);
+                stageNew.setScene(scene);
+                stageNew.show();
+                /*scene = mySim.init(stage);
+                stage.setScene(scene);*/
 
-                scene = mySim.init(stage);
-                stage.setScene(scene);
-                stage.show();
-
-            });		
+            });
         }//Closes MenuItem Object
     }//Closes MenuItem Declaration
 

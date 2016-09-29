@@ -31,7 +31,8 @@ public class SpreadingOfFireSimulation extends Simulation{
     private XYChart.Series aliveLine;
     private int stepCount = 0;
     
-    private static final Text numFireText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 3*marginBoxTop,fire);
+    private static final Text numFireText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, fire);
     private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,dead);
     private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,alive);
 

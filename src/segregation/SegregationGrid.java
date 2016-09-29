@@ -176,7 +176,7 @@ public class SegregationGrid extends Grid{
         	
         }
         
-
+        System.out.println("(" + x + ", " + y + "): " + gridCell.getState() + gridCell.getColor());
         gridCell.addToScene();
         getGrid()[x][y] = gridCell;    
         setUpListener(gridCell);

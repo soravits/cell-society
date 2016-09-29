@@ -38,17 +38,20 @@ public class Segregation extends Simulation{
 	private static final String unsatisfied = "Unsatisfied: ";
 	
 	
-    private int numberEmpty;
-    private int numberSatisfied;
-    private int numberUnsatisfied;
+    private int numberEmpty = 0;
+    private int numberSatisfied = 0;
+    private int numberUnsatisfied = 0;
     
     private XYChart.Series emptyLine;
     private XYChart.Series satisfiedLine;
     private XYChart.Series unsatisfiedLine;
     
-    private static final Text numEmptyText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 3*marginBoxTop,empty);
-    private static final Text numSatisfiedText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,satisfied);
-    private static final Text numUnsatisfiedText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,unsatisfied);
+    private static final Text numEmptyText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, empty);
+    private static final Text numSatisfiedText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, satisfied);
+    private static final Text numUnsatisfiedText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, unsatisfied);
 
     
     
@@ -100,9 +103,9 @@ public class Segregation extends Simulation{
      */
     public void setInitialEnvironment(){
     	createGraph();
-        numberEmpty = 0;
-        numberSatisfied = 0;
-        numberUnsatisfied = 0;
+//        numberEmpty = 0;
+//        numberSatisfied = 0;
+//        numberUnsatisfied = 0;
         int cellType;
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
@@ -110,16 +113,16 @@ public class Segregation extends Simulation{
                 //if the cell is white
                 if(cellLottery <= (percEmpty * 100)){
                     cellType = 0;
-                    numberEmpty++;
+//                    numberEmpty++;
                 }
                 //if the cell is blue
                 else if (cellLottery <= ((percEmpty + percA) * 100)){
                     cellType = 1;
-                    numberSatisfied++;
+//                    numberSatisfied++;
                 }
                 else{
                     cellType = 2;
-                    numberUnsatisfied++;
+//                    numberUnsatisfied++;
                 }
                 myGrid.updateCell(i, j, cellType);
             }
@@ -151,15 +154,18 @@ public class Segregation extends Simulation{
         SegregationCell current = myGrid.getCell(i, j);
         Paint color = current.getColor();
         State curr = current.getState();
+//    	System.out.println("(" + i + ", " + j + "): " + color + " " + curr);
         int sameColor = 0;
         int totalNeighbors = 0;
         //if the cell is uninhabited, can't be satisfied or unsatisfied
-        if(curr.equals(State.EMPTY)){
+        if(color.equals(Color.WHITE)){//curr.equals(State.EMPTY)){
+//        	System.out.println("(" + i + ", " + j + "): empty");
             return EMPTY;
         }
         //checks north
         if(i > 0 && myGrid.getCell(i - 1, j) != null 
         		&& !myGrid.getCell(i - 1, j).getState().equals(EMPTY)){
+//        	System.out.println("if 1a");
             totalNeighbors++;
             if(myGrid.getCell(i - 1, j).getState().equals(curr))
                 sameColor++;
@@ -167,6 +173,8 @@ public class Segregation extends Simulation{
         //checks south
         if(i < getGridLength() - 1 && myGrid.getCell(i + 1, j) != null 
         		&& !myGrid.getCell(i + 1, j).getState().equals(EMPTY)){
+
+//        	System.out.println("if 2a");
             totalNeighbors++;
             if(myGrid.getCell(i + 1, j).getState().equals(curr))
                 sameColor++;
@@ -175,6 +183,7 @@ public class Segregation extends Simulation{
         if(j > 0 && myGrid.getCell(i, j - 1) != null 
         		&& !myGrid.getCell(i, j - 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 3a");
             if(myGrid.getCell(i, j - 1).getState().equals(curr))
                 sameColor++;
         }
@@ -182,6 +191,7 @@ public class Segregation extends Simulation{
         if(j < getGridLength() - 1 && myGrid.getCell(i, j + 1) != null 
         		&& !myGrid.getCell(i, j + 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 4a");
             if(myGrid.getCell(i, j + 1).getState().equals(curr))
                 sameColor++;
         }
@@ -189,6 +199,7 @@ public class Segregation extends Simulation{
         if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null 
         		&& !myGrid.getCell(i - 1, j - 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 5a");
             if(myGrid.getCell(i - 1, j - 1).getState().equals(curr))
                 sameColor++;
         }
@@ -196,6 +207,7 @@ public class Segregation extends Simulation{
         if(i < getGridLength() - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null 
         		&& !myGrid.getCell(i + 1, j - 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 6a");
             if(myGrid.getCell(i + 1, j - 1).getState().equals(curr))
                 sameColor++;
         }
@@ -203,6 +215,7 @@ public class Segregation extends Simulation{
         if(i > 0 && j < getGridLength() - 1 && myGrid.getCell(i - 1, j + 1) != null 
         		&& !myGrid.getCell(i - 1, j + 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 7a");
             if(myGrid.getCell(i - 1, j + 1).getState().equals(curr))
                 sameColor++;
         }
@@ -210,12 +223,13 @@ public class Segregation extends Simulation{
         if(i < getGridLength() - 1 && j < getGridLength() - 1 && myGrid.getCell(i + 1, j + 1) != null 
         		&& !myGrid.getCell(i + 1, j + 1).getState().equals(EMPTY)){
             totalNeighbors++;
+//        	System.out.println("if 8a");
             if(myGrid.getCell(i + 1, j + 1).getState().equals(curr))
                 sameColor++;
         }
-        System.out.println("(" + i + ", " + j + "): "+"Same " + sameColor + " total neighbors " + totalNeighbors + " thresh " 
-        		+ (double) sameColor / (double) totalNeighbors);
-        if((double) sameColor / (double) totalNeighbors >= satisfyThresh){
+//        System.out.println("(" + i + ", " + j + "): "+"Same " + sameColor + " total neighbors " + totalNeighbors + " thresh " 
+//        		+ (double) sameColor / (double) totalNeighbors);
+        if((double) sameColor / (double) totalNeighbors + 0.00001 >= satisfyThresh){
             return SATISFIED;
         }
             
@@ -292,7 +306,9 @@ public class Segregation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + 2*marginBoxTop, (dimensionsOfCellCounterBox/5),dimensionsOfCellCounterBox*3/2,dimensionsOfCellCounterBox);
+        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2, 
+        		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
 			    "-fx-background-radius: 8,7,6;" + 

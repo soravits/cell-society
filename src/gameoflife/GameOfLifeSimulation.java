@@ -53,9 +53,9 @@ public class GameOfLifeSimulation extends Simulation{
         setStage(s);
         makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
-        setTopMargin(getTopMargin() + marginBoxTop*4);
-        this.myGrid = new GameOfLifeGrid(getGridLength(),getCellSize(),getRootElement(),
-        		getLeftMargin(),getTopMargin(),this);
+        setTopMargin(getTopMargin() + marginBoxTop * 4);
+        this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
+        		getLeftMargin(), getTopMargin(), this);
         
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         deadOrAlive = new boolean[getGridLength()][getGridLength()];
@@ -101,7 +101,9 @@ public class GameOfLifeSimulation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + 2*marginBoxTop, (dimensionsOfCellCounterBox/5),dimensionsOfCellCounterBox*3/2,dimensionsOfCellCounterBox);
+        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
+        		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
 			    "-fx-background-radius: 8,7,6;" + 

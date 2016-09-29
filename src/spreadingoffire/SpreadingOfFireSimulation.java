@@ -31,9 +31,12 @@ public class SpreadingOfFireSimulation extends Simulation{
     private XYChart.Series aliveLine;
     private int stepCount = 0;
     
-    private static final Text numFireText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 3*marginBoxTop,fire);
-    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,dead);
-    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,alive);
+    private static final Text numFireText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, fire);
+    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
 
     
     private double probCatch;
@@ -243,7 +246,9 @@ public class SpreadingOfFireSimulation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + 2*marginBoxTop, (dimensionsOfCellCounterBox/5),dimensionsOfCellCounterBox*3/2,dimensionsOfCellCounterBox);
+        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
+        		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
 			    "-fx-background-radius: 8,7,6;" + 

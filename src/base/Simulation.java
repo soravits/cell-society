@@ -27,7 +27,7 @@ public abstract class Simulation{
     private Stage stage;
     private Scene myScene;
     private Pane rootElement;
-    private Timeline animation;
+    protected Timeline animation;
 
     /**
      * @param gridLength

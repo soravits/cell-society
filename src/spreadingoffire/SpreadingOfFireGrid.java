@@ -22,7 +22,8 @@ public class SpreadingOfFireGrid extends Grid{
      * @param initialX
      * @param initialY
      */
-    public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, int initialY, SpreadingOfFireSimulation sim) {
+    public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, 
+    		int initialY, SpreadingOfFireSimulation sim) {
            super(rowLength, sizeOfCell, rootElement, initialX, initialY);
            this.sim = sim;
        }
@@ -38,8 +39,9 @@ public class SpreadingOfFireGrid extends Grid{
     public void initializeGrid() {
             for(int i=0; i<getGrid().length;i++){
                     for(int j=0;j<getGrid()[0].length;j++){
-                            SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(), getSizeOfCell()
-                                            * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
+                            SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), 
+                            		getRootElement(), getSizeOfCell() * (i) + getInitialX(),
+                            		getSizeOfCell()* (j) + getInitialY());
                             gridCell.addToScene();
                             getGrid()[i][j] = gridCell;
                             setUpListener(gridCell);

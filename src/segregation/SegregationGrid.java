@@ -1,5 +1,6 @@
 package segregation;
 import java.awt.Point;
+import segregation.SegregationCell.State;
 import base.Cell;
 import base.Grid;
 import javafx.scene.layout.Pane;
@@ -18,6 +19,7 @@ import javafx.scene.text.Text;
  */
 public class SegregationGrid extends Grid{
     private Text stats;
+    private Segregation sim;
     
     /**
      * @param rowLength
@@ -27,8 +29,9 @@ public class SegregationGrid extends Grid{
      * @param initialY
      */
     public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                           int initialX, int initialY) {
+                           int initialX, int initialY, Segregation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+        this.sim = sim;
     }
     
     /**
@@ -36,8 +39,8 @@ public class SegregationGrid extends Grid{
      * @param column
      * @return cell located at those coordinates
      */
-    public Cell getCell(int row, int column){
-        return getGrid()[row][column];
+    public SegregationCell getCell(int row, int column){
+        return (SegregationCell) getGrid()[row][column];
     }
     
     /* (non-Javadoc)
@@ -49,14 +52,35 @@ public class SegregationGrid extends Grid{
     public void initializeGrid() {
         for(int i = 0; i < getGrid().length; i++){
             for(int j = 0; j < getGrid()[0].length; j++){
-                Cell gridCell = new Cell(getSizeOfCell(), getRootElement(), 
+                SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
                 		getSizeOfCell() * (i) + getInitialX(), 
                 		getSizeOfCell()* (j) + getInitialY());
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell;                          
+                getGrid()[i][j] = gridCell;    
+                setUpListener(gridCell);                      
             }
         }      
         setStats();
+    }
+    
+    private void setUpListener(SegregationCell gridCell){
+    	gridCell.returnBlock().setOnMousePressed(event ->{
+    		System.out.println(gridCell.getState());
+    		System.out.println(gridCell.getColor());
+//    		gridCell.setAsManuallyModified();
+//    		if(gridCell.getState() == State.EMPTY){
+//        		gridCell.setState(State.COLORA);
+//        	}
+//        	else if(gridCell.getState() == State.COLORA){
+//        		gridCell.setState(State.COLORB);
+//        	}
+//        	else{
+//        		gridCell.setState(State.EMPTY);
+//        	}
+//    		gridCell.updateColor();
+    		//sim.manuallyModifyStateOfGrid();
+        	sim.updateGraph();
+		});
     }
     
     /**
@@ -68,9 +92,16 @@ public class SegregationGrid extends Grid{
      * @param p2	coordinates of point that is destination
      */
     public void switchCells(Point p1, Point p2){
-        Paint destination = getGrid()[p2.x][p2.y].getColor();
-        getGrid()[p2.x][p2.y].setColor(getGrid()[p1.x][p1.y].getColor());
-        getGrid()[p1.x][p1.y].setColor(destination);
+    	SegregationCell destCell = (SegregationCell) getGrid()[p2.x][p2.y];
+    	SegregationCell origCell = (SegregationCell) getGrid()[p1.x][p1.y];
+    	updateCell(p1.x, p1.y, destCell.getState());
+    	updateCell(p2.x, p2.y, origCell.getState());
+//    	System.out.println(gridCell.getState());
+//        Paint destination = getGrid()[p2.x][p2.y].getColor();
+//        getGrid()[p2.x][p2.y].setColor(getGrid()[p1.x][p1.y].getColor());
+//        getGrid()[p2.x][p2.y] = origCell;
+//        getGrid()[p1.x][p1.y].setColor(destination);
+//        getGrid()[p1.x][p1.y] = destCell;//.setColor(destination);
     }
     
     /**
@@ -94,6 +125,31 @@ public class SegregationGrid extends Grid{
     	String currentStat = "Round " + stepNumber;
     	stats.setText(currentStat);
     }
+
+    public void updateCell(int x, int y, State cellState){
+    	SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+        		getSizeOfCell() * (x) + getInitialX(), 
+        		getSizeOfCell()* (y) + getInitialY());
+        if(cellState.equals(State.EMPTY)){
+        	gridCell.setColor(Color.WHITE);
+        	gridCell.setState(State.EMPTY);
+        }
+        else if(cellState.equals(State.COLORA)){
+        	gridCell.setColor(Color.DARKBLUE);
+        	gridCell.setState(State.COLORA);
+        	
+        }
+        else{
+        	gridCell.setColor(Color.LIMEGREEN);
+        	gridCell.setState(State.COLORB);
+        	
+        }
+        
+
+        gridCell.addToScene();
+        getGrid()[x][y] = gridCell;    
+        setUpListener(gridCell);
+    }
     
     /**
      * Sets the color of cell at those coordinates based on its state
@@ -102,11 +158,27 @@ public class SegregationGrid extends Grid{
      * @param cellState
      */
     public void updateCell(int x, int y, int cellState){
-        if(cellState == 0)
-            getGrid()[x][y].setColor(Color.WHITE);
-        else if(cellState == 1)
-            getGrid()[x][y].setColor(Color.DARKBLUE);
-        else
-            getGrid()[x][y].setColor(Color.LIMEGREEN);
+    	SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+        		getSizeOfCell() * (x) + getInitialX(), 
+        		getSizeOfCell()* (y) + getInitialY());
+        if(cellState == 0){
+        	gridCell.setColor(Color.WHITE);
+        	gridCell.setState(State.EMPTY);
+        }
+        else if(cellState == 1){
+        	gridCell.setColor(Color.DARKBLUE);
+        	gridCell.setState(State.COLORA);
+        	
+        }
+        else{
+        	gridCell.setColor(Color.LIMEGREEN);
+        	gridCell.setState(State.COLORB);
+        	
+        }
+        
+        System.out.println("(" + x + ", " + y + "): " + gridCell.getState() + gridCell.getColor());
+        gridCell.addToScene();
+        getGrid()[x][y] = gridCell;    
+        setUpListener(gridCell);
     }
 }

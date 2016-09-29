@@ -54,8 +54,8 @@ public class GameOfLifeGrid extends Grid{
     public void initializeGrid() {
         for(int i=0; i<getGrid().length;i++){
             for(int j=0;j<getGrid()[0].length;j++){
-                GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
-                                         * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
+                GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
+                		getSizeOfCell() * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
                 getGrid()[i][j] = gridCell;		

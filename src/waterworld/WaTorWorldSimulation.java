@@ -26,9 +26,12 @@ public class WaTorWorldSimulation extends Simulation{
 	private static final String shark = "Shark: ";
 	private static final String sea = "Sea: ";
 	
-	private static final Text numSea = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 3*marginBoxTop,sea);
-    private static final Text numShark = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,shark);
-    private static final Text numFish = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,fish);
+	private static final Text numSea = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+			+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, sea);
+    private static final Text numShark = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, shark);
+    private static final Text numFish = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, fish);
 
     
 
@@ -72,7 +75,7 @@ public class WaTorWorldSimulation extends Simulation{
         setStage(s);
         makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
-        setTopMargin(getTopMargin() + marginBoxTop*4);
+        setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),
         		getLeftMargin(), getTopMargin(),this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
@@ -89,22 +92,22 @@ public class WaTorWorldSimulation extends Simulation{
     public void setInitialEnvironment(){
         sharkCount = 0;
         fishCount = 0;
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0; j<getGridLength(); j++){
+        for(int i = 0; i < getGridLength(); i++){
+            for(int j = 0; j < getGridLength(); j++){
                 double rand = Math.random();
                 if(rand < fracFish){
-                    breedFish(i,j);
+                    breedFish(i, j);
                 }else if(rand > fracFish && rand < fracFish + fracShark){
-                    breedShark(i,j);
+                    breedShark(i, j);
                 }else{
-                    killCell(i,j);
+                    killCell(i, j);
                 }
             }
         }
         seaCount = (int) Math.pow(getGridLength(), 2) - sharkCount - fishCount;
     }
     
-    private boolean manuallyModified(int row,int col){
+    private boolean manuallyModified(int row, int col){
     	return (myGrid.getCell(row, col).isManuallyModified());
     }
     
@@ -113,20 +116,20 @@ public class WaTorWorldSimulation extends Simulation{
     }
     
     public void manuallyModifyStateOfGrid(){
-    	 for(int i = 0; i<getGridLength(); i++){
-             for(int j = 0; j<getGridLength(); j++){
-            	 if(manuallyModified(i,j)){
-            		 noLongerModified(i,j);
-	                 if((myGrid.getCell(i,j)).getState() == State.SHARK){
+    	 for(int i = 0; i < getGridLength(); i++){
+             for(int j = 0; j < getGridLength(); j++){
+            	 if(manuallyModified(i, j)){
+            		 noLongerModified(i, j);
+	                 if((myGrid.getCell(i, j)).getState() == State.SHARK){
 	                     sharkCount++;
 	                     fishCount--;
-	                 } else if (myGrid.getCell(i,j).getState() == State.FISH){
+	                 } else if (myGrid.getCell(i, j).getState() == State.FISH){
 	                     fishCount++;
 	                     seaCount--;
 	                 }
 	                 else{
 	                	 sharkCount--;
-	                	 killCell(i,j);
+	                	 killCell(i, j);
 	                 }
             	 }
              }
@@ -137,12 +140,12 @@ public class WaTorWorldSimulation extends Simulation{
      * 
      */
     public void updateState(){
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0; j<getGridLength(); j++){
+        for(int i = 0; i < getGridLength(); i++){
+            for(int j = 0; j < getGridLength(); j++){
                 if(myGrid.getCell(i, j).getState() == State.SHARK){
-                    updateShark(i,j);
+                    updateShark(i, j);
                 } else if (myGrid.getCell(i, j).getState() == State.FISH){
-                    updateFish(i,j);
+                    updateFish(i, j);
                 }
             }
         }
@@ -156,19 +159,19 @@ public class WaTorWorldSimulation extends Simulation{
         Location currLocation = new Location(x,y);
         //Cell[][] grid = myGrid.getGrid();
         ArrayList<Location> fish = new ArrayList<Location>();
-        myGrid.getCell(x,y).decrementBreedTime();
-        myGrid.getCell(x,y).decrementStarveTime();
-        if(x != 0 && (myGrid.getCell(x-1,y).getState() == State.FISH)){
-            fish.add(new Location(x-1,y));
+        myGrid.getCell(x, y).decrementBreedTime();
+        myGrid.getCell(x, y).decrementStarveTime();
+        if(x != 0 && (myGrid.getCell(x-1, y).getState() == State.FISH)){
+            fish.add(new Location(x-1, y));
         }
-        if(x != getGridLength()-1 && ( myGrid.getCell(x+1,y).getState() == State.FISH)){
-            fish.add(new Location(x+1,y));
+        if(x != getGridLength()-1 && ( myGrid.getCell(x+1, y).getState() == State.FISH)){
+            fish.add(new Location(x+1, y));
         }
-        if(y != getGridLength() - 1 && ( myGrid.getCell(x,y+1).getState() == State.FISH)){
-            fish.add(new Location(x,y+1));
+        if(y != getGridLength() - 1 && ( myGrid.getCell(x, y+1).getState() == State.FISH)){
+            fish.add(new Location(x, y+1));
         }
-        if(y != 0 && ( myGrid.getCell(x,y-1).getState() == State.FISH)){
-            fish.add(new Location(x,y-1));
+        if(y != 0 && ( myGrid.getCell(x, y-1).getState() == State.FISH)){
+            fish.add(new Location(x, y-1));
         }
         if(fish.size() == 0){
             Location loc = getRandomEmptyNeighbor(x,y);
@@ -257,7 +260,8 @@ public class WaTorWorldSimulation extends Simulation{
      */
     public void moveFish(Location source, Location dest){
         myGrid.getCell(dest.getX(), dest.getY()).setState(myGrid.getCell(source.getX(), source.getY()).getState());
-        myGrid.getCell(dest.getX(), dest.getY()).setBreedTime(myGrid.getCell(source.getX(), source.getY()).getBreedTime());
+        myGrid.getCell(dest.getX(), dest.getY()).setBreedTime(myGrid.getCell(source.getX(), 
+        		source.getY()).getBreedTime());
         killCell(source.getX(),source.getY());
     }
 
@@ -267,7 +271,8 @@ public class WaTorWorldSimulation extends Simulation{
      */
     public void moveShark(Location source, Location dest){
         moveShark(source,dest);
-        myGrid.getCell(dest.getX(), dest.getY()).setStarveTime(myGrid.getCell(source.getX(), source.getY()).getStarveTime());
+        myGrid.getCell(dest.getX(), dest.getY()).setStarveTime(myGrid.getCell(source.getX(), 
+        		source.getY()).getStarveTime());
     }
 
     /**
@@ -338,7 +343,9 @@ public class WaTorWorldSimulation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + 2*marginBoxTop, (dimensionsOfCellCounterBox/5),dimensionsOfCellCounterBox*3/2,dimensionsOfCellCounterBox);
+        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
+        		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
 			    "-fx-background-radius: 8,7,6;" + 

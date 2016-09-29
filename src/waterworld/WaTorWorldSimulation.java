@@ -77,7 +77,7 @@ public class WaTorWorldSimulation extends Simulation{
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new WaTorWorldGrid(getGridLength(),getCellSize(),getRootElement(),
-        		getLeftMargin(), getTopMargin(),this);
+        		getLeftMargin(), getTopMargin(), this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();
@@ -95,11 +95,11 @@ public class WaTorWorldSimulation extends Simulation{
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
                 double rand = Math.random();
-                if(rand < fracFish){
+                if(rand < fracFish) {
                     breedFish(i, j);
                 }else if(rand > fracFish && rand < fracFish + fracShark){
                     breedShark(i, j);
-                }else{
+                }else {
                     killCell(i, j);
                 }
             }

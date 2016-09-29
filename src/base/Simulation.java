@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 /**
  * @author Brian, Soravit, Delia
- *
+ *MIGHT NEED A RESOURCE FILE FOR BUTTONS, SIMULATIONS, ETC.
  */
 public abstract class Simulation{
     public static final int SIMULATION_WINDOW_WIDTH = 700;
@@ -32,19 +32,19 @@ public abstract class Simulation{
     /**
      * @param gridLength
      */
-    public Simulation(int gridLength){
-        this.gridLength = gridLength;
+    public Simulation(int myGridLength) {
+        gridLength = myGridLength;
         rootElement = new Pane();
         cellSize = GRID_DIMENSION / gridLength;
         lengthOfGridInPixels = gridLength * cellSize - 100;
-        leftMargin = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels)/2;
-        topMargin = SIMULATION_WINDOW_HEIGHT/8;
+        leftMargin = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels) / 2;
+        topMargin = SIMULATION_WINDOW_HEIGHT / 8;
     };
 
     /**
      * 
      */
-    public void startSimulation(){
+    public void startSimulation() {
         KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
                                       e -> step());
         animation = new Timeline();
@@ -64,7 +64,7 @@ public abstract class Simulation{
     /**
      * 
      */
-    public void resumeSimulation(){
+    public void resumeSimulation() {
         animation.play();
     }
 
@@ -145,7 +145,7 @@ public abstract class Simulation{
         return rootElement;
     }
     
-    public void makeNewRootElement(){
+    public void makeNewRootElement() {
     	this.rootElement = new Pane();
     }
 

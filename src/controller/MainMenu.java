@@ -32,14 +32,14 @@ import xml.XMLParser;
 
 /**
  * @author Brian, Delia, Soravit
- *
+ *fix lambdas, action event methods
  */
 public class MainMenu {
     public static final int MAIN_MENU_WIDTH = 700;
     public static final int MAIN_MENU_HEIGHT = 600;	
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-    private static final String xmlFileRoot = "data/xml/rules.xml";
+    public static final String xmlFileRoot = "data/xml/rules.xml";
 
     public static int DimensionsOfGrid = 10;
     public static Stage stage;
@@ -47,10 +47,8 @@ public class MainMenu {
     /**
      * @param s
      */
-    public MainMenu(Stage s){
-        stage= s;		
-        stage.setResizable(false);
-        stage.sizeToScene();
+    public MainMenu(Stage s) {
+        stage = s;		
     }
 
     /**
@@ -65,15 +63,15 @@ public class MainMenu {
      * @author Brian
      *
      */
-    public class MenuItem extends StackPane{
+    public class MenuItem extends StackPane {
         private Scene scene = null;
         /**
          * @param Name
          */
         public MenuItem(String Name) {	
-            LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
+            LinearGradient gradient = new LinearGradient(0d, 1d, 1d, 0d, true, 
                                                          CycleMethod.NO_CYCLE, 
-                                                         new Stop[]{
+                                                         new Stop[] {
                                                                     new Stop(0, Color.WHITE),
                                                                     new Stop(0.15, Color.TURQUOISE),
                                                                     new Stop(0.3, Color.LIGHTGREEN),
@@ -84,30 +82,30 @@ public class MainMenu {
                                                                     new Stop(1, Color.WHITE)
             });
 
-            Rectangle bg = new Rectangle(300,50);
+            Rectangle bg = new Rectangle(300, 50);
             bg.setOpacity(0.4);
 
             Text optionText = new Text(Name);
             optionText.setFill(Color.web("rgba(204,204,204,1.0)"));
-            optionText.setFont(Font.font("Tw Cen MT Condensed", FontWeight.SEMI_BOLD,22));
+            optionText.setFont(Font.font("Tw Cen MT Condensed", FontWeight.SEMI_BOLD, 22));
 
             setAlignment(Pos.CENTER);
             getChildren().addAll(bg,optionText);
 
             //On Mouse Over	For Option/Mode Hovering
-            setOnMouseEntered(event ->{
+            setOnMouseEntered(event -> {
                 bg.setFill(gradient);
                 optionText.setFill(Color.WHITE);
             });
 
             //On Mouse Exit (Return buttons to default state)	
-            setOnMouseExited(event ->{
+            setOnMouseExited(event -> {
                 bg.setFill(Color.BLACK);
                 optionText.setFill(Color.web("rgba(204,204,204,1.0)"));
             });
 
             //Change button appearance when they are pressed
-            setOnMousePressed(event ->{
+            setOnMousePressed(event -> {
                 bg.setFill(Color.DARKVIOLET);
             });
 
@@ -154,7 +152,7 @@ public class MainMenu {
                 /*scene = mySim.init(stage);
                 stage.setScene(scene);*/
 
-            });		
+            });
         }//Closes MenuItem Object
     }//Closes MenuItem Declaration
 
@@ -162,15 +160,15 @@ public class MainMenu {
      * Sets up background, big text, as well as all of the option boxes and 
      * Instructions window
      */
-    public Parent setUpWindow(){
+    public Parent setUpWindow() {
         Pane gameWindow = new Pane();
-        gameWindow.setPrefSize(MAIN_MENU_WIDTH,MAIN_MENU_HEIGHT);
+        gameWindow.setPrefSize(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
         Image background = new Image(getClass().getClassLoader()
                                      .getResourceAsStream("BackgroundCellSoc.jpg")); 
-        ImageView backgrondImageMainScreen = new ImageView(background);
-        backgrondImageMainScreen.setFitWidth(MAIN_MENU_WIDTH+50);
-        backgrondImageMainScreen.setFitHeight(MAIN_MENU_HEIGHT);;
-        gameWindow.getChildren().add(backgrondImageMainScreen); 
+        ImageView backgroundImageMainScreen = new ImageView(background);
+        backgroundImageMainScreen.setFitWidth(MAIN_MENU_WIDTH + 50);
+        backgroundImageMainScreen.setFitHeight(MAIN_MENU_HEIGHT);;
+        gameWindow.getChildren().add(backgroundImageMainScreen); 
 
         BigGameNameText titleText = new BigGameNameText("CELL SOCIETY");
         titleText.setTranslateX(125);
@@ -194,14 +192,14 @@ public class MainMenu {
      * @author Brian
      *
      */
-    private static class BigGameNameText extends StackPane{
+    private static class BigGameNameText extends StackPane {
         /**
          * @param Name
          */
-        public BigGameNameText(String Name){
+        public BigGameNameText(String Name) {
             Text titleText = new Text(Name);
-            titleText.setFont(Font.font("Rockwell", FontWeight.BOLD,60));
-            LinearGradient gradient = new LinearGradient(0d,1d,1d,0d, true, 
+            titleText.setFont(Font.font("Rockwell", FontWeight.BOLD, 60));
+            LinearGradient gradient = new LinearGradient(0d, 1d, 1d, 0d, true, 
                                                          CycleMethod.NO_CYCLE, 
                                                          new Stop[]{
                                                                     new Stop(0, Color.WHITE),
@@ -222,14 +220,14 @@ public class MainMenu {
      * @author Brian
      *
      */
-    private static class OptionContainer extends VBox{
+    public static class OptionContainer extends VBox {
         /**
          * @param items
          */
         public OptionContainer(MenuItem...items) {
             getChildren().add(createline());
 
-            for(MenuItem item: items) {
+            for(MenuItem item : items) {
                 getChildren().addAll(item,createline());
             }
         }

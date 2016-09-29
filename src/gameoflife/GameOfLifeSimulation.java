@@ -29,8 +29,10 @@ public class GameOfLifeSimulation extends Simulation{
     private XYChart.Series aliveLine;
     private int stepCount = 0;
     
-    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - 2*marginBoxTop,dead);
-    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2*dimensionsOfCellCounterBox) + marginBoxTop*3, 0+(7/5*dimensionsOfCellCounterBox) - marginBoxTop,alive);
+    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
+    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
 
     
     
@@ -56,7 +58,6 @@ public class GameOfLifeSimulation extends Simulation{
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
         		getLeftMargin(), getTopMargin(), this);
-        
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         deadOrAlive = new boolean[getGridLength()][getGridLength()];
         myGrid.initializeGrid();
@@ -72,7 +73,7 @@ public class GameOfLifeSimulation extends Simulation{
     /**
      * 
      */
-    public void createGraph(){
+    public void createGraph() {
         //defining the axes
         final NumberAxis xAxis = new NumberAxis();
         xAxis.setTickLabelsVisible(false);
@@ -83,7 +84,7 @@ public class GameOfLifeSimulation extends Simulation{
         
         //creating the chart
         final LineChart<Number,Number> lineChart = 
-                new LineChart<Number,Number>(xAxis,yAxis);
+                new LineChart <Number,Number> (xAxis, yAxis);
         deadLine = new XYChart.Series();
         deadLine.setName("Dead");
         aliveLine = new XYChart.Series();
@@ -121,7 +122,7 @@ public class GameOfLifeSimulation extends Simulation{
         
     }
     
-    private void updateText(){
+    private void updateText() {
     	numDeadText.setText(dead + numberDead);
     	numAliveText.setText(alive + numberAlive);
     }
@@ -129,7 +130,7 @@ public class GameOfLifeSimulation extends Simulation{
     /**
      * 
      */
-    public void updateGraph(){
+    public void updateGraph() {
     	deadLine.getData().add(new XYChart.Data(stepCount, numberAlive));
     	aliveLine.getData().add(new XYChart.Data(stepCount, numberDead));
     	updateText();
@@ -151,11 +152,11 @@ public class GameOfLifeSimulation extends Simulation{
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()
      */
-    public void setInitialEnvironment(){
+    public void setInitialEnvironment() {
     	numberAlive = 0;
-    	numberDead = (int) Math.pow(getGridLength(), 2)-numberAlive;
+    	numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
     	
-        for (boolean[] row: deadOrAlive){
+        for (boolean[] row : deadOrAlive) {
             Arrays.fill(row, false);
         }
 
@@ -179,14 +180,14 @@ public class GameOfLifeSimulation extends Simulation{
     /**
      * 
      */
-    public void updateCellUI(){
-       for(int i = 0; i<getGridLength();i++){
-            for(int j=0; j<getGridLength();j++){
-                if(deadOrAlive[i][j] == true){
-                    reviveCell(i,j);
+    public void updateCellUI() {
+       for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                if(deadOrAlive[i][j] == true) {
+                    reviveCell(i, j);
                 }
-                else{
-                    killCell(i,j);
+                else {
+                    killCell(i, j);
                 }
             }
         }	
@@ -196,8 +197,8 @@ public class GameOfLifeSimulation extends Simulation{
      * @param row
      * @param col
      */
-    private void killCell(int row, int col){
-        myGrid.updateCell(row,col);
+    private void killCell(int row, int col) {
+        myGrid.updateCell(row, col);
         myGrid.getCell(row, col).killCell();
     }
 
@@ -205,12 +206,12 @@ public class GameOfLifeSimulation extends Simulation{
      * @param row
      * @param col
      */
-    private void reviveCell(int row, int col){
+    private void reviveCell(int row, int col) {
         myGrid.updateCell(row,col);
         myGrid.getCell(row, col).reviveCell();
     }
     
-    private boolean isAlive(int row, int col){
+    private boolean isAlive(int row, int col) {
     	return (myGrid.getCell(row, col).getState() == States.ALIVE);
     }
 
@@ -220,15 +221,15 @@ public class GameOfLifeSimulation extends Simulation{
      * @param aliveSurroundingCells
      */
     public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
-        if(isAlive(row,column)){
-            if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)){
+        if(isAlive(row,column)) {
+            if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
             	numberDead++;
             	numberAlive--;
             	deadOrAlive[row][column] = false;
             }
         }
-        else{
-            if((aliveSurroundingCells == 3)){
+        else {
+            if((aliveSurroundingCells == 3)) {
             	numberDead--;
             	numberAlive++;
             	deadOrAlive[row][column] = true;
@@ -236,26 +237,26 @@ public class GameOfLifeSimulation extends Simulation{
         }
     }
     
-    private boolean manuallyModified(int row,int col){
+    private boolean manuallyModified(int row, int col) {
     	return (myGrid.getCell(row, col).isManuallyModified());
     }
     
-    private void noLongerModified(int row, int col){
+    private void noLongerModified(int row, int col) {
     	myGrid.getCell(row, col).noLongerManuallyModified();
     }
     
-    public void updateStateOnClick(){
-    	for(int i = 0; i<getGridLength();i++){
-            for(int j=0; j<getGridLength();j++){
-            	if(manuallyModified(i,j)){
-	                if(isAlive(i,j)){
-	                	noLongerModified(i,j);
+    public void updateStateOnClick() {
+    	for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+            	if(manuallyModified(i,j)) {
+	                if(isAlive(i, j)) {
+	                	noLongerModified(i, j);
 	                	deadOrAlive[i][j] = true;
 	                	numberDead--;
 	                	numberAlive++;
 	                }
-	                else{
-	                	noLongerModified(i,j);
+	                else {
+	                	noLongerModified(i, j);
 	                	numberDead++;
 	                	numberAlive--;
 	                }
@@ -267,12 +268,12 @@ public class GameOfLifeSimulation extends Simulation{
     /**
      * 
      */
-    public void updateStateOfCells(){
-        for(int i = 0; i<getGridLength();i++){
-            for(int j=0; j<getGridLength();j++){
+    public void updateStateOfCells() {
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
                 int aliveSurroundingCells = 0;
-                aliveSurroundingCells += checkNearbyCells(i,j);
-                updateCurrentCellState(i,j,aliveSurroundingCells);
+                aliveSurroundingCells += checkNearbyCells(i, j);
+                updateCurrentCellState(i, j, aliveSurroundingCells);
             }
         }
     }
@@ -282,35 +283,35 @@ public class GameOfLifeSimulation extends Simulation{
      * @param column
      * @return
      */
-    private int checkNearbyCells(int row, int column){
+    private int checkNearbyCells(int row, int column) {
         int aliveNearbyCells = 0;
         //BE CAREFUL, THIS ALGORITHM's DIAGANOL DETECTION DEPENDS ON FOUR SIDED BOUNDARIES
-        
-        aliveNearbyCells += ifAliveReturn1(row-1,column);
-        aliveNearbyCells += ifAliveReturn1(row,column-1);
-        aliveNearbyCells += ifAliveReturn1(row+1,column);
-        aliveNearbyCells += ifAliveReturn1(row,column+1);
-        aliveNearbyCells += ifAliveReturn1(row-1,column+1);
-        aliveNearbyCells += ifAliveReturn1(row+1,column+1);
-        aliveNearbyCells += ifAliveReturn1(row-1,column-1);
-        aliveNearbyCells += ifAliveReturn1(row+1,column-1);
+        //can rename ifAliveReturn1 as isAlive. Can also change to a boolean method
+        aliveNearbyCells += ifAliveReturn1(row - 1, column);
+        aliveNearbyCells += ifAliveReturn1(row, column - 1);
+        aliveNearbyCells += ifAliveReturn1(row + 1, column);
+        aliveNearbyCells += ifAliveReturn1(row, column + 1);
+        aliveNearbyCells += ifAliveReturn1(row - 1, column + 1);
+        aliveNearbyCells += ifAliveReturn1(row + 1, column + 1);
+        aliveNearbyCells += ifAliveReturn1(row - 1, column - 1);
+        aliveNearbyCells += ifAliveReturn1(row + 1, column - 1);
         return aliveNearbyCells;
     }
 
-    /**
+    /**Change this to be more flexible, not returning hard coded vals
      * @param row
      * @param column
      * @return
      */
-    private int ifAliveReturn1(int row, int column){
-        boolean leftIsInBounds = ((row-1)>=0);
-        boolean rightIsInBounds = ((row+1)<getGridLength());
-        boolean upIsInBounds = ((column-1)>=0);
-        boolean downIsInBounds = ((column+1)<getGridLength());
-        if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)){
+    private int ifAliveReturn1(int row, int column) {
+        boolean leftIsInBounds = ((row - 1) >= 0);
+        boolean rightIsInBounds = ((row + 1) < getGridLength());
+        boolean upIsInBounds = ((column - 1) >= 0);
+        boolean downIsInBounds = ((column + 1) < getGridLength());
+        if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)) {
         	return 0;
         }
-        if(((GameOfLifeCell) myGrid.getCell(row,column)).getState() == States.ALIVE){
+        if(((GameOfLifeCell) myGrid.getCell(row, column)).getState() == States.ALIVE) {
             return 1;
         }
         return 0;

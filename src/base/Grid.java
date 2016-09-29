@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 
 /**
  * @author Soravit, Brian, Delia
+ *define this as a superclass, and then make squarem, triangular,m and hesagonal subclasses that inherit
+ *avoid intialiting a 2d grid
  *
  */
 public abstract class Grid {
@@ -27,7 +29,7 @@ public abstract class Grid {
      * @param initialX
      * @param initialY
      */
-    public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY){
+    public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY) {
         this.grid = new Cell[rowLength][rowLength];
         this.rootElement = rootElement;
         this.rowLength = rowLength;           
@@ -37,10 +39,10 @@ public abstract class Grid {
         this.initialY = initialY;
     }
     
-    /**
+    /**Improve this? How should we design this better??
      * @return
      */
-    public Cell[][] getGrid(){
+    public Cell[][] getGrid() {
         return grid;
     }
 
@@ -73,7 +75,7 @@ public abstract class Grid {
     /**
      * @param sim
      */
-    public void setSimulationProfile(Simulation sim){
+    public void setSimulationProfile(Simulation sim) {
         this.sim = sim;;
     }
 
@@ -133,19 +135,18 @@ public abstract class Grid {
         this.sizeOfCell = sizeOfCell;
     }
     
-    public void setBackground(int width, int height){
-    	Image background = new Image(getClass().getClassLoader()
-                .getResourceAsStream("BackgroundCellSoc.jpg")); 
-		ImageView backgrondImageMainScreen = new ImageView(background);
-		backgrondImageMainScreen.setFitWidth(width + 50);
-		backgrondImageMainScreen.setFitHeight(height);
-		rootElement.getChildren().add(backgrondImageMainScreen);
+    public void setBackground(int width, int height) {
+    	Image background = new Image(getClass().getClassLoader().getResourceAsStream("BackgroundCellSoc.jpg")); 
+		ImageView backgroundImageMainScreen = new ImageView(background);
+		backgroundImageMainScreen.setFitWidth(width + 50);
+		backgroundImageMainScreen.setFitHeight(height);
+		rootElement.getChildren().add(backgroundImageMainScreen);
     }
     
     /**
      * 
      */
-    public void setUpButtons(){
+    public void setUpButtons() {
         // START SIMULATION BUTTON BELOW
     	String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
                 "-fx-background-radius: 20;" + 
@@ -159,6 +160,7 @@ public abstract class Grid {
                 sim.startSimulation();
             }
         });
+        
         startSim.setTranslateX(20);
         startSim.setTranslateY(200);
         rootElement.getChildren().add(startSim);

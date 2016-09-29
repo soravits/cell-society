@@ -13,7 +13,7 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class GameOfLifeGrid extends Grid{
-	private GameOfLifeSimulation sim;
+	private GameOfLifeSimulation sim; //make instance of itself instead of using a getter all the time
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -27,7 +27,7 @@ public class GameOfLifeGrid extends Grid{
         this.sim = sim;
     }
     
-    public GameOfLifeCell getCell(int row, int col){
+    public GameOfLifeCell getCell(int row, int col) {
     	return (GameOfLifeCell) getGrid()[row][col];
     }
 
@@ -36,12 +36,12 @@ public class GameOfLifeGrid extends Grid{
      * @param col
      * @param cellstate
      */
-    public void updateCell(int row, int col){
-    	GameOfLifeCell myCell = getCell(row,col);
-        if(myCell.getState() == States.ALIVE){
+    public void updateCell(int row, int col) {
+    	GameOfLifeCell myCell = getCell(row, col);
+        if(myCell.getState() == States.ALIVE) {
             getGrid()[row][col].setColor(Color.WHITE);
         }
-        else{
+        else {
             getGrid()[row][col].setColor(Color.BLACK);
         }
         getGrid()[row][col].setBorder(Color.WHITE);
@@ -52,10 +52,10 @@ public class GameOfLifeGrid extends Grid{
      */
     @Override
     public void initializeGrid() {
-        for(int i=0; i<getGrid().length;i++){
-            for(int j=0;j<getGrid()[0].length;j++){
+        for(int i = 0; i < getGrid().length; i++) {
+            for(int j = 0; j < getGrid()[0].length; j++) {
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                		getSizeOfCell() * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
+                		getSizeOfCell() * (i) + getInitialX(), getSizeOfCell()* (j) + getInitialY());
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
                 getGrid()[i][j] = gridCell;		
@@ -64,14 +64,14 @@ public class GameOfLifeGrid extends Grid{
         }	
     }
     
-    private void setUpListener(GameOfLifeCell gridCell){
-    	gridCell.returnBlock().setOnMousePressed(event ->{
+    private void setUpListener(GameOfLifeCell gridCell) {
+    	gridCell.returnBlock().setOnMousePressed(event -> {
     		gridCell.setAsManuallyModified();
-    		if(gridCell.getState() == States.ALIVE){
+    		if(gridCell.getState() == States.ALIVE) {
         		gridCell.killCell();
         		gridCell.setColor(Color.BLACK);
         	}
-    		else{
+    		else { 
     			gridCell.reviveCell();
     			gridCell.setColor(Color.WHITE);
     		}

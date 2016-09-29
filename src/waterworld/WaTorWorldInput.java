@@ -1,8 +1,14 @@
 package waterworld;
 
+import javafx.stage.Stage;
 import base.UserInput;
 
 public class WaTorWorldInput extends UserInput{
+	public WaTorWorldInput(Stage s) {
+		super(s);
+		// TODO Auto-generated constructor stub
+	}
+
 	public void selectFracFish(){
 		
 	}

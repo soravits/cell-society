@@ -64,8 +64,6 @@ public class SegregationGrid extends Grid {
     
     private void setUpListener(SegregationCell gridCell) {
     	gridCell.returnBlock().setOnMousePressed(event -> {
-//    		System.out.println(gridCell.getState());
-//    		System.out.println(gridCell.getColor());
     		gridCell.setAsManuallyModified();
     		if(gridCell.getState() == State.EMPTY) {
         		gridCell.setState(State.COLORA);
@@ -77,7 +75,6 @@ public class SegregationGrid extends Grid {
         		gridCell.setState(State.EMPTY);
         	}
     		gridCell.updateColor();
-    		//sim.manuallyModifyStateOfGrid();
         	sim.updateGraph();
 		});
     }

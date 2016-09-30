@@ -21,6 +21,9 @@ public abstract class Grid {
     private int initialX;
     private int initialY;
     private int sizeOfCell;
+    private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
+            "-fx-background-radius: 20;" + 
+            "-fx-text-fill: white;";
     
     /**
      * @param rowLength
@@ -143,14 +146,15 @@ public abstract class Grid {
 		rootElement.getChildren().add(backgroundImageMainScreen);
     }
     
+//    private Button createSimButton(String fill, String text, int x, int y){
+//    	
+//    }
+    
     /**
      * 
      */
     public void setUpButtons() {
         // START SIMULATION BUTTON BELOW
-    	String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
-                "-fx-background-radius: 20;" + 
-                "-fx-text-fill: white;";
     	
         Button startSim = new Button("Start");
         startSim.setStyle(buttonFill);

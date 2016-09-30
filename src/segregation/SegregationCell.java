@@ -1,12 +1,12 @@
 package segregation;
 
-import segregation.SegregationCell.State;
 import base.Cell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class SegregationCell extends Cell{
-	public enum State{EMPTY, COLORA, COLORB};
+public class SegregationCell extends Cell {
+	
+	public enum State {EMPTY, COLORA, COLORB};
     private boolean manuallyModified = false;
     private State currState;
     
@@ -21,15 +21,24 @@ public class SegregationCell extends Cell{
         this.currState = State.EMPTY;
     }
     
-    public void setAsManuallyModified(){
+    /**
+     * 
+     */
+    public void setAsManuallyModified() {
     	this.manuallyModified = true;
     }
     
-    public boolean isManuallyModified(){
+    /**
+     * @return
+     */
+    public boolean isManuallyModified() {
     	return manuallyModified;
     }
     
-    public void noLongerManuallyModified(){
+    /**
+     * 
+     */
+    public void noLongerManuallyModified() {
     	this.manuallyModified = false;
     }
     
@@ -45,38 +54,22 @@ public class SegregationCell extends Cell{
     /**
      * 
      */
-    public void updateColor(){
-        if(currState == State.EMPTY){
+    public void updateColor() {
+        if(currState == State.EMPTY) {
             setColor(Color.WHITE);
-        }else if(currState == State.COLORA){
+        }
+        else if(currState == State.COLORA) {
             setColor(Color.DARKBLUE);
-        }else{
+        }
+        else {
             setColor(Color.LIMEGREEN);
         }
     }
 
-//    /**
-//     * 
-//     */
-//    public void burn(){
-//        this.states = States.FIRE;
-//    }
-//
-//    /**
-//     * 
-//     */
-//    public void spawn(){
-//        this.states = States.ALIVE;
-//    }
-//    
-//    public void burnout(){
-//    	this.states = States.DEAD;
-//    }
-
     /**
      * @return
      */
-    public State getState(){
+    public State getState() {
         return this.currState;
     }
 }

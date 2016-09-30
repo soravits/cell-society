@@ -21,7 +21,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 	private static final String dead = "Dead: ";
 	private static final String alive = "Alive: ";
 	
-	
     private int numberAlive;
     private int numberDead;
     private int numberFire;
@@ -31,14 +30,16 @@ public class SpreadingOfFireSimulation extends Simulation{
     private XYChart.Series aliveLine;
     private int stepCount = 0;
     
-    private static final Text numFireText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, fire);
-    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
-    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
+    private static final Text numFireText = new Text(
+    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
+    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, fire);
+    private static final Text numDeadText = new Text(
+    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
+    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+    private static final Text numAliveText = new Text(
+    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
+    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
 
-    
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
     private int[][] cellStates;
@@ -55,18 +56,17 @@ public class SpreadingOfFireSimulation extends Simulation{
         this.probCatch = probCatch;
     }
 
-    /* (non-Javadoc)
-     * @see base.Simulation#init(javafx.stage.Stage)
-     */
     @Override
     public Scene init (Stage s) {
         setStage(s);
         makeNewRootElement();
-        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
-        setTopMargin(getTopMargin() + marginBoxTop*4);
+        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
+        		SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
+        setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(),this);
-        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);myGrid.initializeGrid();
+        		getLeftMargin(), getTopMargin(), this);
+        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
+        myGrid.initializeGrid();
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         cellStates = new int[getGridLength()][getGridLength()];
@@ -79,30 +79,30 @@ public class SpreadingOfFireSimulation extends Simulation{
      * @param x
      * @param y
      */
-    public void spawnTree(int x, int y){
+    public void spawnTree(int x, int y) {
         cellStates[x][y] = 1;
         myGrid.updateCell(x,y,1);
         numberAlive++;
         myGrid.getCell(x, y).spawn();
     }
     
-    public void checkUpdatedStatesAfterManualMod(){
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0; j<getGridLength(); j++){
+    public void checkUpdatedStatesAfterManualMod() {
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
             	if(manuallyModified(i,j)){
             		States cellState = myGrid.getCell(i, j).getState();
             		noLongerModified(i,j);
-            		if(cellState == States.FIRE){
+            		if(cellState == States.FIRE) {
                     	cellStates[i][j] = 2;
                     	numberFire++;
                     	numberAlive--;
                     }
-                    else if (cellState == States.DEAD){
+                    else if (cellState == States.DEAD) {
                     	cellStates[i][j] = 0;
                     	numberDead++;
                     	numberFire--;
                     }
-                    else{
+                    else {
                     	cellStates[i][j] = 1;
                     	numberAlive++;
                     	numberDead--;
@@ -112,11 +112,11 @@ public class SpreadingOfFireSimulation extends Simulation{
         }
     }
     
-    private boolean manuallyModified(int row,int col){
+    private boolean manuallyModified(int row,int col) {
     	return (myGrid.getCell(row, col).isManuallyModified());
     }
     
-    private void noLongerModified(int row, int col){
+    private void noLongerModified(int row, int col) {
     	myGrid.getCell(row, col).noLongerManuallyModified();
     }
 
@@ -125,12 +125,12 @@ public class SpreadingOfFireSimulation extends Simulation{
      * @param y
      * @param forceBurn
      */
-    public void burnTree(int x, int y, boolean forceBurn){
+    public void burnTree(int x, int y, boolean forceBurn) {
         double rand = Math.random();
         if(rand < probCatch || forceBurn){
         	myGrid.getCell(x, y).burn();
             cellStates[x][y] = 3;
-            myGrid.updateCell(x,y,2);
+            myGrid.updateCell(x, y, 2);
             numberFire++;
             numberAlive--;
         }
@@ -140,12 +140,12 @@ public class SpreadingOfFireSimulation extends Simulation{
      * @param x
      * @param y
      */
-    public void clearCell(int x, int y){
+    public void clearCell(int x, int y) {
         cellStates[x][y] = 0;
-        myGrid.updateCell(x,y,0);
+        myGrid.updateCell(x, y, 0);
         myGrid.getCell(x, y).burnout();
         numberDead++;
-        if(numberFire>0){
+        if(numberFire > 0){
         	numberFire--;
         }
     }
@@ -153,21 +153,25 @@ public class SpreadingOfFireSimulation extends Simulation{
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()
      */
-    public void setInitialEnvironment(){
+    public void setInitialEnvironment() {
     	numberAlive = 0;
     	numberDead = 0;
     	
     	createGraph();
     	int fireBurnedInitially = 0;
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0;j<getGridLength(); j++){
-                if(i == 0 || i == getGridLength()-1 || j == 0 || j == getGridLength()-1){
-                    clearCell(i,j);
-                }else if(i == getGridLength()/2 && j == getGridLength()/2){
-                    burnTree(i,j,true);
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                if(i == 0 || i == getGridLength() - 1 
+                		|| j == 0 || j == getGridLength()-1) {
+                    clearCell(i, j);
+                }
+                else if(i == getGridLength() / 2 
+                		&& j == getGridLength() / 2) {
+                    burnTree(i, j, true);
                     fireBurnedInitially++;
-                }else{
-                    spawnTree(i,j);
+                }
+                else {
+                    spawnTree(i, j);
                 }
                 myGrid.updateCell(i, j, cellStates[i][j]);
             }
@@ -179,31 +183,32 @@ public class SpreadingOfFireSimulation extends Simulation{
     /**
      * 
      */
-    public void updateState(){
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0; j<getGridLength(); j++){
-                if(cellStates[i][j] == 1){
-                    if(cellStates[i-1][j] == 2){
-                        burnTree(i,j,false);
+    public void updateState() {
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                if(cellStates[i][j] == 1) {
+                    if(cellStates[i - 1][j] == 2) {
+                        burnTree(i, j, false);
                     } 
-                    else if(cellStates[i+1][j] == 2){
-                        burnTree(i,j,false);
+                    else if(cellStates[i + 1][j] == 2) {
+                        burnTree(i, j, false);
                     }  
-                    else if(cellStates[i][j-1] == 2){
-                        burnTree(i,j,false);
+                    else if(cellStates[i][j - 1] == 2) {
+                        burnTree(i, j, false);
                     }  
-                    else if(cellStates[i][j+1] == 2){
-                        burnTree(i,j,false);
+                    else if(cellStates[i][j + 1] == 2) {
+                        burnTree(i, j, false);
                     }               
                 } 
             }
         }
 
-        for(int i = 0; i<getGridLength(); i++){
-            for(int j = 0; j<getGridLength(); j++){
-                if(cellStates[i][j] == 2){
-                    clearCell(i,j);
-                } else if(cellStates[i][j] == 3){
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                if(cellStates[i][j] == 2) {
+                    clearCell(i, j);
+                } 
+                else if(cellStates[i][j] == 3) {
                     cellStates[i][j] = 2;
                 }
             }
@@ -213,7 +218,7 @@ public class SpreadingOfFireSimulation extends Simulation{
     /**
      * 
      */
-    public void createGraph(){
+    public void createGraph() {
         //defining the axes
         final NumberAxis xAxis = new NumberAxis();
         xAxis.setTickLabelsVisible(false);
@@ -223,8 +228,8 @@ public class SpreadingOfFireSimulation extends Simulation{
         yAxis.setMinorTickVisible(false);
         
         //creating the chart
-        final LineChart<Number,Number> lineChart = 
-                new LineChart<Number,Number>(xAxis,yAxis);
+        final LineChart <Number, Number> lineChart = 
+        		new LineChart <Number, Number> (xAxis, yAxis);
         fireLine = new XYChart.Series();
         fireLine.setName("Fire");
         yellowLine = new XYChart.Series();
@@ -246,8 +251,9 @@ public class SpreadingOfFireSimulation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
+        Rectangle cellCounter = new Rectangle(
+        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
+        		(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
         		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
@@ -268,7 +274,7 @@ public class SpreadingOfFireSimulation extends Simulation{
         
     }
     
-    private void updateText(){
+    private void updateText() {
     	numFireText.setText(fire + numberFire);
     	numDeadText.setText(dead + numberDead);
     	numAliveText.setText(alive + numberAlive);
@@ -277,22 +283,17 @@ public class SpreadingOfFireSimulation extends Simulation{
     /**
      * 
      */
-    public void updateGraph(){
+    public void updateGraph() {
     	fireLine.getData().add(new XYChart.Data(stepCount, numberFire));
     	yellowLine.getData().add(new XYChart.Data(stepCount, numberDead));
     	aliveLine.getData().add(new XYChart.Data(stepCount, numberAlive));
     	updateText();
     }
 
-    /* (non-Javadoc)
-     * @see base.Simulation#step()
-     */
     @Override
     public void step () {
         updateState();
         updateGraph();
         stepCount++;
     }
-
-
 }

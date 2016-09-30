@@ -6,7 +6,7 @@ import org.w3c.dom.Element;
  * @author Soravit
  *
  */
-public class FireXMLFactory extends SimulationXMLFactory{
+public class FireXMLFactory extends SimulationXMLFactory { 
 
     /**
      * @param rootElement
@@ -26,7 +26,7 @@ public class FireXMLFactory extends SimulationXMLFactory{
     /**
      * @return
      */
-    public double getProbCatch(){
+    public double getProbCatch() {
         return Double.parseDouble(getTextValue("probCatch"));
     }
 

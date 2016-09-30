@@ -21,7 +21,7 @@ public abstract class SimulationXMLFactory extends XMLFactory {
         return Objects.equals(getAttribute("SimulationType"), getSimulationType());
     }
 
-    public int getGridSize(){
+    public int getGridSize() {
         return Integer.parseInt(getTextValue("gridSize"));
     }
 

@@ -13,7 +13,9 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class GameOfLifeGrid extends Grid{
-	private GameOfLifeSimulation sim; //make instance of itself instead of using a getter all the time
+	private GameOfLifeSimulation sim; 
+	//make instance of itself instead of using a getter all the time?
+	
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -55,7 +57,8 @@ public class GameOfLifeGrid extends Grid{
         for(int i = 0; i < getGrid().length; i++) {
             for(int j = 0; j < getGrid()[0].length; j++) {
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                		getSizeOfCell() * (i) + getInitialX(), getSizeOfCell()* (j) + getInitialY());
+                		getSizeOfCell() * (i) + getInitialX(), 
+                		getSizeOfCell()* (j) + getInitialY());
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
                 getGrid()[i][j] = gridCell;		

@@ -3,17 +3,15 @@ package waterworld;
 import base.Cell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
  * @author Soravit
  *
  */
-public class WaTorWorldCell extends Cell{
+public class WaTorWorldCell extends Cell {
     
     private int breedTime;
     private int starveTime = -1;
-    private boolean manuallyModified = false;
     
     public enum State{EMPTY, FISH, SHARK};
     
@@ -31,19 +29,6 @@ public class WaTorWorldCell extends Cell{
 		super(sizeOfCell, rootElement, xCoord, yCoord);
 		this.currState = currState;
 	}
-	
-    
-    public void setAsManuallyModified(){
-    	this.manuallyModified = true;
-    }
-    
-    public boolean isManuallyModified(){
-    	return manuallyModified;
-    }
-    
-    public void noLongerManuallyModified(){
-    	this.manuallyModified = false;
-    }
 	 
     /**
      * @return
@@ -91,26 +76,28 @@ public class WaTorWorldCell extends Cell{
     /**
      * 
      */
-    public void decrementBreedTime(){
+    public void decrementBreedTime() {
         breedTime --;
     }
     
     /**
      * 
      */
-    public void decrementStarveTime(){
+    public void decrementStarveTime() {
         starveTime --;
     }
     
     /**
      * 
      */
-    public void updateColor(){
-        if(currState == State.EMPTY){
+    public void updateColor() {
+        if(currState == State.EMPTY) {
             setColor(Color.BLUE);
-        }else if(currState == State.FISH){
+        }
+        else if(currState == State.FISH) {
             setColor(Color.GREEN);
-        }else{
+        }
+        else {
             setColor(Color.YELLOW);
         }
     }

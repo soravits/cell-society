@@ -1,12 +1,17 @@
 package waterworld;
 
+import xml.WaTorWorldXMLFactory;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import base.UserInput;
 
 public class WaTorWorldInput extends UserInput{
-	public WaTorWorldInput(Stage s) {
+	private Scene waterScene;
+	private WaTorWorldSimulation waterSim;
+	
+	public WaTorWorldInput(Stage s, WaTorWorldXMLFactory factory, WaTorWorldSimulation mySim) {
 		super(s);
-		// TODO Auto-generated constructor stub
+		this.waterSim = mySim;
 	}
 
 	public void selectFracFish(){
@@ -26,6 +31,21 @@ public class WaTorWorldInput extends UserInput{
 	}
 	
 	public void selectStarveTime(){
+		
+	}
+
+	@Override
+	public void manualInput() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startXMLSimulation() {
+		// TODO Auto-generated method stub
+		waterScene = waterSim.init(stage);
+		stage.setScene(waterScene);
+		stage.show();
 		
 	}
 }

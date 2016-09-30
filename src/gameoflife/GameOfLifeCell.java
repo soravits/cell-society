@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 public class GameOfLifeCell extends Cell {
     public enum States{ALIVE, DEAD};
     private States states;
-    
+
     /**
      * @param sizeOfCell
      * @param rootElement

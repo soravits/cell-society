@@ -18,13 +18,14 @@ public abstract class Grid {
     private Simulation sim;
     private Cell[][] grid;
     private int rowLength;
+    private int columnLength;
     private int initialX;
     private int initialY;
     private int sizeOfCell;
     private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
             "-fx-background-radius: 20;" + 
             "-fx-text-fill: white;";
-    
+
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -32,42 +33,31 @@ public abstract class Grid {
      * @param initialX
      * @param initialY
      */
-    public Grid(int rowLength,int sizeOfCell,Pane rootElement,int initialX,int initialY) {
-        this.grid = new Cell[rowLength][rowLength];
+    public Grid(int gridLength,int sizeOfCell,Pane rootElement,int initialX,int initialY) {
         this.rootElement = rootElement;
-        this.rowLength = rowLength;           
+        this.rowLength = gridLength;        
+        this.columnLength = gridLength;
         this.sizeOfCell = sizeOfCell;
         this.rootElement = rootElement;
         this.initialX = initialX;
         this.initialY = initialY;
-    }
-    
-    /**Improve this? How should we design this better??
-     * @return
-     */
-    public Cell[][] getGrid() {
-        return grid;
+        this.grid = new Cell[columnLength][rowLength];
     }
 
-    /**
-     * @param grid
-     */
-    public void setGrid (Cell[][] grid) {
-        this.grid = grid;
+    public int getRowLength () {
+        return rowLength;
     }
+
+    public int getColumnLength () {
+        return columnLength;
+    }
+
 
     /**
      * @return
      */
     public Pane getRootElement () {
         return rootElement;
-    }
-
-    /**
-     * @param rootElement
-     */
-    public void setRootElement (Pane rootElement) {
-        this.rootElement = rootElement;
     }
 
     /**
@@ -82,32 +72,19 @@ public abstract class Grid {
         this.sim = sim;;
     }
 
+    public Cell getCell(int row, int col){
+        return grid[row][col];
+    }
+
+    public void setCell(int row, int col, Cell c){
+        grid[row][col] = c;
+    }
+
     /**
      * @return
      */
     public int getInitialX () {
         return initialX;
-    }
-
-    /**
-     * @param initialX
-     */
-    public void setInitialX (int initialX) {
-        this.initialX = initialX;
-    }
-
-    /**
-     * @return
-     */
-    public int getRowLength () {
-        return rowLength;
-    }
-
-    /**
-     * @param rowLength
-     */
-    public void setRowLength (int rowLength) {
-        this.rowLength = rowLength;
     }
 
     /**
@@ -118,50 +95,36 @@ public abstract class Grid {
     }
 
     /**
-     * @param initialY
-     */
-    public void setInitialY (int initialY) {
-        this.initialY = initialY;
-    }
-
-    /**
      * @return
      */
     public int getSizeOfCell () {
         return sizeOfCell;
     }
 
-    /**
-     * @param sizeOfCell
-     */
-    public void setSizeOfCell (int sizeOfCell) {
-        this.sizeOfCell = sizeOfCell;
-    }
-    
     public void setBackground(int width, int height) {
-    	Image background = new Image(getClass().getClassLoader().
-    			getResourceAsStream("BackgroundCellSoc.jpg")); 
-		ImageView backgroundImageMainScreen = new ImageView(background);
-		backgroundImageMainScreen.setFitWidth(width + 50);
-		backgroundImageMainScreen.setFitHeight(height);
-		rootElement.getChildren().add(backgroundImageMainScreen);
+        Image background = new Image(getClass().getClassLoader().
+                                     getResourceAsStream("BackgroundCellSoc.jpg")); 
+        ImageView backgroundImageMainScreen = new ImageView(background);
+        backgroundImageMainScreen.setFitWidth(width + 50);
+        backgroundImageMainScreen.setFitHeight(height);
+        rootElement.getChildren().add(backgroundImageMainScreen);
     }
-    
+
     private Button createSimButton(String text, int x, int y) {
-    	Button startSim = new Button(text);
+        Button startSim = new Button(text);
         startSim.setStyle(buttonFill);
         startSim.setTranslateX(x);
         startSim.setTranslateY(y);
-        
+
         return startSim;
     }
-    
+
     /**
      * 
      */
     public void setUpButtons() {
         // START SIMULATION BUTTON BELOW
-    	
+
         Button startSim = createSimButton("Start", 20, 200);
         startSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override

@@ -9,10 +9,10 @@ import javafx.application.Application;
  * @author Soravit, Delia, Brian
  *
  */
-public class Main extends Application{
+public class Main extends Application {
 	Stage stage;
 
-	public void start(Stage primaryStage){	
+	public void start(Stage primaryStage) {	
 		stage = primaryStage;
 		Scene scene = new Scene(new MainMenu(primaryStage).setUpWindow());
 		primaryStage.setTitle("Cell Society");

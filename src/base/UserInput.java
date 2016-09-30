@@ -1,7 +1,5 @@
 package base;
 
-import controller.MainMenu.MenuItem;
-import controller.MainMenu.OptionContainer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -17,11 +15,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
-public class UserInput {
+public abstract class UserInput {
 	public static final int INPUT_MENU_WIDTH = 700;
 	public static final int INPUT_MENU_HEIGHT = 600;	
 	private Alert alert;
@@ -29,12 +29,14 @@ public class UserInput {
 	public Pane inputWindow;
 
 	public UserInput(Stage s){
-
+		stage = s;
 		stage.setScene(new Scene(setUpWindow()));
+		stage.show();
 	}
 
 	private Parent setUpWindow() {
 		inputWindow = new Pane();
+		
 		inputWindow.setPrefSize(INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
 		Image background = new Image(getClass().getClassLoader()
 				.getResourceAsStream("BackgroundCellSoc.jpg")); 
@@ -42,21 +44,22 @@ public class UserInput {
 		backgroundImage.setFitWidth(INPUT_MENU_WIDTH + 50);
 		backgroundImage.setFitHeight(INPUT_MENU_HEIGHT);
 		inputWindow.getChildren().add(backgroundImage); 
-		Text xmlPrompt = new Text(50, 50, "Read in an XML file");
-		inputWindow.getChildren().add(xmlPrompt);
+		
+		Text prompt = new Text(50, 60, "Choose an Option");
+        prompt.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
+        prompt.setFill(Color.WHITE);
+		inputWindow.getChildren().add(prompt);
+		
 		xmlButton();
+		
 
-
-		//	        OptionContainer optionList = new OptionContainer(
-		//	                                                         new MenuItem("FOREST FIRE"),
-		//	                                                         new MenuItem("PREDATOR PREY"),
-		//	                                                         new MenuItem("SEGREGATION"),
-		//	                                                         new MenuItem("GAME OF LIFE"));
-		//	        //new MenuItem("READ XML FILE"));
-		//	        optionList.setTranslateX(200);
-		//	        optionList.setTranslateY(350);
-		//	        gameWindow.getChildren().add(optionList);
-
+		Text otherOption = new Text(50, 150, "Or Choose your own Parameters");
+        otherOption.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
+        otherOption.setFill(Color.WHITE);
+        inputWindow.getChildren().add(otherOption);
+        
+		manualInput();
+		
 		return inputWindow;
 	}
 
@@ -67,24 +70,24 @@ public class UserInput {
 
 		Button readXML = new Button("Read values from XML file");
 		readXML.setStyle(buttonFill);
-		readXML.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				//                sim.startSimulation();
-			}
-		});
-		readXML.setTranslateX(20);
-		readXML.setTranslateY(200);
+		readXML.setOnMouseClicked(e -> startXMLSimulation());
+		readXML.setTranslateX(40);
+		readXML.setTranslateY(80);
 		inputWindow.getChildren().add(readXML);
 	}
+	
+	public abstract void startXMLSimulation();
 
 	public void selectGridSize(){
 		TextField numberField = new TextField();
 		numberField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
 	}
+	
+	public abstract void manualInput();
+	
 
 	public void errorPopup(String errorText){
-		Alert alert = new Alert(AlertType.ERROR);
+		alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Input error");
 
 		String s = errorText;

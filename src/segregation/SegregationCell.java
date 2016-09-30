@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 public class SegregationCell extends Cell {
 	
 	public enum State {EMPTY, COLORA, COLORB};
-    private boolean manuallyModified = false;
+//    private boolean manuallyModified = false;
     private State currState;
     
     /**
@@ -21,28 +21,6 @@ public class SegregationCell extends Cell {
         this.currState = State.EMPTY;
     }
     
-    /**
-     * 
-     */
-    public void setAsManuallyModified() {
-    	this.manuallyModified = true;
-    }
-    
-    /**
-     * @return
-     */
-    public boolean isManuallyModified() {
-    	return manuallyModified;
-    }
-    
-    /**
-     * 
-     */
-    public void noLongerManuallyModified() {
-    	this.manuallyModified = false;
-    }
-    
-
     /**
      * @param currState
      */

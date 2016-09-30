@@ -13,6 +13,7 @@ public class Cell {
     private Pane rootElement;
     public Rectangle block;
     public static final double STROKE_WIDTH = 1;
+    private boolean manuallyModified = false;
 
     /**
      * @param sizeOfCell
@@ -29,6 +30,7 @@ public class Cell {
     public Rectangle returnBlock() {
     	return this.block;
     }
+    
     /**
      * 
      */
@@ -72,6 +74,27 @@ public class Cell {
      */
     public void addToScene() {
         rootElement.getChildren().add(block);
+    }
+    
+    /**
+     * 
+     */
+    public void setAsManuallyModified() {
+    	this.manuallyModified = true;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isManuallyModified() {
+    	return manuallyModified;
+    }
+    
+    /**
+     * 
+     */
+    public void noLongerManuallyModified() {
+    	this.manuallyModified = false;
     }
 
 }

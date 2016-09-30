@@ -76,14 +76,14 @@ public class WaTorWorldCell extends Cell {
     /**
      * 
      */
-    public void decrementBreedTime(){
+    public void decrementBreedTime() {
         breedTime --;
     }
     
     /**
      * 
      */
-    public void decrementStarveTime(){
+    public void decrementStarveTime() {
         starveTime --;
     }
     

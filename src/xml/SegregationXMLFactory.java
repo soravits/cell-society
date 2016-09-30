@@ -6,7 +6,7 @@ import org.w3c.dom.Element;
  * @author Delia
  *
  */
-public class SegregationXMLFactory extends SimulationXMLFactory{
+public class SegregationXMLFactory extends SimulationXMLFactory {
 
     /**
      * @param rootElement
@@ -24,28 +24,28 @@ public class SegregationXMLFactory extends SimulationXMLFactory{
     /**
      * @return double value for percentage of identical neighbors to satisfy a cell
      */
-    public double getSatisfyThreshold(){
+    public double getSatisfyThreshold() {
         return Double.parseDouble(getTextValue("satisfyThresh"));
     }
 
     /**
      * @return percentage of inhabited cells that will be type A
      */
-    public double getPercA(){
+    public double getPercA() {
         return Double.parseDouble(getTextValue("percentageA"));
     }
     
     /**
      * @return percentage of inhabited cells that will be type B
      */
-    public double getPercB(){
+    public double getPercB() {
         return Double.parseDouble(getTextValue("percentageB"));
     }
     
     /**
      * @return percentage of grid that is empty
      */
-    public double getPercEmpty(){
+    public double getPercEmpty() {
         return Double.parseDouble(getTextValue("percentageEmpty"));
     }
 }

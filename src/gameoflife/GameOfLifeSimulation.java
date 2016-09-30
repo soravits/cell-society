@@ -21,7 +21,6 @@ public class GameOfLifeSimulation extends Simulation{
 	private static final String dead = "Dead: ";
 	private static final String alive = "Alive: ";
 	
-	
     private int numberAlive;
     private int numberDead;
     
@@ -29,13 +28,12 @@ public class GameOfLifeSimulation extends Simulation{
     private XYChart.Series aliveLine;
     private int stepCount = 0;
     
-    private static final Text numDeadText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
-    private static final Text numAliveText = new Text(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-    		+ marginBoxTop * 3, 0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
-
-    
-    
+    private static final Text numDeadText = new Text(
+    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
+    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+    private static final Text numAliveText = new Text(
+    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
+    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
     
     private GameOfLifeGrid myGrid;
     private boolean[][] deadOrAlive;
@@ -54,7 +52,8 @@ public class GameOfLifeSimulation extends Simulation{
     public Scene init(Stage s) {
         setStage(s);
         makeNewRootElement();
-        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
+        		SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
         		getLeftMargin(), getTopMargin(), this);
@@ -102,8 +101,9 @@ public class GameOfLifeSimulation extends Simulation{
         getRootElement().getChildren().add(lineChart);
         
         
-        Rectangle cellCounter = new Rectangle(SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
+        Rectangle cellCounter = new Rectangle(
+        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
+        		(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
         		dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
@@ -207,7 +207,7 @@ public class GameOfLifeSimulation extends Simulation{
      * @param col
      */
     private void reviveCell(int row, int col) {
-        myGrid.updateCell(row,col);
+        myGrid.updateCell(row, col);
         myGrid.getCell(row, col).reviveCell();
     }
     
@@ -221,7 +221,7 @@ public class GameOfLifeSimulation extends Simulation{
      * @param aliveSurroundingCells
      */
     public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
-        if(isAlive(row,column)) {
+        if(isAlive(row, column)) {
             if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
             	numberDead++;
             	numberAlive--;

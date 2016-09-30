@@ -14,10 +14,10 @@ import javafx.scene.layout.Pane;
  *
  */
 public abstract class Grid {
-    private Cell[][] grid;
-    private int rowLength;
     private Pane rootElement;
     private Simulation sim;
+    private Cell[][] grid;
+    private int rowLength;
     private int initialX;
     private int initialY;
     private int sizeOfCell;
@@ -139,16 +139,22 @@ public abstract class Grid {
     }
     
     public void setBackground(int width, int height) {
-    	Image background = new Image(getClass().getClassLoader().getResourceAsStream("BackgroundCellSoc.jpg")); 
+    	Image background = new Image(getClass().getClassLoader().
+    			getResourceAsStream("BackgroundCellSoc.jpg")); 
 		ImageView backgroundImageMainScreen = new ImageView(background);
 		backgroundImageMainScreen.setFitWidth(width + 50);
 		backgroundImageMainScreen.setFitHeight(height);
 		rootElement.getChildren().add(backgroundImageMainScreen);
     }
     
-//    private Button createSimButton(String fill, String text, int x, int y){
-//    	
-//    }
+    private Button createSimButton(String text, int x, int y) {
+    	Button startSim = new Button(text);
+        startSim.setStyle(buttonFill);
+        startSim.setTranslateX(x);
+        startSim.setTranslateY(y);
+        
+        return startSim;
+    }
     
     /**
      * 
@@ -156,56 +162,43 @@ public abstract class Grid {
     public void setUpButtons() {
         // START SIMULATION BUTTON BELOW
     	
-        Button startSim = new Button("Start");
-        startSim.setStyle(buttonFill);
+        Button startSim = createSimButton("Start", 20, 200);
         startSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sim.startSimulation();
             }
         });
-        
-        startSim.setTranslateX(20);
-        startSim.setTranslateY(200);
         rootElement.getChildren().add(startSim);
 
         // STEP SIMULATION BUTTON BELOW
-        Button stepSim = new Button("Step");
-        stepSim.setStyle(buttonFill);
+        Button stepSim = createSimButton("Step", 20, 250);
         stepSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sim.step();
             }
         });
-        stepSim.setTranslateX(20);
-        stepSim.setTranslateY(250);
         rootElement.getChildren().add(stepSim);
 
         // PAUSE SIMULATION BUTTON BELOW
-        Button pauseSim = new Button("Pause");
-        pauseSim.setStyle(buttonFill);
+        Button pauseSim = createSimButton("Pause", 20, 300);
         pauseSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sim.stopSimulation();
             }
         });
-        pauseSim.setTranslateX(20);
-        pauseSim.setTranslateY(300);
         rootElement.getChildren().add(pauseSim);
 
         // RESUME SIMULATION BUTTON BELOW
-        Button resumeSim = new Button("Resume");
-        resumeSim.setStyle(buttonFill);
+        Button resumeSim = createSimButton("Resume", 20, 350);
         resumeSim.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sim.resumeSimulation();
             }
         });
-        resumeSim.setTranslateX(20);
-        resumeSim.setTranslateY(350);
         rootElement.getChildren().add(resumeSim);
     }
 }

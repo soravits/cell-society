@@ -20,13 +20,13 @@ public class Cell {
      * @param xCoord
      * @param yCoord
      */
-    public Cell(int sizeOfCell,Pane rootElement,int xCoord,int yCoord){
+    public Cell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
         this.rootElement = rootElement;
-        this.block = new Rectangle(xCoord,yCoord,sizeOfCell,sizeOfCell);
+        this.block = new Rectangle(xCoord, yCoord, sizeOfCell, sizeOfCell);
     }
     
     //TODO: Make this abstract when all cells have their own thing
-    public Rectangle returnBlock(){
+    public Rectangle returnBlock() {
     	return this.block;
     }
     /**
@@ -41,7 +41,7 @@ public class Cell {
     /**
      * @param color
      */
-    public void setBorder(Color color){
+    public void setBorder(Color color) {
         block.setStroke(color);
         block.setStrokeWidth(STROKE_WIDTH);
     }
@@ -49,28 +49,28 @@ public class Cell {
     /**
      * @param color
      */
-    public void setColor(Color color){
+    public void setColor(Color color) {
         block.setFill(color);
     }
 
     /**
      * @param color
      */
-    public void setColor(Paint color){
+    public void setColor(Paint color) {
         block.setFill(color);
     }
 
     /**
      * @return
      */
-    public Paint getColor(){
+    public Paint getColor() {
         return block.getFill();
     }
 
     /**
      * 
      */
-    public void addToScene(){
+    public void addToScene() {
         rootElement.getChildren().add(block);
     }
 

@@ -30,13 +30,13 @@ public class WaTorWorldGrid extends Grid {
 	 */
 	@Override
 	public void initializeGrid() {
-		for(int i = 0; i < getGrid().length; i++) {
-			for(int j = 0; j < getGrid()[0].length; j++) {
+		for(int i = 0; i < getColumnLength(); i++) {
+			for(int j = 0; j < getRowLength(); j++) {
 				WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), 
 						getRootElement(), getSizeOfCell() * (i) + getInitialX(),
 						getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
 				gridCell.addToScene();
-				getGrid()[i][j] = gridCell; 
+				setCell(i,j,gridCell); 
 				setUpListener(gridCell);
 			}
 		} 
@@ -66,6 +66,6 @@ public class WaTorWorldGrid extends Grid {
 	 * @return
 	 */
 	public WaTorWorldCell getCell(int x, int y) {
-		return (WaTorWorldCell) getGrid()[x][y];
+		return (WaTorWorldCell) super.getCell(x,y);
 	}
 }

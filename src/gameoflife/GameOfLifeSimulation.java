@@ -18,23 +18,23 @@ import javafx.stage.Stage;
  *
  */
 public class GameOfLifeSimulation extends Simulation{
-	private static final String dead = "Dead: ";
-	private static final String alive = "Alive: ";
-	
+    private static final String dead = "Dead: ";
+    private static final String alive = "Alive: ";
+
     private int numberAlive;
     private int numberDead;
-    
+
     private XYChart.Series deadLine;
     private XYChart.Series aliveLine;
     private int stepCount = 0;
-    
+
     private static final Text numDeadText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+                                                     SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
+                                                     0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
     private static final Text numAliveText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
-    
+                                                      SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
+                                                      0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
+
     private GameOfLifeGrid myGrid;
     private boolean[][] deadOrAlive;
 
@@ -53,10 +53,10 @@ public class GameOfLifeSimulation extends Simulation{
         setStage(s);
         makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
-        		SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+                             SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
-        		getLeftMargin(), getTopMargin(), this);
+                                         getLeftMargin(), getTopMargin(), this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         deadOrAlive = new boolean[getGridLength()][getGridLength()];
         myGrid.initializeGrid();
@@ -68,7 +68,7 @@ public class GameOfLifeSimulation extends Simulation{
     }
 
 
-    
+
     /**
      * 
      */
@@ -80,7 +80,7 @@ public class GameOfLifeSimulation extends Simulation{
         xAxis.setMinorTickVisible(false);
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setMinorTickVisible(false);
-        
+
         //creating the chart
         final LineChart<Number,Number> lineChart = 
                 new LineChart <Number,Number> (xAxis, yAxis);
@@ -88,52 +88,52 @@ public class GameOfLifeSimulation extends Simulation{
         deadLine.setName("Dead");
         aliveLine = new XYChart.Series();
         aliveLine.setName("Alive");
-             
+
         //populating the series with data
         //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(deadLine);
         lineChart.getData().add(aliveLine);
-        
+
         lineChart.setLayoutX(25);
         lineChart.setPrefSize(500, 100);
         lineChart.setLegendVisible(true);
         lineChart.setLegendSide(Side.RIGHT);
         getRootElement().getChildren().add(lineChart);
-        
-        
+
+
         Rectangle cellCounter = new Rectangle(
-        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
-        		(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
-        		dimensionsOfCellCounterBox);
+                                              SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
+                                              (dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
+                                              dimensionsOfCellCounterBox);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
-			    "-fx-background-radius: 8,7,6;" + 
-			    "-fx-background-insets: 0,1,2;" +
-			    "-fx-text-fill: black;" +
-			    "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-		);
+                             "-fx-background-radius: 8,7,6;" + 
+                                     "-fx-background-insets: 0,1,2;" +
+                                     "-fx-text-fill: black;" +
+                                     "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
+                );
         getRootElement().getChildren().add(cellCounter);
         numDeadText.setFill(Color.BLACK);
         numAliveText.setFill(Color.GRAY);
         updateText();
         getRootElement().getChildren().add(numDeadText);
         getRootElement().getChildren().add(numAliveText);
-        
-        
+
+
     }
-    
+
     private void updateText() {
-    	numDeadText.setText(dead + numberDead);
-    	numAliveText.setText(alive + numberAlive);
+        numDeadText.setText(dead + numberDead);
+        numAliveText.setText(alive + numberAlive);
     }
 
     /**
      * 
      */
     public void updateGraph() {
-    	deadLine.getData().add(new XYChart.Data(stepCount, numberAlive));
-    	aliveLine.getData().add(new XYChart.Data(stepCount, numberDead));
-    	updateText();
+        deadLine.getData().add(new XYChart.Data(stepCount, numberAlive));
+        aliveLine.getData().add(new XYChart.Data(stepCount, numberDead));
+        updateText();
     }
 
     /* (non-Javadoc)
@@ -141,7 +141,7 @@ public class GameOfLifeSimulation extends Simulation{
      */
     @Override
     public void step () {
-    	updateStateOfCells();
+        updateStateOfCells();
         updateCellUI();
         updateGraph();
         stepCount++;
@@ -153,9 +153,9 @@ public class GameOfLifeSimulation extends Simulation{
      * @see base.Simulation#setInitialEnvironment()
      */
     public void setInitialEnvironment() {
-    	numberAlive = 0;
-    	numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
-    	
+        numberAlive = 0;
+        numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
+
         for (boolean[] row : deadOrAlive) {
             Arrays.fill(row, false);
         }
@@ -165,9 +165,9 @@ public class GameOfLifeSimulation extends Simulation{
         deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
         deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
         deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
-        
+
         myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 - 1).reviveCell();
-        
+
         myGrid.getCell(deadOrAlive.length/2-1, deadOrAlive.length/2).reviveCell();
         myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 + 1).reviveCell();
         myGrid.getCell(deadOrAlive.length/2+1, deadOrAlive.length/2).reviveCell();
@@ -181,7 +181,7 @@ public class GameOfLifeSimulation extends Simulation{
      * 
      */
     public void updateCellUI() {
-       for(int i = 0; i < getGridLength(); i++) {
+        for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
                 if(deadOrAlive[i][j] == true) {
                     reviveCell(i, j);
@@ -210,9 +210,9 @@ public class GameOfLifeSimulation extends Simulation{
         myGrid.updateCell(row, col);
         myGrid.getCell(row, col).reviveCell();
     }
-    
+
     private boolean isAlive(int row, int col) {
-    	return (myGrid.getCell(row, col).getState() == States.ALIVE);
+        return (myGrid.getCell(row, col).getState() == States.ALIVE);
     }
 
     /**
@@ -223,44 +223,44 @@ public class GameOfLifeSimulation extends Simulation{
     public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
         if(isAlive(row, column)) {
             if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
-            	numberDead++;
-            	numberAlive--;
-            	deadOrAlive[row][column] = false;
+                numberDead++;
+                numberAlive--;
+                deadOrAlive[row][column] = false;
             }
         }
         else {
             if((aliveSurroundingCells == 3)) {
-            	numberDead--;
-            	numberAlive++;
-            	deadOrAlive[row][column] = true;
+                numberDead--;
+                numberAlive++;
+                deadOrAlive[row][column] = true;
             }
         }
     }
-    
+
     private boolean manuallyModified(int row, int col) {
-    	return (myGrid.getCell(row, col).isManuallyModified());
+        return (myGrid.getCell(row, col).isManuallyModified());
     }
-    
+
     private void noLongerModified(int row, int col) {
-    	myGrid.getCell(row, col).noLongerManuallyModified();
+        myGrid.getCell(row, col).noLongerManuallyModified();
     }
-    
+
     public void updateStateOnClick() {
-    	for(int i = 0; i < getGridLength(); i++) {
+        for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-            	if(manuallyModified(i,j)) {
-	                if(isAlive(i, j)) {
-	                	noLongerModified(i, j);
-	                	deadOrAlive[i][j] = true;
-	                	numberDead--;
-	                	numberAlive++;
-	                }
-	                else {
-	                	noLongerModified(i, j);
-	                	numberDead++;
-	                	numberAlive--;
-	                }
-            	}
+                if(manuallyModified(i,j)) {
+                    if(isAlive(i, j)) {
+                        noLongerModified(i, j);
+                        deadOrAlive[i][j] = true;
+                        numberDead--;
+                        numberAlive++;
+                    }
+                    else {
+                        noLongerModified(i, j);
+                        numberDead++;
+                        numberAlive--;
+                    }
+                }
             }
         }
     }
@@ -309,7 +309,7 @@ public class GameOfLifeSimulation extends Simulation{
         boolean upIsInBounds = ((column - 1) >= 0);
         boolean downIsInBounds = ((column + 1) < getGridLength());
         if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)) {
-        	return 0;
+            return 0;
         }
         if(((GameOfLifeCell) myGrid.getCell(row, column)).getState() == States.ALIVE) {
             return 1;

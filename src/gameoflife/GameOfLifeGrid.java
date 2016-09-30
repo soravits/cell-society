@@ -13,9 +13,9 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class GameOfLifeGrid extends Grid{
-	private GameOfLifeSimulation sim; 
-	//make instance of itself instead of using a getter all the time?
-	
+    private GameOfLifeSimulation sim; 
+    //make instance of itself instead of using a getter all the time?
+
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -28,9 +28,9 @@ public class GameOfLifeGrid extends Grid{
         super(rowLength, sizeOfCell, rootElement, initialX, initialY);
         this.sim = sim;
     }
-    
+
     public GameOfLifeCell getCell(int row, int col) {
-    	return (GameOfLifeCell) getGrid()[row][col];
+        return (GameOfLifeCell) super.getCell(row,col);
     }
 
     /**
@@ -39,14 +39,14 @@ public class GameOfLifeGrid extends Grid{
      * @param cellstate
      */
     public void updateCell(int row, int col) {
-    	GameOfLifeCell myCell = getCell(row, col);
+        GameOfLifeCell myCell = getCell(row, col);
         if(myCell.getState() == States.ALIVE) {
-            getGrid()[row][col].setColor(Color.WHITE);
+            getCell(row,col).setColor(Color.WHITE);
         }
         else {
-            getGrid()[row][col].setColor(Color.BLACK);
+            getCell(row,col).setColor(Color.BLACK);
         }
-        getGrid()[row][col].setBorder(Color.WHITE);
+        getCell(row,col).setBorder(Color.WHITE);
     }
 
     /* (non-Javadoc)
@@ -54,32 +54,32 @@ public class GameOfLifeGrid extends Grid{
      */
     @Override
     public void initializeGrid() {
-        for(int i = 0; i < getGrid().length; i++) {
-            for(int j = 0; j < getGrid()[0].length; j++) {
+        for(int i = 0; i < getColumnLength(); i++) {
+            for(int j = 0; j < getRowLength(); j++) {
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                		getSizeOfCell() * (i) + getInitialX(), 
-                		getSizeOfCell()* (j) + getInitialY());
+                                                             getSizeOfCell() * (i) + getInitialX(), 
+                                                             getSizeOfCell()* (j) + getInitialY());
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell;		
+                setCell(i,j,gridCell);		
                 setUpListener(gridCell);
             }
         }	
     }
-    
+
     private void setUpListener(GameOfLifeCell gridCell) {
-    	gridCell.returnBlock().setOnMousePressed(event -> {
-    		gridCell.setAsManuallyModified();
-    		if(gridCell.getState() == States.ALIVE) {
-        		gridCell.killCell();
-        		gridCell.setColor(Color.BLACK);
-        	}
-    		else { 
-    			gridCell.reviveCell();
-    			gridCell.setColor(Color.WHITE);
-    		}
-    		sim.updateStateOnClick();
-        	sim.updateGraph();
-		});
+        gridCell.returnBlock().setOnMousePressed(event -> {
+            gridCell.setAsManuallyModified();
+            if(gridCell.getState() == States.ALIVE) {
+                gridCell.killCell();
+                gridCell.setColor(Color.BLACK);
+            }
+            else { 
+                gridCell.reviveCell();
+                gridCell.setColor(Color.WHITE);
+            }
+            sim.updateStateOnClick();
+            sim.updateGraph();
+        });
     }
 }

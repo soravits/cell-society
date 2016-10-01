@@ -73,6 +73,10 @@ public class Segregation extends Simulation{
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
         this.percEmpty = percentEmpty;
+        System.out.println(threshold + "thresh");
+        System.out.println(percentA + "perca");
+        System.out.println(percentB + "percB");
+        System.out.println(percentEmpty + "empty");
     }
 
     @Override

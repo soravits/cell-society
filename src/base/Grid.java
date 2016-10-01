@@ -25,6 +25,9 @@ public abstract class Grid {
     private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
             "-fx-background-radius: 20;" + 
             "-fx-text-fill: white;";
+    private String overButton = "-fx-background-color: linear-gradient(#00110e, #0079b3);" + 
+            "-fx-background-radius: 20;" + 
+            "-fx-text-fill: white;";
 
     /**
      * @param rowLength
@@ -113,10 +116,20 @@ public abstract class Grid {
     private Button createSimButton(String text, int x, int y) {
         Button startSim = new Button(text);
         startSim.setStyle(buttonFill);
+        startSim.setOnMouseEntered(e -> mouseIn(startSim));
+        startSim.setOnMouseExited(e -> mouseOut(startSim));
         startSim.setTranslateX(x);
         startSim.setTranslateY(y);
 
         return startSim;
+    }
+    
+    private void mouseIn(Button b){
+    	b.setStyle(overButton);
+    }
+    
+    private void mouseOut(Button b){
+    	b.setStyle(buttonFill);
     }
 
     /**

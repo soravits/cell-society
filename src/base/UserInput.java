@@ -28,6 +28,13 @@ public abstract class UserInput {
 	public static Stage stage;
 	public Pane segWindow;
 
+	private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
+			"-fx-background-radius: 20;" + 
+			"-fx-text-fill: white;";
+    private String overButton = "-fx-background-color: linear-gradient(#00110e, #0079b3);" + 
+            "-fx-background-radius: 20;" + 
+            "-fx-text-fill: white;";
+
 	public UserInput(Stage s){
 		stage = s;
 		stage.setScene(new Scene(setUpWindow()));
@@ -41,7 +48,7 @@ public abstract class UserInput {
 		
 		segWindow.getChildren().add(setBackground()); 
 		
-		Text prompt = new Text(50, 60, "Choose an Option");
+		Text prompt = new Text(50, 60, "Read from an XML File");
         prompt.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
         prompt.setFill(Color.WHITE);
 		segWindow.getChildren().add(prompt);
@@ -69,12 +76,11 @@ public abstract class UserInput {
 	}
 
 	public void xmlButton(){
-		String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
-				"-fx-background-radius: 20;" + 
-				"-fx-text-fill: white;";
 
-		Button readXML = new Button("Read values from XML file");
+		Button readXML = new Button("Run with XML");
 		readXML.setStyle(buttonFill);
+        readXML.setOnMouseEntered(e -> mouseIn(readXML));
+        readXML.setOnMouseExited(e -> mouseOut(readXML));
 		readXML.setOnMouseClicked(e -> startXMLSimulation());
 		readXML.setTranslateX(40);
 		readXML.setTranslateY(80);
@@ -88,11 +94,21 @@ public abstract class UserInput {
 
 		Button inputManual = new Button("Input values here");
 		inputManual.setStyle(buttonFill);
+        inputManual.setOnMouseEntered(e -> mouseIn(inputManual));
+        inputManual.setOnMouseExited(e -> mouseOut(inputManual));
 		inputManual.setOnMouseClicked(e -> manualInput());
 		inputManual.setTranslateX(40);
 		inputManual.setTranslateY(160);
 		segWindow.getChildren().add(inputManual);
 	}
+	
+    private void mouseIn(Button b){
+    	b.setStyle(overButton);
+    }
+    
+    private void mouseOut(Button b){
+    	b.setStyle(buttonFill);
+    }
 	
 	public abstract void startXMLSimulation();
 	
@@ -104,16 +120,6 @@ public abstract class UserInput {
 	
 	public abstract Button beginButton();
 
-	public void errorPopup(String errorText){
-		alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Input error");
-
-		String s = errorText;
-		alert.setContentText(s);
-		alert.showAndWait();
-		//		    String msg = "Invalid text entered: ";
-
-	}
 }
 
 

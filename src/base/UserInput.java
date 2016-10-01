@@ -26,7 +26,7 @@ public abstract class UserInput {
 	public static final int INPUT_MENU_HEIGHT = 600;	
 	private Alert alert;
 	public static Stage stage;
-	public Pane inputWindow;
+	public Pane segWindow;
 
 	public UserInput(Stage s){
 		stage = s;
@@ -35,20 +35,16 @@ public abstract class UserInput {
 	}
 
 	private Parent setUpWindow() {
-		inputWindow = new Pane();
+		segWindow = new Pane();
 		
-		inputWindow.setPrefSize(INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-		Image background = new Image(getClass().getClassLoader()
-				.getResourceAsStream("BackgroundCellSoc.jpg")); 
-		ImageView backgroundImage = new ImageView(background);
-		backgroundImage.setFitWidth(INPUT_MENU_WIDTH + 50);
-		backgroundImage.setFitHeight(INPUT_MENU_HEIGHT);
-		inputWindow.getChildren().add(backgroundImage); 
+		segWindow.setPrefSize(INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
+		
+		segWindow.getChildren().add(setBackground()); 
 		
 		Text prompt = new Text(50, 60, "Choose an Option");
         prompt.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
         prompt.setFill(Color.WHITE);
-		inputWindow.getChildren().add(prompt);
+		segWindow.getChildren().add(prompt);
 		
 		xmlButton();
 		
@@ -56,11 +52,20 @@ public abstract class UserInput {
 		Text otherOption = new Text(50, 150, "Or Choose your own Parameters");
         otherOption.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
         otherOption.setFill(Color.WHITE);
-        inputWindow.getChildren().add(otherOption);
+        segWindow.getChildren().add(otherOption);
         
-		manualInput();
+		manualButton();
 		
-		return inputWindow;
+		return segWindow;
+	}
+	
+	public ImageView setBackground(){
+		Image background = new Image(getClass().getClassLoader()
+				.getResourceAsStream("BackgroundCellSoc.jpg")); 
+		ImageView backgroundImage = new ImageView(background);
+		backgroundImage.setFitWidth(INPUT_MENU_WIDTH + 50);
+		backgroundImage.setFitHeight(INPUT_MENU_HEIGHT);
+		return backgroundImage;
 	}
 
 	public void xmlButton(){
@@ -73,7 +78,20 @@ public abstract class UserInput {
 		readXML.setOnMouseClicked(e -> startXMLSimulation());
 		readXML.setTranslateX(40);
 		readXML.setTranslateY(80);
-		inputWindow.getChildren().add(readXML);
+		segWindow.getChildren().add(readXML);
+	}
+	
+	public void manualButton(){
+		String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
+				"-fx-background-radius: 20;" + 
+				"-fx-text-fill: white;";
+
+		Button inputManual = new Button("Input values here");
+		inputManual.setStyle(buttonFill);
+		inputManual.setOnMouseClicked(e -> manualInput());
+		inputManual.setTranslateX(40);
+		inputManual.setTranslateY(160);
+		segWindow.getChildren().add(inputManual);
 	}
 	
 	public abstract void startXMLSimulation();

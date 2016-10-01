@@ -29,7 +29,7 @@ public class SpreadingOfFireGrid extends Grid {
 	}
 
 	public SpreadingOfFireCell getCell(int row, int col) {
-		return (SpreadingOfFireCell) getGrid()[row][col];
+		return (SpreadingOfFireCell) super.getCell(row,col);
 	}
 
 	/* (non-Javadoc)
@@ -37,14 +37,14 @@ public class SpreadingOfFireGrid extends Grid {
 	 */
 	@Override
 	public void initializeGrid() {
-		for(int i = 0; i < getGrid().length; i++) {
-			for(int j = 0; j < getGrid()[0].length; j++) {
+		for(int i = 0; i < getColumnLength(); i++) {
+			for(int j = 0; j < getRowLength(); j++) {
 				SpreadingOfFireCell gridCell = new SpreadingOfFireCell(
 						getSizeOfCell(), getRootElement(), 
 						getSizeOfCell() * (i) + getInitialX(),
 						getSizeOfCell()* (j) + getInitialY());
 				gridCell.addToScene();
-				getGrid()[i][j] = gridCell;
+				setCell(i,j,gridCell);
 				setUpListener(gridCell);
 			}
 		}       
@@ -77,13 +77,13 @@ public class SpreadingOfFireGrid extends Grid {
 	 */
 	public void updateCell(int x, int y, int cellState) {
 		if(cellState == 0) {
-			getGrid()[x][y].setColor(Color.YELLOW);
+			getCell(x,y).setColor(Color.YELLOW);
 		}
 		else if(cellState == 1 || cellState == 3) {
-			getGrid()[x][y].setColor(Color.FORESTGREEN);
+		        getCell(x,y).setColor(Color.FORESTGREEN);
 		}
 		else {
-			getGrid()[x][y].setColor(Color.BROWN);
+		        getCell(x,y).setColor(Color.BROWN);
 		}
 	}
 

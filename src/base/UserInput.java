@@ -95,11 +95,14 @@ public abstract class UserInput {
 	}
 	
 	public abstract void startXMLSimulation();
+	
+	public abstract void startManualSimulation();
 
 	public abstract void selectGridSize();
 	
 	public abstract void manualInput();
 	
+	public abstract Button beginButton();
 
 	public void errorPopup(String errorText){
 		alert = new Alert(AlertType.ERROR);

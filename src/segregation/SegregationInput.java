@@ -15,8 +15,6 @@ public class SegregationInput extends UserInput{
 	private Scene segScene;
 	private Segregation segregation;
 	private GridPane grid = new GridPane();
-	private double percA, percB, empty, threshold;
-	private int gridsize;
 	private Spinner<Double> percEmptySpinner, percASpinner, percBSpinner, threshSpinner;
 	private Spinner<Integer> gridSizeSpinner;
 
@@ -46,7 +44,7 @@ public class SegregationInput extends UserInput{
 	}
 
 	public void selectPercB() {
-		percBSpinner = new Spinner<>(0.05, 1 - percA, 0.5, 0.05);
+		percBSpinner = new Spinner<>(0.05, 1 - percASpinner.getValue(), 0.5, 0.05);
 		percBSpinner.setEditable(true);
 		grid.add(new Label("% Color B"), 0, 2);
 		grid.add(percBSpinner, 1, 2);
@@ -92,7 +90,7 @@ public class SegregationInput extends UserInput{
 		stage.show();
 	}
 	
-	private Button beginButton(){
+	public Button beginButton(){
 		Button beginSim = new Button("Start Segregation Simulation");
 		beginSim.setOnMouseClicked(e -> startManualSimulation());
 		beginSim.setTranslateX(40);

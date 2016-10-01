@@ -36,7 +36,8 @@ public class MainMenu {
 	public static final int MAIN_MENU_HEIGHT = 600;	
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-	public static final String xmlFileRoot = "data/xml/brokenRules.xml";
+	public static final String xmlFileRoot = "data/xml/rules.xml";
+	public static final String badxmlFileRoot = "data/xml/brokenRules.xml";
 	public static LinearGradient gradient = new LinearGradient(0d, 1d, 1d, 0d, true, 
 			CycleMethod.NO_CYCLE, 
 			new Stop[]{

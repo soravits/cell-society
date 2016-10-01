@@ -28,7 +28,21 @@ public abstract class SimulationXMLFactory extends XMLFactory {
     }
 
     public int getGridSize() {
-        return Integer.parseInt(getTextValue("gridSize"));
+    	int gridSize = 20;
+    	try{
+    		gridSize = Integer.parseInt(getTextValue("gridSize"));
+    	}
+    	catch(NullPointerException e){
+    		errorPopup("Could not find grid size in XML.");
+    	}
+    	catch(NumberFormatException e){
+    		errorPopup("The format of the grid size in your XML is incorrect. ");
+    	}
+    	if(gridSize < 0){
+    		errorPopup("Grid size cannot be negative.");
+    		gridSize = 20;
+    	}
+        return gridSize;
     }
     
 	public void errorPopup(String errorText){

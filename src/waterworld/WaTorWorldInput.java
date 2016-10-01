@@ -48,4 +48,10 @@ public class WaTorWorldInput extends UserInput{
 		stage.show();
 		
 	}
+
+	@Override
+	public void selectGridSize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -29,4 +29,10 @@ public class GameOfLifeInput extends UserInput {
 
     }
 
+	@Override
+	public void selectGridSize() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

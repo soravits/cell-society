@@ -96,10 +96,7 @@ public abstract class UserInput {
 	
 	public abstract void startXMLSimulation();
 
-	public void selectGridSize(){
-		TextField numberField = new TextField();
-		numberField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-	}
+	public abstract void selectGridSize();
 	
 	public abstract void manualInput();
 	

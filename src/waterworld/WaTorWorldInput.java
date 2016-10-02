@@ -41,7 +41,7 @@ public class WaTorWorldInput extends UserInput {
 	 * 
 	 */
 	public void selectFracShark(){
-		fracSharkSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
+		fracSharkSpinner = new Spinner<>(0.05, 0.95, 0.25, 0.05);
 		fracSharkSpinner.setEditable(true);
 		getGrid().add(new Label("% Shark Population"), 0, 2);
 		getGrid().add(fracSharkSpinner, 1, 2);

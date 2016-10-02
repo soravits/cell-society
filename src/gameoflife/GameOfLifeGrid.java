@@ -29,8 +29,8 @@ public class GameOfLifeGrid extends Grid{
         this.sim = sim;
     }
 
-    public GameOfLifeCell getCell(int row, int col) {
-        return (GameOfLifeCell) super.getCell(row,col);
+    public GameOfLifeCell gridCell(int row, int col) {
+        return (GameOfLifeCell) super.gridCell(row,col);
     }
 
     /**
@@ -39,14 +39,14 @@ public class GameOfLifeGrid extends Grid{
      * @param cellstate
      */
     public void updateCell(int row, int col) {
-        GameOfLifeCell myCell = getCell(row, col);
+        GameOfLifeCell myCell = gridCell(row, col);
         if(myCell.getState() == States.ALIVE) {
-            getCell(row,col).setColor(Color.WHITE);
+            gridCell(row,col).setColor(Color.WHITE);
         }
         else {
-            getCell(row,col).setColor(Color.BLACK);
+            gridCell(row,col).setColor(Color.BLACK);
         }
-        getCell(row,col).setBorder(Color.WHITE);
+        gridCell(row,col).setBorder(Color.WHITE);
     }
 
     /* (non-Javadoc)

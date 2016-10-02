@@ -65,7 +65,7 @@ public class WaTorWorldGrid extends Grid {
 	 * @param y
 	 * @return
 	 */
-	public WaTorWorldCell getCell(int x, int y) {
-		return (WaTorWorldCell) super.getCell(x,y);
+	public WaTorWorldCell gridCell(int x, int y) {
+		return (WaTorWorldCell) super.gridCell(x,y);
 	}
 }

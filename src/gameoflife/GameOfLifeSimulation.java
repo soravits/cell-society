@@ -199,7 +199,7 @@ public class GameOfLifeSimulation extends Simulation{
 	 */
 	private void killCell(int row, int col) {
 		myGrid.updateCell(row, col);
-		myGrid.getCell(row, col).killCell();
+		myGrid.gridCell(row, col).killCell();
 	}
 
 	/**
@@ -208,11 +208,11 @@ public class GameOfLifeSimulation extends Simulation{
 	 */
 	private void reviveCell(int row, int col) {
 		myGrid.updateCell(row, col);
-		myGrid.getCell(row, col).reviveCell();
+		myGrid.gridCell(row, col).reviveCell();
 	}
 
 	private boolean isAlive(int row, int col) {
-		return (myGrid.getCell(row, col).getState() == States.ALIVE);
+		return (myGrid.gridCell(row, col).getState() == States.ALIVE);
 	}
 
 	/**
@@ -238,11 +238,11 @@ public class GameOfLifeSimulation extends Simulation{
 	}
 
 	private boolean manuallyModified(int row, int col) {
-		return (myGrid.getCell(row, col).isManuallyModified());
+		return (myGrid.gridCell(row, col).isManuallyModified());
 	}
 
 	private void noLongerModified(int row, int col) {
-		myGrid.getCell(row, col).noLongerManuallyModified();
+		myGrid.gridCell(row, col).noLongerManuallyModified();
 	}
 
 	public void updateStateOnClick() {
@@ -311,7 +311,7 @@ public class GameOfLifeSimulation extends Simulation{
 		 if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)) {
 			 return 0;
 		 }
-		 if(((GameOfLifeCell) myGrid.getCell(row, column)).getState() == States.ALIVE) {
+		 if(((GameOfLifeCell) myGrid.gridCell(row, column)).getState() == States.ALIVE) {
 			 return 1;
 		 }
 		 return 0;

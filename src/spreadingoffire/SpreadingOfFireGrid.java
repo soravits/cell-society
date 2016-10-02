@@ -22,14 +22,14 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param initialX
 	 * @param initialY
 	 */
-	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, 
+	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement, int initialX, 
 			int initialY, SpreadingOfFireSimulation sim) {
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
 		this.sim = sim;
 	}
 
-	public SpreadingOfFireCell getCell(int row, int col) {
-		return (SpreadingOfFireCell) super.getCell(row,col);
+	public SpreadingOfFireCell gridCell(int row, int col) {
+		return (SpreadingOfFireCell) super.gridCell(row,col);
 	}
 
 	/* (non-Javadoc)
@@ -77,13 +77,13 @@ public class SpreadingOfFireGrid extends Grid {
 	 */
 	public void updateCell(int x, int y, int cellState) {
 		if(cellState == 0) {
-			getCell(x,y).setColor(Color.YELLOW);
+			gridCell(x,y).setColor(Color.YELLOW);
 		}
 		else if(cellState == 1 || cellState == 3) {
-		        getCell(x,y).setColor(Color.FORESTGREEN);
+		        gridCell(x,y).setColor(Color.FORESTGREEN);
 		}
 		else {
-		        getCell(x,y).setColor(Color.BROWN);
+		        gridCell(x,y).setColor(Color.BROWN);
 		}
 	}
 

@@ -75,7 +75,7 @@ public abstract class Grid {
         this.sim = sim;;
     }
 
-    public Cell getCell(int row, int col){
+    public Cell gridCell(int row, int col){
         return grid[row][col];
     }
 

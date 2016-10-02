@@ -24,6 +24,8 @@ import waterworld.*;
 import segregation.*;
 import gameoflife.*;
 import xml.*;
+import base.Simulation;
+import base.Simulation.CellType;
 import base.UserInput;
 
 /**
@@ -73,6 +75,7 @@ public class MainMenu {
 	 *
 	 */
 	public class MenuItem extends StackPane {
+		private Scene scene = null;
 		/**
 		 * @param Name
 		 */
@@ -106,6 +109,7 @@ public class MainMenu {
 
 			setOnMouseReleased(event -> {
 				bg.setFill(gradient);
+				Simulation mySim = null;
 				XMLParser parser = new XMLParser();
 				UserInput input;
 				if(Name == null) {
@@ -121,7 +125,7 @@ public class MainMenu {
 					FireXMLFactory factory = new FireXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					SpreadingOfFireSimulation myFire = new SpreadingOfFireSimulation(
-							factory.getGridSize(), factory.getProbCatch()); 
+							factory.getGridSize(), factory.getProbCatch(),CellType.SQUARE); 
 					input = new SpreadingOfFireInput(stageNew, factory, myFire);
 					break;
 				case "GAME OF LIFE":
@@ -131,7 +135,7 @@ public class MainMenu {
 					GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					GameOfLifeSimulation myGoL = new GameOfLifeSimulation(
-							GoLFactory.getGridSize()); 
+							GoLFactory.getGridSize(),CellType.SQUARE); 
 					input = new GameOfLifeInput(stageNew, GoLFactory, myGoL);
 					break;
 				case "SEGREGATION":
@@ -142,7 +146,7 @@ public class MainMenu {
 							parser.getRootElement(xmlFileRoot));
 					Segregation mySeg = new Segregation(segfactory.getGridSize(), 
 							segfactory.getSatisfyThreshold(), segfactory.getPercA(), 
-							segfactory.getPercB(), segfactory.getPercEmpty());
+							segfactory.getPercB(), segfactory.getPercEmpty(),CellType.SQUARE);
 
 					input = new SegregationInput(stageNew, segfactory, mySeg);
 					break;
@@ -156,10 +160,16 @@ public class MainMenu {
 					WaTorWorldSimulation myWater = new WaTorWorldSimulation(
 							WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), 
 							WWXMLFactory.getFracShark(), WWXMLFactory.getFishBreedTime(), 
-							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime());
+							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
 				}
+				
+//				Stage stageNew = new Stage();
+//				stageNew.setTitle(stageTitle);
+//				scene = mySim.init(stageNew);
+//				stageNew.setScene(scene);
+//				stageNew.show();
 
 			});
 		}//Closes MenuItem Object

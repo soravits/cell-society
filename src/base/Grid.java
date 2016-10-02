@@ -1,5 +1,6 @@
 package base;
 
+import base.Simulation.CellType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -29,14 +30,18 @@ public abstract class Grid {
             "-fx-background-radius: 20;" + 
             "-fx-text-fill: white;";
 
+    public enum gridEdgeType{finite, toroidal};
+    private gridEdgeType edgeType;
+
     /**
-     * @param rowLength
+     * @param gridLength;
      * @param sizeOfCell
      * @param rootElement
      * @param initialX
      * @param initialY
      */
-    public Grid(int gridLength,int sizeOfCell,Pane rootElement,int initialX,int initialY) {
+    public Grid(int gridLength,int sizeOfCell, Pane rootElement, int initialX, 
+    		int initialY, gridEdgeType edgeType) {
         this.rootElement = rootElement;
         this.rowLength = gridLength;        
         this.columnLength = gridLength;
@@ -44,6 +49,7 @@ public abstract class Grid {
         this.rootElement = rootElement;
         this.initialX = initialX;
         this.initialY = initialY;
+        this.edgeType = edgeType;
         this.grid = new Cell[columnLength][rowLength];
     }
 
@@ -53,6 +59,14 @@ public abstract class Grid {
 
     public int getColumnLength () {
         return columnLength;
+    }
+
+    public gridEdgeType getEdgeType(){
+        return edgeType;
+    }
+
+    public void setEdgeType(gridEdgeType edgeType){
+        this.edgeType = edgeType;
     }
 
 
@@ -66,16 +80,16 @@ public abstract class Grid {
     /**
      * 
      */
-    public abstract void initializeGrid();
+    public abstract void initializeGrid(CellType type);
 
     /**
      * @param sim
      */
     public void setSimulationProfile(Simulation sim) {
-        this.sim = sim;;
+        this.sim = sim;
     }
 
-    public Cell gridCell(int row, int col){
+    public Cell getCell(int row, int col){
         return grid[row][col];
     }
 
@@ -86,6 +100,105 @@ public abstract class Grid {
     /**
      * @return
      */
+
+    public Location getNorthernNeighbor(int row, int col){
+        if(row != 0) {
+            return new Location(row-1, col);
+        }else if(edgeType == gridEdgeType.toroidal){
+            return new Location(columnLength - 1, col);
+        }
+        return null;
+    }
+
+    public Location getSouthernNeighbor(int row, int col){
+        if(row != columnLength - 1) {
+            return new Location(row + 1, col);
+        }else if(edgeType == gridEdgeType.toroidal){
+            return new Location(0, col);
+        }
+        return null;
+    }
+
+    public Location getEasternNeighbor(int row, int col){
+        if(col != rowLength-1) {
+            return new Location(row, col + 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            return new Location(row, 0);
+        }
+        return null;
+    }
+
+    public Location getWesternNeighbor(int row, int col){
+        if(col != 0) {
+            return new Location(row, col - 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            return new Location(row, rowLength - 1);
+        }
+        return null;
+    }
+
+    public Location getNorthwesternNeighbor(int row, int col){
+        if(row != 0 && col != 0) {
+            return new Location(row - 1, col - 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            if(row == 0 && col != 0){
+                return new Location(columnLength - 1, col - 1);
+            }else if (row == 0 && col != 0){
+                return new Location(row - 1, rowLength - 1);
+            }
+            else {
+                return new Location(columnLength - 1, rowLength - 1);
+            }
+
+        }
+        return null;
+    }
+
+    public Location getNortheasternNeighbor(int row, int col){
+        if(row != 0 && col != rowLength - 1) {
+            return new Location(row - 1, col + 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            if(row == 0 && col != rowLength - 1){
+                return new Location(columnLength - 1, col + 1);
+            }else if(row != 0 && col == rowLength - 1){
+                return new Location (row - 1, 0);
+            }else{
+                return new Location(columnLength - 1, 0);
+            }
+        }
+        return null;
+    }
+
+    public Location getSouthwesternNeighbor(int row, int col){
+        if(row != columnLength - 1 && col != 0) {
+            return new Location(row + 1, col - 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            if(row == columnLength - 1 && col != 0){
+                return new Location(0, col - 1);
+            }else if(row != columnLength - 1 && col == 0){
+                return new Location (row + 1, rowLength - 1);
+            }else{
+                return new Location(0, rowLength - 1);
+            }
+        }
+        return null;
+    }
+
+    public Location getSoutheasternNeighbor(int row, int col){
+        if(row != columnLength - 1 && col != rowLength - 1) {
+            return new Location(row + 1, col + 1);
+        }else if(edgeType == gridEdgeType.toroidal){
+            if(row == columnLength - 1 && col != rowLength -1){
+                return new Location(0, col + 1);
+            }else if(row != columnLength - 1 && col == rowLength - 1){
+                return new Location (row + 1, 0);
+            }else{
+                return new Location(0, 0);
+            }
+        }
+        return null;
+    }
+
     public int getInitialX () {
         return initialX;
     }
@@ -176,5 +289,23 @@ public abstract class Grid {
             }
         });
         rootElement.getChildren().add(resumeSim);
+
+        Button makeEdgesFinite = createSimButton("Make edges finite", 20, 400);
+        makeEdgesFinite.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setEdgeType(gridEdgeType.finite);
+            }
+        });
+        rootElement.getChildren().add(makeEdgesFinite);
+
+        Button makeEdgesToroidal = createSimButton("Make edges toroidal", 20, 450);
+        makeEdgesToroidal.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setEdgeType(gridEdgeType.toroidal);
+            }
+        });
+        rootElement.getChildren().add(makeEdgesToroidal);
     }
 }

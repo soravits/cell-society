@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import base.Cell;
+import base.Grid;
 import base.Simulation;
 import javafx.animation.Timeline;
 import javafx.geometry.Side;
@@ -16,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import segregation.SegregationCell.State;
+import waterworld.WaTorWorldCell;
 
 /**
  * This is the Segregation class of Cell Society. 
@@ -68,8 +70,8 @@ public class Segregation extends Simulation{
      * @param percentEmpty
      */
     public Segregation(int gridLength, double threshold, double percentA, 
-                       double percentB, double percentEmpty) {
-        super(gridLength);
+                       double percentB, double percentEmpty,CellType type) {
+        super(gridLength,type);
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
         this.percEmpty = percentEmpty;
@@ -80,16 +82,16 @@ public class Segregation extends Simulation{
     }
 
     @Override
-    public Scene init(Stage s) {
+    public Scene init(Stage s,CellType type) {
         setStage(s);
         makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
         		SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(),this);
+        		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid();
+        myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         cellSatisfied = new int[getGridLength()][getGridLength()];
@@ -110,10 +112,12 @@ public class Segregation extends Simulation{
                 //if the cell is white
                 if(cellLottery <= (percEmpty * 100)) {
                     cellType = 0;
+                    numberEmpty++;
                 }
                 //if the cell is blue
                 else if (cellLottery <= ((percEmpty + percA) * 100)) {
                     cellType = 1;
+                    numberUnsatisfied++;
                 }
                 else {
                     cellType = 2;
@@ -122,6 +126,9 @@ public class Segregation extends Simulation{
 //                System.out.println(cellType);
             }
         }
+        numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
+        updateText();
+
     }
     
     /**
@@ -142,13 +149,12 @@ public class Segregation extends Simulation{
     /**
      * MUST CHANGE THIS
      * WORST METHOD EVER BUT IT WORKS
-     * @param i
-     * @param j
+     * @param row
+     * @param col
      * @return int value indicating cell's state
      */
-    public int setSatisfiedState(int i, int j) {
-        SegregationCell current = myGrid.gridCell(i, j);
-//        System.out.println(current.getColor());
+    public int setSatisfiedState(int row, int col) {
+        SegregationCell current = myGrid.getCell(row, col);
         State currentState = current.getState();
         int sameColor = 0;
         int totalNeighbors = 0;
@@ -158,60 +164,68 @@ public class Segregation extends Simulation{
             return EMPTY;
         }
         //checks north
-        if(i > 0 && myGrid.gridCell(i - 1, j) != null 
-        		&& !myGrid.gridCell(i - 1, j).getColor().equals(Color.WHITE)) {
+
+        if(myGrid.getNorthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+                myGrid.getNorthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i - 1, j).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+                    myGrid.getNorthernNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks south
-        if(i < getGridLength() - 1 && myGrid.gridCell(i + 1, j) != null 
-        		&& !myGrid.gridCell(i + 1, j).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSouthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+                myGrid.getSouthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i + 1, j).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+                    myGrid.getSouthernNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks west
-        if(j > 0 && myGrid.gridCell(i, j - 1) != null 
-        		&& !myGrid.gridCell(i, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getWesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+                myGrid.getWesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+                    myGrid.getWesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks east
-        if(j < getGridLength() - 1 && myGrid.gridCell(i, j + 1) != null 
-        		&& !myGrid.gridCell(i, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getEasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+                myGrid.getEasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+                    myGrid.getEasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks northwest
-        if(i > 0 && j > 0 && myGrid.gridCell(i - 1, j - 1) != null 
-        		&& !myGrid.gridCell(i - 1, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getNorthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+                myGrid.getNorthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i - 1, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+                    myGrid.getNorthwesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks southwest
-        if(i < getGridLength() - 1 && j > 0 && myGrid.gridCell(i + 1, j - 1) != null 
-        		&& !myGrid.gridCell(i + 1, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSouthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+                myGrid.getSouthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i + 1, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+                    myGrid.getSouthwesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks northeast
-        if(i > 0 && j < getGridLength() - 1 && myGrid.gridCell(i - 1, j + 1) != null 
-        		&& !myGrid.gridCell(i - 1, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getNortheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+                myGrid.getNortheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i - 1, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+                    myGrid.getNortheasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks southeast
-        if(i < getGridLength() - 1 && j < getGridLength() - 1 
-        		&& myGrid.gridCell(i + 1, j + 1) != null 
-        		&& !myGrid.gridCell(i + 1, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSoutheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+                myGrid.getSoutheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.gridCell(i + 1, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+                    myGrid.getSoutheasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         if((double) sameColor / (double) totalNeighbors >= satisfyThresh) {
@@ -246,9 +260,9 @@ public class Segregation extends Simulation{
         }
         for(int i = 0; i < unhappySpots.size(); i++) {
             int destinationIndex = random.nextInt(emptySpots.size());
-            System.out.println("destination " + myGrid.gridCell(emptySpots.get(destinationIndex).x, 
+            System.out.println("destination " + myGrid.getCell(emptySpots.get(destinationIndex).x, 
             		emptySpots.get(destinationIndex).y).getState());
-            System.out.println("origin " + myGrid.gridCell(unhappySpots.get(i).x, 
+            System.out.println("origin " + myGrid.getCell(unhappySpots.get(i).x, 
             		unhappySpots.get(i).y).getState());
             myGrid.switchCells(unhappySpots.get(i), emptySpots.get(destinationIndex));
             emptySpots.remove(destinationIndex);

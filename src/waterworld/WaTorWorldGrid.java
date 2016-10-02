@@ -2,6 +2,8 @@ package waterworld;
 
 import base.Grid;
 import base.Simulation;
+import base.Simulation.CellType;
+import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
@@ -29,15 +31,27 @@ public class WaTorWorldGrid extends Grid {
 	 * @see base.Grid#initializeGrid()
 	 */
 	@Override
-	public void initializeGrid() {
+	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getColumnLength(); i++) {
 			for(int j = 0; j < getRowLength(); j++) {
-				WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), 
-						getRootElement(), getSizeOfCell() * (i) + getInitialX(),
-						getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
-				gridCell.addToScene();
-				setCell(i,j,gridCell); 
-				setUpListener(gridCell);
+				int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
+                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),State.EMPTY,getRowLength(),type);
+   
+                gridCell.addToScene();
+                setCell(i,j,gridCell);		
+                setUpListener(gridCell);
 			}
 		} 
 	}
@@ -61,11 +75,17 @@ public class WaTorWorldGrid extends Grid {
 	}
 
 	/**
-	 * @param x
-	 * @param y
+	 * @param row
+	 * @param col
 	 * @return
 	 */
+<<<<<<< HEAD
 	public WaTorWorldCell gridCell(int x, int y) {
 		return (WaTorWorldCell) super.gridCell(x,y);
+=======
+	public WaTorWorldCell getCell(int row, int col) {
+		return (WaTorWorldCell) super.getCell(row,col);
+>>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	}
+
 }

@@ -1,6 +1,8 @@
 package spreadingoffire;
 
+import base.Grid;
 import base.Simulation;
+import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -43,6 +45,7 @@ public class SpreadingOfFireSimulation extends Simulation{
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
     private int[][] cellStates;
+    private CellType type;
     // 0 is empty
     // 1 is tree
     // 2 is burning tree
@@ -51,22 +54,28 @@ public class SpreadingOfFireSimulation extends Simulation{
      * @param gridLength
      * @param probCatch
      */
-    public SpreadingOfFireSimulation(int gridLength, double probCatch) {
-        super(gridLength);
+    public SpreadingOfFireSimulation(int gridLength, double probCatch,CellType type) {
+        super(gridLength,type);
         this.probCatch = probCatch;
+        this.type = type;
     }
 
     @Override
-    public Scene init (Stage s) {
+    public Scene init (Stage s,CellType type) {
         setStage(s);
         makeNewRootElement();
-        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
+        int screenWidth = SIMULATION_WINDOW_WIDTH;
+		if(type == CellType.HEX){
+			screenWidth *= 1.75;
+		}
+		
+        setMyScene(new Scene(getRootElement(), screenWidth, 
         		SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), 
         		getLeftMargin(), getTopMargin(), this);
-        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid();
+        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
+        myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         cellStates = new int[getGridLength()][getGridLength()];
@@ -161,18 +170,33 @@ public class SpreadingOfFireSimulation extends Simulation{
     	int fireBurnedInitially = 0;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-                if(i == 0 || i == getGridLength() - 1 
-                		|| j == 0 || j == getGridLength()-1) {
-                    clearCell(i, j);
-                }
-                else if(i == getGridLength() / 2 
-                		&& j == getGridLength() / 2) {
-                    burnTree(i, j, true);
-                    fireBurnedInitially++;
-                }
-                else {
-                    spawnTree(i, j);
-                }
+            	if(type != CellType.HEX){
+	                if(i == 0 || i == getGridLength() - 1 
+	                		|| j == 0 || j == getGridLength()-1) {
+	                    clearCell(i, j);
+	                }
+	                else if(i == getGridLength() / 2 
+	                		&& j == getGridLength() / 2) {
+	                    burnTree(i, j, true);
+	                    fireBurnedInitially++;
+	                }
+	                else {
+	                    spawnTree(i, j);
+	                }
+            	}
+            	else{
+            		if(((i == 0) && (j%2 == 1))  || j == 1 || ((i == getGridLength() - 1)&& (j%2 == 0))  || j == 0 || j == getGridLength()-1) {
+	                    clearCell(i, j);
+	                }
+	                else if(i == getGridLength() / 2 
+	                		&& j == getGridLength() / 2) {
+	                    burnTree(i, j, true);
+	                    fireBurnedInitially++;
+	                }
+	                else {
+	                    spawnTree(i, j);
+	                }
+            	}
                 myGrid.updateCell(i, j, cellStates[i][j]);
             }
         }

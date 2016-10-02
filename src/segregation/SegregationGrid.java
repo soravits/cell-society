@@ -2,6 +2,8 @@ package segregation;
 import java.awt.Point;
 import segregation.SegregationCell.State;
 import base.Grid;
+import base.Simulation.CellType;
+import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,51 +18,78 @@ import javafx.scene.text.Text;
  *
  */
 public class SegregationGrid extends Grid {
-	private Text stats;
-	private Segregation sim;
 
-	/**
-	 * @param rowLength
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param initialX
-	 * @param initialY
-	 */
-	public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-			int initialX, int initialY, Segregation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
-		this.sim = sim;
-	}
+    private Text stats;
+    private Segregation sim;
+    private CellType type;
 
-	/**
-	 * @param row
-	 * @param column
-	 * @return cell located at those coordinates
-	 */
-	public SegregationCell gridCell(int row, int col) {
-		return (SegregationCell) super.gridCell(row, col);
-	}
+    /**
+     * @param rowLength
+     * @param sizeOfCell
+     * @param rootElement
+     * @param initialX
+     * @param initialY
+     */
+    public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
+                           int initialX, int initialY, gridEdgeType edgeType, Segregation sim) {
+        super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
+        this.sim = sim;
+    }
 
-	/* (non-Javadoc)
-	 * @see base.Grid#initializeGrid()
-	 * maybe we should put this in the superclass and have separate methods 
-	 * in each of our grids that call this. 
-	 */
-	@Override
-	public void initializeGrid() {
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
-				SegregationCell gridCell = new SegregationCell(getSizeOfCell(), 
-						getRootElement(), getSizeOfCell() * (i) + getInitialX(), 
-						getSizeOfCell()* (j) + getInitialY());
+    /**
+     * @param row
+     * @param col
+     * @return cell located at those coordinates
+     */
+    public SegregationCell getCell(int row, int col) {
+        return (SegregationCell) super.getCell(row, col);
+    }
 
-				gridCell.addToScene();
-				setCell(i,j,gridCell);    
-				setUpListener(gridCell);                      
-			}
-		}      
-		setStats();
-	}
+    /* (non-Javadoc)
+     * @see base.Grid#initializeGrid()
+     * maybe we should put this in the superclass and have separate methods 
+     * in each of our grids that call this. 
+     */
+    @Override
+    public void initializeGrid(CellType type) {
+    	this.type = type;
+        for(int i = 0; i < getColumnLength(); i++) {
+            for(int j = 0; j < getRowLength(); j++) {
+            	int horizontalOffset = getInitialX();
+            	
+            	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+                         getSizeOfCell() * (i) + horizontalOffset, 
+                         getSizeOfCell() * (j) + getInitialY(),getRowLength(),type);
+
+                gridCell.addToScene();
+                setCell(i,j,gridCell);    
+                setUpListener(gridCell);                      
+            }
+        }      
+        setStats();
+    }
+    
+    private void createNewCell(int i,int j){
+    	int horizontalOffset = getInitialX();
+    	double horizontalShift = getSizeOfCell();
+    	double verticalShift = getSizeOfCell();
+    	if(type == CellType.HEX){
+    		horizontalShift = getSizeOfCell()* 6/10;
+    		verticalShift = 1.925* getSizeOfCell();
+        	if(j%2 == 0){
+        		horizontalOffset= getInitialX() + getSizeOfCell();
+        		
+        	}
+    	}
+    	
+    	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+                 verticalShift * (i) + horizontalOffset, 
+                 horizontalShift * (j) + getInitialY(),getRowLength(),type);
+
+        gridCell.addToScene();
+        setCell(i,j,gridCell);    
+        setUpListener(gridCell); 
+    }
 
 	private void setUpListener(SegregationCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
@@ -88,8 +117,8 @@ public class SegregationGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void switchCells(Point p1, Point p2) {
-		State destination = gridCell(p2.x, p2.y).getState();
-		State origin = gridCell(p1.x, p1.y).getState();
+		State destination = getCell(p2.x, p2.y).getState();
+		State origin = getCell(p1.x, p1.y).getState();
 		
 		updateCell(p1.x, p1.y, destination);
 		System.out.println(destination);
@@ -117,19 +146,19 @@ public class SegregationGrid extends Grid {
 		stats.setText(currentStat);
 	}
 
+
 	public void updateCell(int x, int y, State cellState) {		
 		if(cellState.equals(State.EMPTY)) {
-			gridCell(x, y).setColor(Color.WHITE);
-			gridCell(x, y).setState(State.EMPTY);
+			getCell(x, y).setColor(Color.WHITE);
+			getCell(x, y).setState(State.EMPTY);
 		}
 		else if(cellState.equals(State.COLORA)) {
-			gridCell(x, y).setColor(Color.DARKBLUE);
-			gridCell(x, y).setState(State.COLORA);
-
+			getCell(x, y).setColor(Color.DARKBLUE);
+			getCell(x, y).setState(State.COLORA);
 		}
 		else {
-			gridCell(x, y).setColor(Color.LIMEGREEN);
-			gridCell(x, y).setState(State.COLORB);
+			getCell(x, y).setColor(Color.LIMEGREEN);
+			getCell(x, y).setState(State.COLORB);
 		}
 	}
 

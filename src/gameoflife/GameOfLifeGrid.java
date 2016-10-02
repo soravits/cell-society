@@ -2,6 +2,7 @@ package gameoflife;
 
 import base.Cell;
 import base.Grid;
+import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell.States;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -24,8 +25,8 @@ public class GameOfLifeGrid extends Grid{
      * @param initialY
      */
     public GameOfLifeGrid(int rowLength, int sizeOfCell, Pane rootElement, 
-                          int initialX, int initialY, GameOfLifeSimulation sim) {
-        super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+                          int initialX, int initialY, gridEdgeType edgeType, GameOfLifeSimulation sim) {
+        super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }
 
@@ -36,7 +37,6 @@ public class GameOfLifeGrid extends Grid{
     /**
      * @param row
      * @param col
-     * @param cellstate
      */
     public void updateCell(int row, int col) {
         GameOfLifeCell myCell = gridCell(row, col);
@@ -53,12 +53,23 @@ public class GameOfLifeGrid extends Grid{
      * @see base.Grid#initializeGrid()
      */
     @Override
-    public void initializeGrid() {
+    public void initializeGrid(CellType type) {
         for(int i = 0; i < getColumnLength(); i++) {
-            for(int j = 0; j < getRowLength(); j++) {
+            for(int j = 0; j < getColumnLength(); j++) {
+            	int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                                                             getSizeOfCell() * (i) + getInitialX(), 
-                                                             getSizeOfCell()* (j) + getInitialY());
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
                 setCell(i,j,gridCell);		

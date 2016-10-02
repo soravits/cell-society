@@ -1,8 +1,10 @@
 package base;
 
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -11,7 +13,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class Cell {
     private Pane rootElement;
-    public Rectangle block;
+    private Polygon block;
+    private int gridLength;
     public static final double STROKE_WIDTH = 1;
     private boolean manuallyModified = false;
 
@@ -21,13 +24,26 @@ public class Cell {
      * @param xCoord
      * @param yCoord
      */
-    public Cell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
+    public Cell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, int gridLength, CellType type) {
         this.rootElement = rootElement;
-        this.block = new Rectangle(xCoord, yCoord, sizeOfCell, sizeOfCell);
+        //this.block = new Rectangle(xCoord, yCoord, sizeOfCell, sizeOfCell);
+        CellShape cellShape = new CellShape(gridLength);
+        if(type == CellType.HEX){
+        	cellShape.setHexagonalCell();
+        }
+        else if(type == CellType.TRIANGLE){
+        	cellShape.setTriangularCell();
+        }
+        else{
+        	cellShape.setSquareCell();
+        }
+        
+        cellShape.setCoords(xCoord,yCoord);
+        this.block = cellShape.returnShape();
+        
     }
-    
-    //TODO: Make this abstract when all cells have their own thing
-    public Rectangle returnBlock() {
+
+    public Polygon returnBlock() {
     	return this.block;
     }
     

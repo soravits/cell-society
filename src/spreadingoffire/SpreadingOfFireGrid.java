@@ -2,6 +2,7 @@ package spreadingoffire;
 
 import base.Cell;
 import base.Grid;
+import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,31 +24,41 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param initialY
 	 */
 	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement, int initialX, 
-			int initialY, SpreadingOfFireSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+			int initialY, gridEdgeType edgeType, SpreadingOfFireSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
 
 	public SpreadingOfFireCell gridCell(int row, int col) {
-		return (SpreadingOfFireCell) super.gridCell(row,col);
+		return (SpreadingOfFireCell) super.getCell(row,col);
 	}
 
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
 	@Override
-	public void initializeGrid() {
+	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
-				SpreadingOfFireCell gridCell = new SpreadingOfFireCell(
-						getSizeOfCell(), getRootElement(), 
-						getSizeOfCell() * (i) + getInitialX(),
-						getSizeOfCell()* (j) + getInitialY());
-				gridCell.addToScene();
-				setCell(i,j,gridCell);
-				setUpListener(gridCell);
-			}
-		}       
+            for(int j = 0; j < getColumnLength(); j++) {
+            	int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
+                SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(), 
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
+                gridCell.addToScene();
+                setCell(i,j,gridCell);		
+                setUpListener(gridCell);
+            }
+        }	      
 	}
 
 	private void setUpListener(SpreadingOfFireCell gridCell) {

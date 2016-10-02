@@ -114,94 +114,46 @@ public abstract class UserInput {
 		segWindow.getChildren().add(readXML);
 	}
 	
-	/**
-	 * 
-	 */
-	public void manualButton() {
+	public void manualButton(){
+		String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
+				"-fx-background-radius: 20;" + 
+				"-fx-text-fill: white;";
+
 		Button inputManual = new Button("Input values here");
 		inputManual.setStyle(buttonFill);
         inputManual.setOnMouseEntered(e -> mouseIn(inputManual));
         inputManual.setOnMouseExited(e -> mouseOut(inputManual));
-		inputManual.setOnMouseClicked(e -> setManualGrid());
+		inputManual.setOnMouseClicked(e -> manualInput());
 		inputManual.setTranslateX(40);
 		inputManual.setTranslateY(160);
 		segWindow.getChildren().add(inputManual);
 	}
 	
-    /**
-     * @param b
-     */
-    private void mouseIn(Button b) {
+    private void mouseIn(Button b){
     	b.setStyle(overButton);
     }
     
-    /**
-     * @param b
-     */
-    private void mouseOut(Button b) {
+    private void mouseOut(Button b){
     	b.setStyle(buttonFill);
     }
+	
+	public abstract void startXMLSimulation();
+	
+	public abstract void startManualSimulation(CellType cellType);
 
-	/**
-	 * 
-	 */
-	public void selectGridSize() {
-		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
-		gridSizeSpinner.setEditable(true);
-		grid.add(new Label("Size of Square Grid"), 0, 0);
-		grid.add(gridSizeSpinner, 1, 0);
-		
-	}
+	public abstract void selectGridSize();
 	
-	/**
-	 * 
-	 */
-	public void startSimulation() {
-		mySimScene = initSimulation();
-		stage.setScene(mySimScene);
-		stage.show();
-	}
-	
-	/**
-	 * 
-	 */
-	public void setManualGrid() {
-		mySimScene = new Scene(grid, INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-		grid.setStyle("-fx-background-color: #a0c6ed;");
-		grid.setHgap(50);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(10));
-		manualInput();
-		stage.setScene(mySimScene);
-		stage.show();
-	}
-	
-	/**
-	 * @param s
-	 * @return
-	 */
-	public Button startManualButton(String s) {
-		Button beginSim = new Button(s);
-		beginSim.setOnMouseClicked(e -> startManualSimulation());
-		return beginSim;
-	}
-	
-	/**
-	 * 
-	 */
 	public abstract void manualInput();
-
-	/**
-	 * @return
-	 */
-	public abstract Scene initSimulation();
 	
-	/**
-	 * 
-	 */
-	public abstract void startManualSimulation();
-}
+	public abstract Button beginHexButton();
+	
+	public abstract Button beginSquareButton();
+	
+	public abstract Button beginTriangleButton();
 
+
+
+}
 
 
 

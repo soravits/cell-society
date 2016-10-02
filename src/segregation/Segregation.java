@@ -70,8 +70,8 @@ public class Segregation extends Simulation{
      * @param percentEmpty
      */
     public Segregation(int gridLength, double threshold, double percentA, 
-                       double percentB, double percentEmpty) {
-        super(gridLength);
+                       double percentB, double percentEmpty,CellType type) {
+        super(gridLength,type);
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
         this.percEmpty = percentEmpty;
@@ -82,7 +82,7 @@ public class Segregation extends Simulation{
     }
 
     @Override
-    public Scene init(Stage s) {
+    public Scene init(Stage s,CellType type) {
         setStage(s);
         makeNewRootElement();
         setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
@@ -91,7 +91,7 @@ public class Segregation extends Simulation{
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
         		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid();
+        myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         cellSatisfied = new int[getGridLength()][getGridLength()];
@@ -112,10 +112,12 @@ public class Segregation extends Simulation{
                 //if the cell is white
                 if(cellLottery <= (percEmpty * 100)) {
                     cellType = 0;
+                    numberEmpty++;
                 }
                 //if the cell is blue
                 else if (cellLottery <= ((percEmpty + percA) * 100)) {
                     cellType = 1;
+                    numberUnsatisfied++;
                 }
                 else {
                     cellType = 2;
@@ -123,6 +125,9 @@ public class Segregation extends Simulation{
                 myGrid.updateCell(i, j, cellType);
             }
         }
+        numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
+        updateText();
+
     }
     
     /**

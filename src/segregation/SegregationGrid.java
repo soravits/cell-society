@@ -2,6 +2,8 @@ package segregation;
 import java.awt.Point;
 import segregation.SegregationCell.State;
 import base.Grid;
+import base.Simulation.CellType;
+import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,6 +20,7 @@ import javafx.scene.text.Text;
 public class SegregationGrid extends Grid {
     private Text stats;
     private Segregation sim;
+    private CellType type;
 
     /**
      * @param rowLength
@@ -47,12 +50,15 @@ public class SegregationGrid extends Grid {
      * in each of our grids that call this. 
      */
     @Override
-    public void initializeGrid() {
+    public void initializeGrid(CellType type) {
+    	this.type = type;
         for(int i = 0; i < getColumnLength(); i++) {
             for(int j = 0; j < getRowLength(); j++) {
-                SegregationCell gridCell = new SegregationCell(getSizeOfCell(), 
-                                                               getRootElement(), getSizeOfCell() * (i) + getInitialX(), 
-                                                               getSizeOfCell()* (j) + getInitialY());
+            	int horizontalOffset = getInitialX();
+            	
+            	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+                         getSizeOfCell() * (i) + horizontalOffset, 
+                         getSizeOfCell() * (j) + getInitialY(),getRowLength(),type);
 
                 gridCell.addToScene();
                 setCell(i,j,gridCell);    
@@ -60,6 +66,28 @@ public class SegregationGrid extends Grid {
             }
         }      
         setStats();
+    }
+    
+    private void createNewCell(int i,int j){
+    	int horizontalOffset = getInitialX();
+    	double horizontalShift = getSizeOfCell();
+    	double verticalShift = getSizeOfCell();
+    	if(type == CellType.HEX){
+    		horizontalShift = getSizeOfCell()* 6/10;
+    		verticalShift = 1.925* getSizeOfCell();
+        	if(j%2 == 0){
+        		horizontalOffset= getInitialX() + getSizeOfCell();
+        		
+        	}
+    	}
+    	
+    	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+                 verticalShift * (i) + horizontalOffset, 
+                 horizontalShift * (j) + getInitialY(),getRowLength(),type);
+
+        gridCell.addToScene();
+        setCell(i,j,gridCell);    
+        setUpListener(gridCell); 
     }
 
     private void setUpListener(SegregationCell gridCell) {
@@ -117,7 +145,7 @@ public class SegregationGrid extends Grid {
     public void updateCell(int x, int y, State cellState) {
         SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
                                                        getSizeOfCell() * (x) + getInitialX(), 
-                                                       getSizeOfCell()* (y) + getInitialY());
+                                                       getSizeOfCell()* (y) + getInitialY(),getRowLength(),type);
         if(cellState.equals(State.EMPTY)) {
             gridCell.setColor(Color.WHITE);
             gridCell.setState(State.EMPTY);

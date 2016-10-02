@@ -1,5 +1,6 @@
 package base;
 
+import base.Simulation.CellType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -67,6 +68,7 @@ public abstract class Grid {
         this.edgeType = edgeType;
     }
 
+
     /**
      * @return
      */
@@ -77,13 +79,13 @@ public abstract class Grid {
     /**
      * 
      */
-    public abstract void initializeGrid();
+    public abstract void initializeGrid(CellType type);
 
     /**
      * @param sim
      */
     public void setSimulationProfile(Simulation sim) {
-        this.sim = sim;;
+        this.sim = sim;
     }
 
     public Cell getCell(int row, int col){

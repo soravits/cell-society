@@ -1,6 +1,7 @@
 package waterworld;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -24,9 +25,9 @@ public class WaTorWorldCell extends Cell {
 	 * @param yCoord
 	 * @param currState
 	 */
-	public WaTorWorldCell(int sizeOfCell, Pane rootElement, int xCoord,
-			int yCoord, State currState) {
-		super(sizeOfCell, rootElement, xCoord, yCoord);
+	public WaTorWorldCell(int sizeOfCell, Pane rootElement, double xCoord,
+			double yCoord, State currState, int gridLength, CellType type) {
+		super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
 		this.currState = currState;
 	}
 	 

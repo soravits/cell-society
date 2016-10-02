@@ -23,7 +23,8 @@ import waterworld.WaTorWorldCell;
 public class GameOfLifeSimulation extends Simulation{
 	private static final String dead = "Dead: ";
 	private static final String alive = "Alive: ";
-
+	private CellType type;
+	
 	private int numberAlive;
 	private int numberDead;
 
@@ -32,10 +33,10 @@ public class GameOfLifeSimulation extends Simulation{
 	private int stepCount = 0;
 
 	private static final Text numDeadText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3,
+			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
 			0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
 	private static final Text numAliveText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3,
+			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
 			0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
 
 	private GameOfLifeGrid myGrid;
@@ -44,25 +45,33 @@ public class GameOfLifeSimulation extends Simulation{
 	/**
 	 * @param gridLength
 	 */
-	public GameOfLifeSimulation(int gridLength) {
-		super(gridLength);
+	public GameOfLifeSimulation(int gridLength, CellType type) {
+		super(gridLength, type);
+		this.type = type;
 	}
 
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage)
 	 */
 	@Override
-	public Scene init(Stage s) {
+	public Scene init(Stage s,CellType type) {
 		setStage(s);
 		makeNewRootElement();
-		setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH,
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
+		
+		int screenWidth = SIMULATION_WINDOW_WIDTH;
+		if(type == CellType.HEX){
+			screenWidth *= 1.75;
+		}
+		
+		setMyScene(new Scene(getRootElement(), screenWidth, 
+				SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
-				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-		myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
+				getLeftMargin(), getTopMargin(), this);
+		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
 		deadOrAlive = new boolean[getGridLength()][getGridLength()];
-		myGrid.initializeGrid();
+
+		myGrid.initializeGrid(type);
 		myGrid.setUpButtons();
 		myGrid.setSimulationProfile(this);
 		setInitialEnvironment();
@@ -158,23 +167,11 @@ public class GameOfLifeSimulation extends Simulation{
 	public void setInitialEnvironment() {
 		numberAlive = 0;
 		numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
-
+		
+		
 		for (boolean[] row : deadOrAlive) {
 			Arrays.fill(row, false);
 		}
-
-		/*deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2] = true;
-        deadOrAlive[deadOrAlive.length/2 + 1][deadOrAlive.length/2] = true;
-        deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 + 1] = true;
-        deadOrAlive[deadOrAlive.length/2 - 1 ][deadOrAlive.length/2] = true;
-        deadOrAlive[deadOrAlive.length/2][deadOrAlive.length/2 - 1] = true;
-
-        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 - 1).reviveCell();
-
-        myGrid.getCell(deadOrAlive.length/2-1, deadOrAlive.length/2).reviveCell();
-        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2 + 1).reviveCell();
-        myGrid.getCell(deadOrAlive.length/2+1, deadOrAlive.length/2).reviveCell();
-        myGrid.getCell(deadOrAlive.length/2, deadOrAlive.length/2).reviveCell();*/
 
 		updateCellUI();
 		createGraph();

@@ -1,6 +1,7 @@
 package spreadingoffire;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 public class SpreadingOfFireCell extends Cell {
@@ -13,8 +14,8 @@ public class SpreadingOfFireCell extends Cell {
      * @param xCoord
      * @param yCoord
      */
-    public SpreadingOfFireCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
-        super(sizeOfCell, rootElement, xCoord, yCoord);
+    public SpreadingOfFireCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord,int gridLength,CellType type) {
+        super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
         this.states = States.ALIVE;
     }
     

@@ -1,6 +1,7 @@
 package gameoflife;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 /**
@@ -14,11 +15,11 @@ public class GameOfLifeCell extends Cell {
     /**
      * @param sizeOfCell
      * @param rootElement
-     * @param xCoord
+     * @param d
      * @param yCoord
      */
-    public GameOfLifeCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
-        super(sizeOfCell, rootElement, xCoord, yCoord);
+    public GameOfLifeCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, int gridLength, CellType type) {
+        super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
         this.states = States.DEAD;
     }
 

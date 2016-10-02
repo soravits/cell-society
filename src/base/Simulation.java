@@ -1,5 +1,6 @@
 package base;
 
+import base.Simulation.CellType;
 import controller.MainMenu;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +19,9 @@ public abstract class Simulation{
     public static final int GRID_DIMENSION = 500;
     public static final int dimensionsOfCellCounterBox = 100;
     public static final int marginBoxTop = 20;
+    
+    public enum CellType {HEX, TRIANGLE, SQUARE};
+    private CellType cellType;
 
     private int gridLength;
     private int cellSize;
@@ -28,17 +32,19 @@ public abstract class Simulation{
     private Scene myScene;
     private Pane rootElement;
     protected Timeline animation;
+    private int type;
 
     /**
      * @param myGridLength
      */
-    public Simulation(int myGridLength) {
+    public Simulation(int myGridLength, CellType type) {
+    	this.cellType = type;
         gridLength = myGridLength;
         rootElement = new Pane();
         cellSize = GRID_DIMENSION / gridLength;
         lengthOfGridInPixels = gridLength * cellSize - 100;
-        leftMargin = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels) / 2;
-        topMargin = SIMULATION_WINDOW_HEIGHT / 8;
+        leftMargin = (SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels) / 5 * 2;
+        topMargin = SIMULATION_WINDOW_HEIGHT / 10;
     };
 
     /**
@@ -167,7 +173,7 @@ public abstract class Simulation{
      * @param s
      * @return
      */
-    public abstract Scene init(Stage s);
+    public abstract Scene init(Stage s, CellType type);
     
     /**
      * 

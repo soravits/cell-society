@@ -7,6 +7,7 @@ import base.Cell;
 import base.Grid;
 import base.Location;
 import base.Simulation;
+import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -61,9 +62,9 @@ public class WaTorWorldSimulation extends Simulation {
 	 * @param sharkBreedTime
 	 * @param starveTime
 	 */
-	public WaTorWorldSimulation(int gridLength, double fracFish, double fracShark,
-								int fishBreedTime, int sharkBreedTime, int starveTime) {
-		super(gridLength);
+	public WaTorWorldSimulation(int gridLength, double fracFish, double fracShark, 
+			int fishBreedTime, int sharkBreedTime, int starveTime, CellType type) {
+		super(gridLength,type);
 		this.setGridLength(gridLength);
 		this.fracFish = fracFish;
 		this.fracShark = fracShark;
@@ -73,16 +74,22 @@ public class WaTorWorldSimulation extends Simulation {
 	}
 
 	@Override
-	public Scene init (Stage s) {
+	public Scene init (Stage s,CellType type) {
 		setStage(s);
 		makeNewRootElement();
-		setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+		
+		int screenWidth = SIMULATION_WINDOW_WIDTH;
+		if(type == CellType.HEX){
+			screenWidth *= 1.75;
+		}
+		
+		setMyScene(new Scene(getRootElement(), screenWidth, 
+				SIMULATION_WINDOW_HEIGHT, Color.WHITE));   
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new WaTorWorldGrid(getGridLength(), getCellSize(), getRootElement(),
-				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-		myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
-		myGrid.initializeGrid();
+				getLeftMargin(), getTopMargin(), this);
+		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
+		myGrid.initializeGrid(type);
 		myGrid.setUpButtons();
 		myGrid.setSimulationProfile(this);
 		setInitialEnvironment();

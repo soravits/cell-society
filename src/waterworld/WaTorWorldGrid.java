@@ -2,6 +2,8 @@ package waterworld;
 
 import base.Grid;
 import base.Simulation;
+import base.Simulation.CellType;
+import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
@@ -20,8 +22,8 @@ public class WaTorWorldGrid extends Grid {
 	 * @param initialY
 	 */
 	public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
-			int initialX, int initialY, gridEdgeType edgeType, WaTorWorldSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
+			int initialX, int initialY, WaTorWorldSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
 		this.sim = sim;
 	}
 
@@ -29,15 +31,27 @@ public class WaTorWorldGrid extends Grid {
 	 * @see base.Grid#initializeGrid()
 	 */
 	@Override
-	public void initializeGrid() {
+	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getColumnLength(); i++) {
 			for(int j = 0; j < getRowLength(); j++) {
-				WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), 
-						getRootElement(), getSizeOfCell() * (i) + getInitialX(),
-						getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
-				gridCell.addToScene();
-				setCell(i,j,gridCell); 
-				setUpListener(gridCell);
+				int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
+                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),State.EMPTY,getRowLength(),type);
+   
+                gridCell.addToScene();
+                setCell(i,j,gridCell);		
+                setUpListener(gridCell);
 			}
 		} 
 	}

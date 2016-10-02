@@ -1,6 +1,8 @@
 package gameoflife;
 
 import java.util.Arrays;
+
+import base.Grid;
 import base.Simulation;
 import gameoflife.GameOfLifeCell.States;
 import javafx.geometry.Side;
@@ -56,7 +58,7 @@ public class GameOfLifeSimulation extends Simulation{
 				SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
-				getLeftMargin(), getTopMargin(), this);
+				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
 		myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
 		deadOrAlive = new boolean[getGridLength()][getGridLength()];
 		myGrid.initializeGrid();

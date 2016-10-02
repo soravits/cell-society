@@ -118,7 +118,7 @@ public class MainMenu {
 				String stageTitle = "";
 
 				switch(Name) {
-				case "FOREST FIRE":
+				case "FOREST BURNING":
 					stageTitle = Name;
 					stageNew = new Stage();
 					stageNew.setTitle(stageTitle);
@@ -195,7 +195,7 @@ public class MainMenu {
 		gameWindow.getChildren().add(titleText);
 
 		OptionContainer optionList = new OptionContainer(
-				new MenuItem("FOREST FIRE"),
+				new MenuItem("FOREST BURNING"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
 				new MenuItem("GAME OF LIFE"));

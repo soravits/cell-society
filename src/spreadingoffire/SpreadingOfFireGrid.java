@@ -86,11 +86,11 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param y
 	 * @param cellState
 	 */
-	public void updateCell(int x, int y, int cellState) {
-		if(cellState == 0) {
+	public void updateCell(int x, int y, States state) {
+		if(state == States.DEAD) {
 			getCell(x,y).setColor(Color.YELLOW);
 		}
-		else if(cellState == 1 || cellState == 3) {
+		else if(state == States.ALIVE || state == States.CAUGHTFIRE) {
 		        getCell(x,y).setColor(Color.FORESTGREEN);
 		}
 		else {

@@ -2,7 +2,6 @@ package spreadingoffire;
 
 import base.Grid;
 import base.Simulation;
-import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -44,7 +43,6 @@ public class SpreadingOfFireSimulation extends Simulation{
 
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
-    private int[][] cellStates;
     private CellType type;
     // 0 is empty
     // 1 is tree
@@ -78,21 +76,19 @@ public class SpreadingOfFireSimulation extends Simulation{
         myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
-        cellStates = new int[getGridLength()][getGridLength()];
         setInitialEnvironment();
 
         return getMyScene();
     }
 
     /**
-     * @param x
-     * @param y
+     * @param row
+     * @param col
      */
-    public void spawnTree(int x, int y) {
-        cellStates[x][y] = 1;
-        myGrid.updateCell(x,y,1);
+    public void spawnTree(int row, int col) {
+        myGrid.updateCell(row,col,States.ALIVE);
         numberAlive++;
-        myGrid.getCell(x, y).spawn();
+        myGrid.getCell(row, col).spawn();
     }
     
     public void checkUpdatedStatesAfterManualMod() {
@@ -101,18 +97,15 @@ public class SpreadingOfFireSimulation extends Simulation{
             	if(manuallyModified(i,j)){
             		States cellState = myGrid.getCell(i, j).getState();
             		noLongerModified(i,j);
-            		if(cellState == States.FIRE) {
-                    	cellStates[i][j] = 2;
+            		if(cellState == States.BURNING) {
                     	numberFire++;
                     	numberAlive--;
                     }
                     else if (cellState == States.DEAD) {
-                    	cellStates[i][j] = 0;
                     	numberDead++;
                     	numberFire--;
                     }
                     else {
-                    	cellStates[i][j] = 1;
                     	numberAlive++;
                     	numberDead--;
                     }
@@ -137,9 +130,8 @@ public class SpreadingOfFireSimulation extends Simulation{
     public void burnTree(int x, int y, boolean forceBurn) {
         double rand = Math.random();
         if(rand < probCatch || forceBurn){
-        	myGrid.getCell(x, y).burn();
-            cellStates[x][y] = 3;
-            myGrid.updateCell(x, y, 2);
+        	myGrid.getCell(x, y).catchfire();
+            myGrid.updateCell(x, y, States.CAUGHTFIRE);
             numberFire++;
             numberAlive--;
         }
@@ -150,8 +142,7 @@ public class SpreadingOfFireSimulation extends Simulation{
      * @param y
      */
     public void clearCell(int x, int y) {
-        cellStates[x][y] = 0;
-        myGrid.updateCell(x, y, 0);
+        myGrid.updateCell(x, y, States.DEAD);
         myGrid.getCell(x, y).burnout();
         numberDead++;
         if(numberFire > 0){
@@ -197,7 +188,7 @@ public class SpreadingOfFireSimulation extends Simulation{
 	                    spawnTree(i, j);
 	                }
             	}
-                myGrid.updateCell(i, j, cellStates[i][j]);
+                myGrid.updateCell(i, j, myGrid.getCell(i,j).getState());
             }
         }
         
@@ -210,30 +201,35 @@ public class SpreadingOfFireSimulation extends Simulation{
     public void updateState() {
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-                if(cellStates[i][j] == 1) {
-                    if(cellStates[i - 1][j] == 2) {
+                if(myGrid.getCell(i,j).getState() == States.ALIVE) {
+                    if(myGrid.getCell(myGrid.getNorthernNeighbor(i,j).getRow(), myGrid.getNorthernNeighbor(i,j).getColumn()).
+                            getState() == States.BURNING) {
                         burnTree(i, j, false);
-                    } 
-                    else if(cellStates[i + 1][j] == 2) {
+                    }
+                    if(myGrid.getCell(myGrid.getSouthernNeighbor(i,j).getRow(), myGrid.getSouthernNeighbor(i,j).getColumn()).
+                            getState() == States.BURNING) {
                         burnTree(i, j, false);
-                    }  
-                    else if(cellStates[i][j - 1] == 2) {
+                    }
+                    if(myGrid.getCell(myGrid.getEasternNeighbor(i,j).getRow(), myGrid.getEasternNeighbor(i,j).getColumn()).
+                            getState() == States.BURNING) {
                         burnTree(i, j, false);
-                    }  
-                    else if(cellStates[i][j + 1] == 2) {
+                    }
+                    if(myGrid.getCell(myGrid.getWesternNeighbor(i,j).getRow(), myGrid.getWesternNeighbor(i,j).getColumn()).
+                            getState() == States.BURNING) {
                         burnTree(i, j, false);
-                    }               
+                    }
                 } 
             }
         }
 
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-                if(cellStates[i][j] == 2) {
+                if(myGrid.getCell(i,j).getState() == States.BURNING) {
                     clearCell(i, j);
                 } 
-                else if(cellStates[i][j] == 3) {
-                    cellStates[i][j] = 2;
+                else if(myGrid.getCell(i,j).getState() == States.CAUGHTFIRE) {
+                    myGrid.getCell(i,j).burn();
+                    myGrid.updateCell(i,j,States.BURNING);
                 }
             }
         }

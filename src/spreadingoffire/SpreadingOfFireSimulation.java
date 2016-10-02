@@ -1,5 +1,6 @@
 package spreadingoffire;
 
+import base.Grid;
 import base.Simulation;
 import base.Simulation.CellType;
 import javafx.geometry.Side;

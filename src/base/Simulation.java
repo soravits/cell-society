@@ -27,7 +27,7 @@ public abstract class Simulation{
     private int cellSize;
     private int lengthOfGridInPixels; 
     private int leftMargin;
-    private int topMargin; 
+    private int topMargin;
     private Stage stage;
     private Scene myScene;
     private Pane rootElement;
@@ -35,7 +35,7 @@ public abstract class Simulation{
     private int type;
 
     /**
-     * @param gridLength
+     * @param myGridLength
      */
     public Simulation(int myGridLength, CellType type) {
     	this.cellType = type;
@@ -167,7 +167,7 @@ public abstract class Simulation{
      */
     public void setCellSize (int cellSize) {
         this.cellSize = cellSize;
-    }	
+    }
 
     /**
      * @param s

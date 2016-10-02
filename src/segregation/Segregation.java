@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import base.Cell;
+import base.Grid;
 import base.Simulation;
 import javafx.animation.Timeline;
 import javafx.geometry.Side;
@@ -16,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import segregation.SegregationCell.State;
+import waterworld.WaTorWorldCell;
 
 /**
  * This is the Segregation class of Cell Society. 
@@ -87,7 +89,7 @@ public class Segregation extends Simulation{
         		SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(),this);
+        		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid(type);
         myGrid.setUpButtons();
@@ -145,12 +147,12 @@ public class Segregation extends Simulation{
     /**
      * MUST CHANGE THIS
      * WORST METHOD EVER BUT IT WORKS
-     * @param i
-     * @param j
+     * @param row
+     * @param col
      * @return int value indicating cell's state
      */
-    public int setSatisfiedState(int i, int j) {
-        SegregationCell current = myGrid.getCell(i, j);
+    public int setSatisfiedState(int row, int col) {
+        SegregationCell current = myGrid.getCell(row, col);
         State currentState = current.getState();
         int sameColor = 0;
         int totalNeighbors = 0;
@@ -159,60 +161,67 @@ public class Segregation extends Simulation{
             return EMPTY;
         }
         //checks north
-        if(i > 0 && myGrid.getCell(i - 1, j) != null 
-        		&& !myGrid.getCell(i - 1, j).getColor().equals(Color.WHITE)) {
+        if(myGrid.getNorthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+                myGrid.getNorthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i - 1, j).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+                    myGrid.getNorthernNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks south
-        if(i < getGridLength() - 1 && myGrid.getCell(i + 1, j) != null 
-        		&& !myGrid.getCell(i + 1, j).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSouthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+                myGrid.getSouthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i + 1, j).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+                    myGrid.getSouthernNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks west
-        if(j > 0 && myGrid.getCell(i, j - 1) != null 
-        		&& !myGrid.getCell(i, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getWesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+                myGrid.getWesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+                    myGrid.getWesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks east
-        if(j < getGridLength() - 1 && myGrid.getCell(i, j + 1) != null 
-        		&& !myGrid.getCell(i, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getEasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+                myGrid.getEasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+                    myGrid.getEasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks northwest
-        if(i > 0 && j > 0 && myGrid.getCell(i - 1, j - 1) != null 
-        		&& !myGrid.getCell(i - 1, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getNorthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+                myGrid.getNorthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i - 1, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+                    myGrid.getNorthwesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks southwest
-        if(i < getGridLength() - 1 && j > 0 && myGrid.getCell(i + 1, j - 1) != null 
-        		&& !myGrid.getCell(i + 1, j - 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSouthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+                myGrid.getSouthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i + 1, j - 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+                    myGrid.getSouthwesternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks northeast
-        if(i > 0 && j < getGridLength() - 1 && myGrid.getCell(i - 1, j + 1) != null 
-        		&& !myGrid.getCell(i - 1, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getNortheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+                myGrid.getNortheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i - 1, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+                    myGrid.getNortheasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         //checks southeast
-        if(i < getGridLength() - 1 && j < getGridLength() - 1 
-        		&& myGrid.getCell(i + 1, j + 1) != null 
-        		&& !myGrid.getCell(i + 1, j + 1).getColor().equals(Color.WHITE)) {
+        if(myGrid.getSoutheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+                myGrid.getSoutheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
-            if(myGrid.getCell(i + 1, j + 1).getState().equals(currentState))
+            if(myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+                    myGrid.getSoutheasternNeighbor(row, col).getColumn()).getState().equals(currentState))
                 sameColor++;
         }
         if((double) sameColor / (double) totalNeighbors >= satisfyThresh) {

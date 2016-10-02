@@ -24,63 +24,66 @@ public class WaTorWorldInput extends UserInput{
 		this.waterSim = mySim;
 	}
 
+	/**
+	 * 
+	 */
 	public void selectFracFish(){
 		fracFishSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		fracFishSpinner.setEditable(true);
-		grid.add(new Label("% Fish Population"), 0, 0);
-		grid.add(fracFishSpinner, 1, 0);
+		getGrid().add(new Label("% Fish Population"), 0, 1);
+		getGrid().add(fracFishSpinner, 1, 1);
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void selectFracShark(){
 		fracSharkSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		fracSharkSpinner.setEditable(true);
-		grid.add(new Label("% Shark Population"), 0, 1);
-		grid.add(fracSharkSpinner, 1, 1);
+		getGrid().add(new Label("% Shark Population"), 0, 2);
+		getGrid().add(fracSharkSpinner, 1, 2);
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void selectFishBreedTime(){
 		fishBreedSpinner = new Spinner<>(1, 20, 3, 1);
 		fishBreedSpinner.setEditable(true);
-		grid.add(new Label("Fish Breed Time"), 0, 2);
-		grid.add(fishBreedSpinner, 1, 2);
+		getGrid().add(new Label("Fish Breed Time"), 0, 3);
+		getGrid().add(fishBreedSpinner, 1, 3);
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void selectSharkBreedTime(){
 		sharkBreedSpinner = new Spinner<>(1, 20, 15, 1);
 		sharkBreedSpinner.setEditable(true);
-		grid.add(new Label("Shark Breed Time"), 0, 3);
-		grid.add(sharkBreedSpinner, 1, 3);
+		getGrid().add(new Label("Shark Breed Time"), 0, 4);
+		getGrid().add(sharkBreedSpinner, 1, 4);
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void selectStarveTime(){
 		starveSpinner = new Spinner<>(1, 20, 3, 1);
 		starveSpinner.setEditable(true);
-		grid.add(new Label("Starvation Time"), 0, 4);
-		grid.add(starveSpinner, 1, 4);
-		
-	}
-	
-	@Override
-	public void selectGridSize() {
-		// TODO Auto-generated method stub
-		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
-		gridSizeSpinner.setEditable(true);
-		grid.add(new Label("Size of Square Grid"), 0, 5);
-		grid.add(gridSizeSpinner, 1, 5);
+		getGrid().add(new Label("Starvation Time"), 0, 5);
+		getGrid().add(starveSpinner, 1, 5);
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see base.UserInput#manualInput()
+	 */
 	@Override
 	public void manualInput() {
-		waterScene = new Scene(grid, INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-
-		grid.setHgap(50);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(10));
 		selectFracFish();
 		selectFracShark();
 		selectFishBreedTime();

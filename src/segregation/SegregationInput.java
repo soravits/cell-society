@@ -123,6 +123,50 @@ public class SegregationInput extends UserInput{
 		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.SQUARE));
 		return beginSim;
 	}
+
+	/**
+	 * 
+	 */
+	public void selectPercB() {
+		percBSpinner = new Spinner<>(0.05, 1 - percASpinner.getValue(), 0.5, 0.05);
+		percBSpinner.setEditable(true);
+		getGrid().add(new Label("% Color B"), 0, 3);
+		getGrid().add(percBSpinner, 1, 3);
+
+	}
+
+	/**
+	 * 
+	 */
+	public void selectSatisfyThresh() {
+		threshSpinner = new Spinner<>(0.1, 0.95, 0.5, 0.05);
+		threshSpinner.setEditable(true);
+		getGrid().add(new Label("% for Satisfaction"), 0, 4);
+		getGrid().add(threshSpinner, 1, 4);
+
+	}
+
+	/**
+	 * 
+	 */
+	public void selectColors(){
+
+	}
+
+	/* (non-Javadoc)
+	 * @see base.UserInput#manualInput()
+	 */
+	@Override
+	public void manualInput() {
+		selectPercEmpty();
+		selectPercA();
+		selectPercB();
+		selectSatisfyThresh();
+		selectGridSize();
+		//		selectColors();
+		getGrid().add(startManualButton("Start Segregation Simulation"), 0, 5);
+	}
+	
 	
 
 	@Override

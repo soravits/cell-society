@@ -1,6 +1,8 @@
 package gameoflife;
 
 import java.util.Arrays;
+
+import base.Grid;
 import base.Simulation;
 import gameoflife.GameOfLifeCell.States;
 import javafx.geometry.Side;
@@ -12,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import waterworld.WaTorWorldCell;
 
 /**
  * @author Brian
@@ -277,21 +280,47 @@ public class GameOfLifeSimulation extends Simulation{
 
 	 /**
 	  * @param row
-	  * @param column
+	  * @param col
 	  * @return
 	  */
-	 private int checkNearbyCells(int row, int column) {
+	 private int checkNearbyCells(int row, int col) {
 		 int aliveNearbyCells = 0;
-		 //BE CAREFUL, THIS ALGORITHM's DIAGANOL DETECTION DEPENDS ON FOUR SIDED BOUNDARIES
-		 //can rename ifAliveReturn1 as isAlive. Can also change to a boolean method
-		 aliveNearbyCells += ifAliveReturn1(row - 1, column);
-		 aliveNearbyCells += ifAliveReturn1(row, column - 1);
-		 aliveNearbyCells += ifAliveReturn1(row + 1, column);
-		 aliveNearbyCells += ifAliveReturn1(row, column + 1);
-		 aliveNearbyCells += ifAliveReturn1(row - 1, column + 1);
-		 aliveNearbyCells += ifAliveReturn1(row + 1, column + 1);
-		 aliveNearbyCells += ifAliveReturn1(row - 1, column - 1);
-		 aliveNearbyCells += ifAliveReturn1(row + 1, column - 1);
+		 if(myGrid.getNorthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+				 myGrid.getNorthernNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+		 if(myGrid.getSouthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+				 myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+
+		 if(myGrid.getEasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+				 myGrid.getEasternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+
+		 if(myGrid.getWesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+				 myGrid.getWesternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+		 if(myGrid.getNorthwesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+				 myGrid.getNorthwesternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+		 if(myGrid.getNortheasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+				 myGrid.getNortheasternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+
+		 if(myGrid.getSouthwesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+				 myGrid.getSouthwesternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
+
+		 if(myGrid.getSoutheasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+				 myGrid.getSoutheasternNeighbor(row, col).getColumn()).getState() == States.ALIVE){
+			 aliveNearbyCells++;
+		 }
 		 return aliveNearbyCells;
 	 }
 
@@ -300,17 +329,4 @@ public class GameOfLifeSimulation extends Simulation{
 	  * @param column
 	  * @return
 	  */
-	 private int ifAliveReturn1(int row, int column) {
-		 boolean leftIsInBounds = ((row - 1) >= 0);
-		 boolean rightIsInBounds = ((row + 1) < getGridLength());
-		 boolean upIsInBounds = ((column - 1) >= 0);
-		 boolean downIsInBounds = ((column + 1) < getGridLength());
-		 if(!(leftIsInBounds && rightIsInBounds && upIsInBounds && downIsInBounds)) {
-			 return 0;
-		 }
-		 if(((GameOfLifeCell) myGrid.getCell(row, column)).getState() == States.ALIVE) {
-			 return 1;
-		 }
-		 return 0;
-	 }
 }

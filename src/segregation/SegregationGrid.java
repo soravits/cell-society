@@ -30,14 +30,14 @@ public class SegregationGrid extends Grid {
      * @param initialY
      */
     public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                           int initialX, int initialY, Segregation sim) {
-        super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+                           int initialX, int initialY, gridEdgeType edgeType, Segregation sim) {
+        super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }
 
     /**
      * @param row
-     * @param column
+     * @param col
      * @return cell located at those coordinates
      */
     public SegregationCell getCell(int row, int col) {

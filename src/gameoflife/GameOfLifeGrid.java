@@ -2,6 +2,7 @@ package gameoflife;
 
 import base.Cell;
 import base.Grid;
+import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell.States;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -13,7 +14,9 @@ import waterworld.WaTorWorldCell.State;
  *
  */
 public class GameOfLifeGrid extends Grid{
-	private GameOfLifeSimulation sim;
+    private GameOfLifeSimulation sim; 
+    //make instance of itself instead of using a getter all the time?
+
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -26,9 +29,9 @@ public class GameOfLifeGrid extends Grid{
         super(rowLength, sizeOfCell, rootElement, initialX, initialY);
         this.sim = sim;
     }
-    
-    public GameOfLifeCell getCell(int row, int col){
-    	return (GameOfLifeCell) getGrid()[row][col];
+
+    public GameOfLifeCell getCell(int row, int col) {
+        return (GameOfLifeCell) super.getCell(row,col);
     }
 
     /**
@@ -36,47 +39,59 @@ public class GameOfLifeGrid extends Grid{
      * @param col
      * @param cellstate
      */
-    public void updateCell(int row, int col){
-    	GameOfLifeCell myCell = getCell(row,col);
-        if(myCell.getState() == States.ALIVE){
-            getGrid()[row][col].setColor(Color.WHITE);
+    public void updateCell(int row, int col) {
+        GameOfLifeCell myCell = getCell(row, col);
+        if(myCell.getState() == States.ALIVE) {
+            getCell(row,col).setColor(Color.WHITE);
         }
-        else{
-            getGrid()[row][col].setColor(Color.BLACK);
+        else {
+            getCell(row,col).setColor(Color.BLACK);
         }
-        getGrid()[row][col].setBorder(Color.WHITE);
+        getCell(row,col).setBorder(Color.WHITE);
     }
 
     /* (non-Javadoc)
      * @see base.Grid#initializeGrid()
      */
     @Override
-    public void initializeGrid() {
-        for(int i=0; i<getGrid().length;i++){
-            for(int j=0;j<getGrid()[0].length;j++){
+    public void initializeGrid(CellType type) {
+        for(int i = 0; i < getColumnLength(); i++) {
+            for(int j = 0; j < getColumnLength(); j++) {
+            	int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                		getSizeOfCell() * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY());
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
                 gridCell.fillCellWithColors();
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell;		
+                setCell(i,j,gridCell);		
                 setUpListener(gridCell);
             }
         }	
     }
-    
-    private void setUpListener(GameOfLifeCell gridCell){
-    	gridCell.returnBlock().setOnMousePressed(event ->{
-    		gridCell.setAsManuallyModified();
-    		if(gridCell.getState() == States.ALIVE){
-        		gridCell.killCell();
-        		gridCell.setColor(Color.BLACK);
-        	}
-    		else{
-    			gridCell.reviveCell();
-    			gridCell.setColor(Color.WHITE);
-    		}
-    		sim.updateStateOnClick();
-        	sim.updateGraph();
-		});
+
+    private void setUpListener(GameOfLifeCell gridCell) {
+        gridCell.returnBlock().setOnMousePressed(event -> {
+            gridCell.setAsManuallyModified();
+            if(gridCell.getState() == States.ALIVE) {
+                gridCell.killCell();
+                gridCell.setColor(Color.BLACK);
+            }
+            else { 
+                gridCell.reviveCell();
+                gridCell.setColor(Color.WHITE);
+            }
+            sim.updateStateOnClick();
+            sim.updateGraph();
+        });
     }
 }

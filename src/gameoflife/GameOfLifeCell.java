@@ -1,58 +1,46 @@
 package gameoflife;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 /**
  * @author Brian
  *
  */
-public class GameOfLifeCell extends Cell{
+public class GameOfLifeCell extends Cell {
     public enum States{ALIVE, DEAD};
     private States states;
-    private boolean manuallyModified = false;
-    
+
     /**
      * @param sizeOfCell
      * @param rootElement
-     * @param xCoord
+     * @param d
      * @param yCoord
      */
-    public GameOfLifeCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
-        super(sizeOfCell, rootElement, xCoord, yCoord);
-        this.states= States.DEAD;
-    }
-    
-    public void setAsManuallyModified(){
-    	this.manuallyModified = true;
-    }
-    
-    public boolean isManuallyModified(){
-    	return manuallyModified;
-    }
-    
-    public void noLongerManuallyModified(){
-    	this.manuallyModified = false;
-    }
-
-    /**
-     * 
-     */
-    public void killCell(){
+    public GameOfLifeCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, int gridLength, CellType type) {
+        super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
         this.states = States.DEAD;
     }
 
     /**
      * 
      */
-    public void reviveCell(){
+    public void killCell() {
+        this.states = States.DEAD;
+    }
+
+    /**
+     * 
+     */
+    public void reviveCell() {
         this.states = States.ALIVE;
     }
 
     /**
      * @return
      */
-    public States getState(){
+    public States getState() {
         return this.states;
     }
 }

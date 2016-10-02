@@ -2,6 +2,8 @@ package waterworld;
 
 import base.Grid;
 import base.Simulation;
+import base.Simulation.CellType;
+import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
@@ -10,61 +12,74 @@ import waterworld.WaTorWorldCell.State;
  * @author Soravit
  *
  */
-public class WaTorWorldGrid extends Grid{
+public class WaTorWorldGrid extends Grid {
 	private WaTorWorldSimulation sim;
-    /**
-     * @param rowLength
-     * @param sizeOfCell
-     * @param rootElement
-     * @param initialX
-     * @param initialY
-     */
-    public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                          int initialX, int initialY, WaTorWorldSimulation sim) {
-        super(rowLength, sizeOfCell, rootElement, initialX, initialY);
-        this.sim = sim;
-    }
+	/**
+	 * @param rowLength
+	 * @param sizeOfCell
+	 * @param rootElement
+	 * @param initialX
+	 * @param initialY
+	 */
+	public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
+			int initialX, int initialY, WaTorWorldSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+		this.sim = sim;
+	}
 
-    /* (non-Javadoc)
-     * @see base.Grid#initializeGrid()
-     */
-    @Override
-    public void initializeGrid() {
-        for(int i=0; i<getGrid().length;i++){
-            for(int j=0;j<getGrid()[0].length;j++){
-                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), getSizeOfCell() 
-                                                             * (i) + getInitialX(),getSizeOfCell()* (j) + getInitialY(), State.EMPTY);
+	/* (non-Javadoc)
+	 * @see base.Grid#initializeGrid()
+	 */
+	@Override
+	public void initializeGrid(CellType type) {
+		for(int i = 0; i < getColumnLength(); i++) {
+			for(int j = 0; j < getRowLength(); j++) {
+				int horizontalOffset = getInitialX();
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){
+            		horizontalShift = getSizeOfCell()* 6/10;
+            		verticalShift = 1.925* getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
+                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),State.EMPTY,getRowLength(),type);
+   
                 gridCell.addToScene();
-                getGrid()[i][j] = gridCell; 
+                setCell(i,j,gridCell);		
                 setUpListener(gridCell);
-            }
-        } 
-    }
-    
-    private void setUpListener(WaTorWorldCell gridCell){
-    	gridCell.returnBlock().setOnMousePressed(event ->{
-    		gridCell.setAsManuallyModified();
-    		if(gridCell.getState() == State.EMPTY){
-        		gridCell.setState(State.FISH);
-        	}
-        	else if(gridCell.getState() == State.FISH){
-        		gridCell.setState(State.SHARK);
-        	}
-        	else{
-        		gridCell.setState(State.EMPTY);
-        	}
-    		gridCell.updateColor();
-    		//sim.manuallyModifyStateOfGrid();
-        	sim.updateGraph();
-		});
-    }
+			}
+		} 
+	}
 
-    /**
-     * @param x
-     * @param y
-     * @return
-     */
-    public WaTorWorldCell getCell(int x, int y){
-        return (WaTorWorldCell) getGrid()[x][y];
-    }
+	private void setUpListener(WaTorWorldCell gridCell) {
+		gridCell.returnBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModified();
+			if(gridCell.getState() == State.EMPTY) {
+				gridCell.setState(State.FISH);
+			}
+			else if(gridCell.getState() == State.FISH) {
+				gridCell.setState(State.SHARK);
+			}
+			else{
+				gridCell.setState(State.EMPTY);
+			}
+			gridCell.updateColor();
+			//sim.manuallyModifyStateOfGrid();
+			sim.updateGraph();
+		});
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public WaTorWorldCell getCell(int x, int y) {
+		return (WaTorWorldCell) super.getCell(x,y);
+	}
 }

@@ -1,19 +1,18 @@
 package waterworld;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
  * @author Soravit
  *
  */
-public class WaTorWorldCell extends Cell{
+public class WaTorWorldCell extends Cell {
     
     private int breedTime;
     private int starveTime = -1;
-    private boolean manuallyModified = false;
     
     public enum State{EMPTY, FISH, SHARK};
     
@@ -26,24 +25,11 @@ public class WaTorWorldCell extends Cell{
 	 * @param yCoord
 	 * @param currState
 	 */
-	public WaTorWorldCell(int sizeOfCell, Pane rootElement, int xCoord,
-			int yCoord, State currState) {
-		super(sizeOfCell, rootElement, xCoord, yCoord);
+	public WaTorWorldCell(int sizeOfCell, Pane rootElement, double xCoord,
+			double yCoord, State currState, int gridLength, CellType type) {
+		super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
 		this.currState = currState;
 	}
-	
-    
-    public void setAsManuallyModified(){
-    	this.manuallyModified = true;
-    }
-    
-    public boolean isManuallyModified(){
-    	return manuallyModified;
-    }
-    
-    public void noLongerManuallyModified(){
-    	this.manuallyModified = false;
-    }
 	 
     /**
      * @return
@@ -91,26 +77,28 @@ public class WaTorWorldCell extends Cell{
     /**
      * 
      */
-    public void decrementBreedTime(){
+    public void decrementBreedTime() {
         breedTime --;
     }
     
     /**
      * 
      */
-    public void decrementStarveTime(){
+    public void decrementStarveTime() {
         starveTime --;
     }
     
     /**
      * 
      */
-    public void updateColor(){
-        if(currState == State.EMPTY){
+    public void updateColor() {
+        if(currState == State.EMPTY) {
             setColor(Color.BLUE);
-        }else if(currState == State.FISH){
+        }
+        else if(currState == State.FISH) {
             setColor(Color.GREEN);
-        }else{
+        }
+        else {
             setColor(Color.YELLOW);
         }
     }

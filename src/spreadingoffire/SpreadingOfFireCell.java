@@ -1,12 +1,12 @@
 package spreadingoffire;
 
 import base.Cell;
+import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
-public class SpreadingOfFireCell extends Cell{
+public class SpreadingOfFireCell extends Cell {
 	public enum States{FIRE, DEAD, ALIVE};
     private States states;
-    private boolean manuallyModified = false;
     
     /**
      * @param sizeOfCell
@@ -14,45 +14,33 @@ public class SpreadingOfFireCell extends Cell{
      * @param xCoord
      * @param yCoord
      */
-    public SpreadingOfFireCell(int sizeOfCell, Pane rootElement, int xCoord, int yCoord) {
-        super(sizeOfCell, rootElement, xCoord, yCoord);
-        this.states= States.ALIVE;
+    public SpreadingOfFireCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord,int gridLength,CellType type) {
+        super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
+        this.states = States.ALIVE;
     }
     
-    public void setAsManuallyModified(){
-    	this.manuallyModified = true;
-    }
-    
-    public boolean isManuallyModified(){
-    	return manuallyModified;
-    }
-    
-    public void noLongerManuallyModified(){
-    	this.manuallyModified = false;
-    }
-
     /**
      * 
      */
-    public void burn(){
+    public void burn() {
         this.states = States.FIRE;
     }
 
     /**
      * 
      */
-    public void spawn(){
+    public void spawn() {
         this.states = States.ALIVE;
     }
     
-    public void burnout(){
+    public void burnout() {
     	this.states = States.DEAD;
     }
 
     /**
      * @return
      */
-    public States getState(){
+    public States getState() {
         return this.states;
     }
 }

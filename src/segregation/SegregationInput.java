@@ -78,10 +78,6 @@ public class SegregationInput extends UserInput{
 
 
 	public void startManualSimulation(CellType type) {
-//		int inputValue = gridSizeSpinner.getValue();
-//		if((gridSizeSpinner.getValue() > 45)){
-//			inputValue = 45;
-//		}
 		segregation = new Segregation(getGridSize(), threshSpinner.getValue(),
 				percASpinner.getValue(), percBSpinner.getValue(), percEmptySpinner.getValue(),type);
 		segScene = segregation.init(stage,type);

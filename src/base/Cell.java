@@ -44,14 +44,6 @@ public class Cell {
     }
     
     /**
-     * 
-     */
-    public void fillCellWithColors() {
-        block.setFill(Color.WHITE);
-        block.setStroke(Color.BLACK);
-        block.setStrokeWidth(STROKE_WIDTH);
-    }
-    /**
      * @param color
      */
     public void setBorder(Color color) {

@@ -1,5 +1,6 @@
 package spreadingoffire;
 import base.Cell;
+import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell;
@@ -40,8 +41,8 @@ public class SpreadingOfFireGrid extends Grid {
             	double horizontalShift = getSizeOfCell();
             	double verticalShift = getSizeOfCell();
             	if(type == CellType.HEX){
-            		horizontalShift = getSizeOfCell()* 6/10;
-            		verticalShift = 1.925* getSizeOfCell();
+            		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
+            		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
 	            	if(j%2 == 0){
 	            		horizontalOffset= getInitialX() + getSizeOfCell();
 	            		

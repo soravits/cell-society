@@ -4,6 +4,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
 public class CellShape {
+	public static final double horizontalOffsetHexagon = 0.6;
+	public static final double verticalOffsetHexagon = 1.925;
+	
 	private Polygon cellShape;
 	private double verticleOffset = 0; // For aligning them together
 	private double horizontalOffset = 0; // For subsequent rows getting aligned horizontally

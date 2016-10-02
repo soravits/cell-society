@@ -22,8 +22,8 @@ public class WaTorWorldGrid extends Grid {
 	 * @param initialY
 	 */
 	public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
-			int initialX, int initialY, WaTorWorldSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+			int initialX, int initialY, gridEdgeType edgeType, WaTorWorldSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
 

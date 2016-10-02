@@ -1,9 +1,7 @@
 package gameoflife;
-
 import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
-
 /**
  * @author Brian
  *
@@ -11,7 +9,6 @@ import javafx.scene.layout.Pane;
 public class GameOfLifeCell extends Cell {
     public enum States{ALIVE, DEAD};
     private States states;
-
     /**
      * @param sizeOfCell
      * @param rootElement
@@ -22,21 +19,18 @@ public class GameOfLifeCell extends Cell {
         super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
         this.states = States.DEAD;
     }
-
     /**
      * 
      */
     public void killCell() {
         this.states = States.DEAD;
     }
-
     /**
      * 
      */
     public void reviveCell() {
         this.states = States.ALIVE;
     }
-
     /**
      * @return
      */

@@ -40,7 +40,8 @@ public abstract class Grid {
      * @param initialX
      * @param initialY
      */
-    public Grid(int gridLength,int sizeOfCell, Pane rootElement, int initialX, int initialY, gridEdgeType edgeType) {
+    public Grid(int gridLength,int sizeOfCell, Pane rootElement, int initialX, 
+    		int initialY, gridEdgeType edgeType) {
         this.rootElement = rootElement;
         this.rowLength = gridLength;        
         this.columnLength = gridLength;
@@ -289,7 +290,7 @@ public abstract class Grid {
         });
         rootElement.getChildren().add(resumeSim);
 
-        Button makeEdgesFinite = createSimButton("Make edges finite", 20, 400);
+        Button makeEdgesFinite = createSimButton("Make edges \nfinite", 20, 400);
         makeEdgesFinite.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -298,7 +299,7 @@ public abstract class Grid {
         });
         rootElement.getChildren().add(makeEdgesFinite);
 
-        Button makeEdgesToroidal = createSimButton("Make edges toroidal", 20, 450);
+        Button makeEdgesToroidal = createSimButton("Make edges \ntoroidal", 20, 470);
         makeEdgesToroidal.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

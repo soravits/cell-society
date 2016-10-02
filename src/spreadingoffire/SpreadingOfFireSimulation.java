@@ -1,5 +1,4 @@
 package spreadingoffire;
-
 import base.Grid;
 import base.Simulation;
 import javafx.geometry.Side;
@@ -12,7 +11,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spreadingoffire.SpreadingOfFireCell.States;
-
 /**
  * @author Soravit
  *
@@ -40,14 +38,12 @@ public class SpreadingOfFireSimulation extends Simulation{
     private static final Text numAliveText = new Text(
     		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
     		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
-
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
     private CellType type;
     // 0 is empty
     // 1 is tree
     // 2 is burning tree
-
     /**
      * @param gridLength
      * @param probCatch
@@ -57,7 +53,6 @@ public class SpreadingOfFireSimulation extends Simulation{
         this.probCatch = probCatch;
         this.type = type;
     }
-
     @Override
     public Scene init (Stage s,CellType type) {
         setStage(s);
@@ -77,10 +72,8 @@ public class SpreadingOfFireSimulation extends Simulation{
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         setInitialEnvironment();
-
         return getMyScene();
     }
-
     /**
      * @param row
      * @param col
@@ -121,7 +114,6 @@ public class SpreadingOfFireSimulation extends Simulation{
     private void noLongerModified(int row, int col) {
     	myGrid.getCell(row, col).noLongerManuallyModified();
     }
-
     /**
      * @param x
      * @param y
@@ -136,7 +128,6 @@ public class SpreadingOfFireSimulation extends Simulation{
             numberAlive--;
         }
     }
-
     /**
      * @param x
      * @param y
@@ -149,7 +140,6 @@ public class SpreadingOfFireSimulation extends Simulation{
         	numberFire--;
         }
     }
-
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()
      */
@@ -194,7 +184,6 @@ public class SpreadingOfFireSimulation extends Simulation{
         
         numberFire = fireBurnedInitially;
     }
-
     /**
      * 
      */
@@ -221,7 +210,6 @@ public class SpreadingOfFireSimulation extends Simulation{
                 } 
             }
         }
-
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
                 if(myGrid.getCell(i,j).getState() == States.BURNING) {
@@ -299,7 +287,6 @@ public class SpreadingOfFireSimulation extends Simulation{
     	numDeadText.setText(dead + numberDead);
     	numAliveText.setText(alive + numberAlive);
     }
-
     /**
      * 
      */
@@ -309,7 +296,6 @@ public class SpreadingOfFireSimulation extends Simulation{
     	aliveLine.getData().add(new XYChart.Data(stepCount, numberAlive));
     	updateText();
     }
-
     @Override
     public void step () {
         updateState();

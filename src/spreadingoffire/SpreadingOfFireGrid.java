@@ -1,5 +1,4 @@
 package spreadingoffire;
-
 import base.Cell;
 import base.Grid;
 import base.Simulation.CellType;
@@ -9,7 +8,6 @@ import javafx.scene.paint.Color;
 import spreadingoffire.SpreadingOfFireCell.States;
 import waterworld.WaTorWorldCell;
 import waterworld.WaTorWorldCell.State;
-
 /**
  * @author Soravit
  *
@@ -28,11 +26,9 @@ public class SpreadingOfFireGrid extends Grid {
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
-
 	public SpreadingOfFireCell getCell(int row, int col) {
 		return (SpreadingOfFireCell) super.getCell(row,col);
 	}
-
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
@@ -60,7 +56,6 @@ public class SpreadingOfFireGrid extends Grid {
             }
         }	      
 	}
-
 	private void setUpListener(SpreadingOfFireCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -97,5 +92,4 @@ public class SpreadingOfFireGrid extends Grid {
 		        getCell(x,y).setColor(Color.BROWN);
 		}
 	}
-
 }

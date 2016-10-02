@@ -1,9 +1,7 @@
 package spreadingoffire;
-
 import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
-
 public class SpreadingOfFireCell extends Cell {
 	public enum States{BURNING, DEAD, ALIVE, CAUGHTFIRE};
     private States states;
@@ -29,7 +27,6 @@ public class SpreadingOfFireCell extends Cell {
     public void catchfire(){
         this.states = States.CAUGHTFIRE;
     }
-
     /**
      * 
      */
@@ -40,7 +37,6 @@ public class SpreadingOfFireCell extends Cell {
     public void burnout() {
     	this.states = States.DEAD;
     }
-
     /**
      * @return
      */

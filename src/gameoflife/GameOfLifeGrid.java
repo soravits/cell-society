@@ -1,5 +1,4 @@
 package gameoflife;
-
 import base.Cell;
 import base.Grid;
 import base.Simulation.CellType;
@@ -8,7 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell;
 import waterworld.WaTorWorldCell.State;
-
 /**
  * @author Brian
  *
@@ -16,7 +14,6 @@ import waterworld.WaTorWorldCell.State;
 public class GameOfLifeGrid extends Grid{
     private GameOfLifeSimulation sim; 
     //make instance of itself instead of using a getter all the time?
-
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -29,11 +26,9 @@ public class GameOfLifeGrid extends Grid{
         super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }
-
     public GameOfLifeCell getCell(int row, int col) {
         return (GameOfLifeCell) super.getCell(row,col);
     }
-
     /**
      * @param row
      * @param col
@@ -48,7 +43,6 @@ public class GameOfLifeGrid extends Grid{
         }
         getCell(row,col).setBorder(Color.WHITE);
     }
-
     /* (non-Javadoc)
      * @see base.Grid#initializeGrid()
      */
@@ -77,7 +71,6 @@ public class GameOfLifeGrid extends Grid{
             }
         }	
     }
-
     private void setUpListener(GameOfLifeCell gridCell) {
         gridCell.returnBlock().setOnMousePressed(event -> {
             gridCell.setAsManuallyModified();

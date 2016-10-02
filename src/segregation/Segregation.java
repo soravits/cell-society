@@ -75,10 +75,6 @@ public class Segregation extends Simulation{
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
         this.percEmpty = percentEmpty;
-        System.out.println(threshold + "thresh");
-        System.out.println(percentA + "perca");
-        System.out.println(percentB + "percB");
-        System.out.println(percentEmpty + "empty");
     }
 
     @Override
@@ -157,10 +153,11 @@ public class Segregation extends Simulation{
         int sameColor = 0;
         int totalNeighbors = 0;
         //if the cell is uninhabited, can't be satisfied or unsatisfied
-        if(currentState.equals(State.EMPTY)) {
+        if(current.getColor().equals(Color.WHITE)){ 
             return EMPTY;
         }
         //checks north
+
         if(myGrid.getNorthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
                 myGrid.getNorthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
@@ -256,6 +253,10 @@ public class Segregation extends Simulation{
         }
         for(int i = 0; i < unhappySpots.size(); i++) {
             int destinationIndex = random.nextInt(emptySpots.size());
+//            System.out.println("destination " + myGrid.getCell(emptySpots.get(destinationIndex).x, 
+//            		emptySpots.get(destinationIndex).y).getState());
+//            System.out.println("origin " + myGrid.getCell(unhappySpots.get(i).x, 
+//            		unhappySpots.get(i).y).getState());
             myGrid.switchCells(unhappySpots.get(i), emptySpots.get(destinationIndex));
             emptySpots.remove(destinationIndex);
         }

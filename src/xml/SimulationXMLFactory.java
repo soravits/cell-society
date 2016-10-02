@@ -55,6 +55,24 @@ public abstract class SimulationXMLFactory extends XMLFactory {
         return gridSize;
     }
     
+    /**
+     * Search XML for grid size, account for formatting and other errors
+     * @return gridSize		int value for number of cells on one side of square grid
+     */
+    public int hasSpecificStates() {
+    	int specific = 0;
+    	try{
+    		specific = Integer.parseInt(getTextValue("specificStates"));
+    	}
+    	catch(NullPointerException e){
+//    		errorPopup("Could not find grid size in XML.");
+    	}
+    	catch(NumberFormatException e){
+//    		errorPopup("The format of the grid size in your XML is incorrect. ");
+    	}
+        return specific;
+    }
+    
 	/**
 	 * Generates error popup window displaying message for why the value is wrong.
 	 * Notifies user that default value will be used instead

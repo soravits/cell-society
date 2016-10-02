@@ -156,7 +156,7 @@ public class Segregation extends Simulation{
             return EMPTY;
         }
         //checks north
-        if(myGrid.getNorthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
+        if(myGrid.getNorthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
                 myGrid.getNorthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
@@ -164,7 +164,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks south
-        if(myGrid.getSouthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
+        if(myGrid.getSouthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
                 myGrid.getSouthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
@@ -172,7 +172,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks west
-        if(myGrid.getWesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
+        if(myGrid.getWesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
                 myGrid.getWesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
@@ -180,7 +180,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks east
-        if(myGrid.getEasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
+        if(myGrid.getEasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
                 myGrid.getEasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
@@ -188,7 +188,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks northwest
-        if(myGrid.getNorthwesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
+        if(myGrid.getNorthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
                 myGrid.getNorthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
@@ -196,7 +196,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks southwest
-        if(myGrid.getSouthwesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
+        if(myGrid.getSouthwesternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
                 myGrid.getSouthwesternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
@@ -204,7 +204,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks northeast
-        if(myGrid.getNortheasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
+        if(myGrid.getNortheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
                 myGrid.getNortheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
@@ -212,7 +212,7 @@ public class Segregation extends Simulation{
                 sameColor++;
         }
         //checks southeast
-        if(myGrid.getSoutheasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
+        if(myGrid.getSoutheasternNeighbor(row, col) != null && !myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
                 myGrid.getSoutheasternNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
             if(myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),

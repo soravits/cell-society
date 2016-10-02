@@ -45,7 +45,7 @@ public class SpreadingOfFireInput extends UserInput{
 	public void manualInput() {
 		// TODO Auto-generated method stub
 		fireScene = new Scene(grid, INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-
+		grid.setStyle("-fx-background-color: #a0c6ed;");
 		grid.setHgap(50);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10));

@@ -2,15 +2,19 @@ package base;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,6 +31,9 @@ public abstract class UserInput {
 	private Alert alert;
 	public static Stage stage;
 	public Pane segWindow;
+	private GridPane grid = new GridPane();
+	private Scene mySimScene;
+	private Spinner<Integer> gridSizeSpinner;
 
 	private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
 			"-fx-background-radius: 20;" + 
@@ -66,6 +73,14 @@ public abstract class UserInput {
 		return segWindow;
 	}
 	
+	public GridPane getGrid(){
+		return grid;
+	}
+	
+	public int getGridSize(){
+		return gridSizeSpinner.getValue();
+	}
+	
 	public ImageView setBackground(){
 		Image background = new Image(getClass().getClassLoader()
 				.getResourceAsStream("BackgroundCellSoc.jpg")); 
@@ -81,7 +96,7 @@ public abstract class UserInput {
 		readXML.setStyle(buttonFill);
         readXML.setOnMouseEntered(e -> mouseIn(readXML));
         readXML.setOnMouseExited(e -> mouseOut(readXML));
-		readXML.setOnMouseClicked(e -> startXMLSimulation());
+		readXML.setOnMouseClicked(e -> startSimulation());
 		readXML.setTranslateX(40);
 		readXML.setTranslateY(80);
 		segWindow.getChildren().add(readXML);
@@ -96,7 +111,7 @@ public abstract class UserInput {
 		inputManual.setStyle(buttonFill);
         inputManual.setOnMouseEntered(e -> mouseIn(inputManual));
         inputManual.setOnMouseExited(e -> mouseOut(inputManual));
-		inputManual.setOnMouseClicked(e -> manualInput());
+		inputManual.setOnMouseClicked(e -> setManualGrid());
 		inputManual.setTranslateX(40);
 		inputManual.setTranslateY(160);
 		segWindow.getChildren().add(inputManual);
@@ -110,15 +125,42 @@ public abstract class UserInput {
     	b.setStyle(buttonFill);
     }
 	
-	public abstract void startXMLSimulation();
+	public abstract Scene initSimulation();
 	
 	public abstract void startManualSimulation();
 
-	public abstract void selectGridSize();
+	public void selectGridSize() {
+		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
+		gridSizeSpinner.setEditable(true);
+		grid.add(new Label("Size of Square Grid"), 0, 4);
+		grid.add(gridSizeSpinner, 1, 4);
+		
+	}
+	
+	public void startSimulation() {
+		mySimScene = initSimulation();
+		stage.setScene(mySimScene);
+		stage.show();
+	}
+	
+	public void setManualGrid(){
+		mySimScene = new Scene(grid, INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
+		grid.setStyle("-fx-background-color: #a0c6ed;");
+		grid.setHgap(50);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(10));
+		manualInput();
+		stage.setScene(mySimScene);
+		stage.show();
+	}
+	
+	public Button startManualButton(String s){
+		Button beginSim = new Button(s);
+		beginSim.setOnMouseClicked(e -> startManualSimulation());
+		return beginSim;
+	}
 	
 	public abstract void manualInput();
-	
-	public abstract Button beginButton();
 
 }
 

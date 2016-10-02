@@ -24,7 +24,6 @@ import waterworld.*;
 import segregation.*;
 import gameoflife.*;
 import xml.*;
-import base.Simulation;
 import base.UserInput;
 
 /**
@@ -74,7 +73,6 @@ public class MainMenu {
 	 *
 	 */
 	public class MenuItem extends StackPane {
-		private Scene scene = null;
 		/**
 		 * @param Name
 		 */
@@ -108,7 +106,6 @@ public class MainMenu {
 
 			setOnMouseReleased(event -> {
 				bg.setFill(gradient);
-				Simulation mySim = null;
 				XMLParser parser = new XMLParser();
 				UserInput input;
 				if(Name == null) {
@@ -163,12 +160,6 @@ public class MainMenu {
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
 				}
-				
-//				Stage stageNew = new Stage();
-//				stageNew.setTitle(stageTitle);
-//				scene = mySim.init(stageNew);
-//				stageNew.setScene(scene);
-//				stageNew.show();
 
 			});
 		}//Closes MenuItem Object

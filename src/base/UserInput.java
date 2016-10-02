@@ -109,17 +109,13 @@ public abstract class UserInput {
 		readXML.setStyle(buttonFill);
         readXML.setOnMouseEntered(e -> mouseIn(readXML));
         readXML.setOnMouseExited(e -> mouseOut(readXML));
-		readXML.setOnMouseClicked(e -> startSimulation());
+		readXML.setOnMouseClicked(e -> startXMLSimulation());
 		readXML.setTranslateX(40);
 		readXML.setTranslateY(80);
 		segWindow.getChildren().add(readXML);
 	}
 	
 	public void manualButton(){
-		String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
-				"-fx-background-radius: 20;" + 
-				"-fx-text-fill: white;";
-
 		Button inputManual = new Button("Input values here");
 		inputManual.setStyle(buttonFill);
         inputManual.setOnMouseEntered(e -> mouseIn(inputManual));
@@ -138,33 +134,72 @@ public abstract class UserInput {
     	b.setStyle(buttonFill);
     }
     
-	/**
-	 * 
-	 */
-	public void startSimulation() {
-		mySimScene = initSimulation();
+//	@Override
+	public void manualInput() {
+		mySimScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
+
+		grid.setHgap(50);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(10));
+		generateNodes();
 		stage.setScene(mySimScene);
 		stage.show();
+	}
+
+	public void selectGridSize() {
+		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
+		gridSizeSpinner.setEditable(true);
+		grid.add(new Label("Size of Square Grid"), 0, 0);
+		grid.add(gridSizeSpinner, 1, 0);
+	}
+	
+//	@Override
+	public Button beginHexButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Hex Simulation");
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.HEX));
+		return beginSim;
+	}
+
+//	@Override
+	public Button beginTriangleButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Triangle Simulation");
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.TRIANGLE));
+		return beginSim;
+	}
+
+//	@Override
+	public Button beginSquareButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Square Simulation");
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.SQUARE));
+		return beginSim;
 	}
 	
 	/**
 	 * @return
 	 */
-	public abstract Scene initSimulation(Stage s, CellType t);
+//	public abstract Scene initSimulation(Stage s, CellType t);
+	
+//	public void startSimulation(){
+//		mySimScene = segregation.init(stage, CellType.SQUARE);
+//		stage.setScene(mySimScene);
+//		stage.show();
+//	}
 	
 	public abstract void startXMLSimulation();
 	
 	public abstract void startManualSimulation(CellType cellType);
+	
+	public abstract void generateNodes();
 
-	public abstract void selectGridSize();
+//	public abstract void selectGridSize();
 	
-	public abstract void manualInput();
-	
-	public abstract Button beginHexButton();
-	
-	public abstract Button beginSquareButton();
-	
-	public abstract Button beginTriangleButton();
+//	public abstract void manualInput();
+//	
+//	public abstract Button beginHexButton();
+//	
+//	public abstract Button beginSquareButton();
+//	
+//	public abstract Button beginTriangleButton();
 
 
 

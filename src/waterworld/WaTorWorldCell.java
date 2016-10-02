@@ -1,10 +1,8 @@
 package waterworld;
-
 import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
 /**
  * @author Soravit
  *
@@ -17,7 +15,6 @@ public class WaTorWorldCell extends Cell {
     public enum State{EMPTY, FISH, SHARK};
     
     private State currState;
-
 	/**
 	 * @param sizeOfCell
 	 * @param rootElement
@@ -37,7 +34,6 @@ public class WaTorWorldCell extends Cell {
     public State getState () {
         return currState;
     }
-
     /**
      * @param currState
      */
@@ -45,28 +41,24 @@ public class WaTorWorldCell extends Cell {
         this.currState = currState;
         updateColor();
     }
-
     /**
      * @return
      */
     public int getBreedTime () {
         return breedTime;
     }
-
     /**
      * @param breedTime
      */
     public void setBreedTime (int breedTime) {
         this.breedTime = breedTime;
     }
-
     /**
      * @return
      */
     public int getStarveTime () {
         return starveTime;
     }
-
     /**
      * @param starveTime
      */

@@ -1,5 +1,4 @@
 package spreadingoffire;
-
 import base.Cell;
 import base.Grid;
 import base.Simulation.CellType;
@@ -9,7 +8,6 @@ import javafx.scene.paint.Color;
 import spreadingoffire.SpreadingOfFireCell.States;
 import waterworld.WaTorWorldCell;
 import waterworld.WaTorWorldCell.State;
-
 /**
  * @author Soravit
  *
@@ -23,16 +21,14 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param initialX
 	 * @param initialY
 	 */
-	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement, int initialX, 
+	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, 
 			int initialY, gridEdgeType edgeType, SpreadingOfFireSimulation sim) {
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
-
-	public SpreadingOfFireCell gridCell(int row, int col) {
+	public SpreadingOfFireCell getCell(int row, int col) {
 		return (SpreadingOfFireCell) super.getCell(row,col);
 	}
-
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
@@ -60,7 +56,6 @@ public class SpreadingOfFireGrid extends Grid {
             }
         }	      
 	}
-
 	private void setUpListener(SpreadingOfFireCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -88,14 +83,13 @@ public class SpreadingOfFireGrid extends Grid {
 	 */
 	public void updateCell(int x, int y, int cellState) {
 		if(cellState == 0) {
-			gridCell(x,y).setColor(Color.YELLOW);
+			getCell(x,y).setColor(Color.YELLOW);
 		}
 		else if(cellState == 1 || cellState == 3) {
-		        gridCell(x,y).setColor(Color.FORESTGREEN);
+		        getCell(x,y).setColor(Color.FORESTGREEN);
 		}
 		else {
-		        gridCell(x,y).setColor(Color.BROWN);
+		        getCell(x,y).setColor(Color.BROWN);
 		}
 	}
-
 }

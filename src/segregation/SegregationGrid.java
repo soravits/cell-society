@@ -121,9 +121,9 @@ public class SegregationGrid extends Grid {
 		State origin = getCell(p1.x, p1.y).getState();
 		
 		updateCell(p1.x, p1.y, destination);
-		System.out.println(destination);
+//		System.out.println(destination);
 		updateCell(p2.x, p2.y, origin);
-		System.out.println(origin);
+//		System.out.println(origin);
 	}
 
 	/**

@@ -1,5 +1,4 @@
 package waterworld;
-
 import base.Grid;
 import base.Simulation;
 import base.Simulation.CellType;
@@ -7,7 +6,6 @@ import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
-
 /**
  * @author Soravit
  *
@@ -22,11 +20,10 @@ public class WaTorWorldGrid extends Grid {
 	 * @param initialY
 	 */
 	public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
-			int initialX, int initialY, WaTorWorldSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+			int initialX, int initialY, gridEdgeType edgeType, WaTorWorldSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
-
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
@@ -55,7 +52,6 @@ public class WaTorWorldGrid extends Grid {
 			}
 		} 
 	}
-
 	private void setUpListener(WaTorWorldCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -73,19 +69,12 @@ public class WaTorWorldGrid extends Grid {
 			sim.updateGraph();
 		});
 	}
-
 	/**
 	 * @param row
 	 * @param col
 	 * @return
 	 */
-<<<<<<< HEAD
-	public WaTorWorldCell gridCell(int x, int y) {
-		return (WaTorWorldCell) super.gridCell(x,y);
-=======
 	public WaTorWorldCell getCell(int row, int col) {
 		return (WaTorWorldCell) super.getCell(row,col);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	}
-
 }

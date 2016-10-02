@@ -1,8 +1,6 @@
 package waterworld;
-
 import java.util.ArrayList;
 import java.util.Collections;
-
 import base.Cell;
 import base.Grid;
 import base.Location;
@@ -18,7 +16,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import waterworld.WaTorWorldCell.State;
-
 /**
  * @author Soravit
  *
@@ -27,7 +24,6 @@ public class WaTorWorldSimulation extends Simulation {
 	private static final String fish = "Fish: ";
 	private static final String shark = "Shark: ";
 	private static final String sea = "Sea: ";
-
 	private static final Text numSea = new Text(
 			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
 			0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, sea);
@@ -37,23 +33,19 @@ public class WaTorWorldSimulation extends Simulation {
 	private static final Text numFish = new Text(
 			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
 			0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, fish);
-
 	private WaTorWorldGrid myGrid;
 	private double fracFish;
 	private double fracShark;
 	private int fishBreedTime;
 	private int sharkBreedTime;
 	private int starveTime;
-
 	private int fishCount;
 	private int seaCount;
 	private int sharkCount;
-
 	private XYChart.Series fishSeries;
 	private XYChart.Series sharkSeries;
 	private XYChart.Series seaSeries;
 	private int stepCount = 0;
-
 	/**
 	 * @param gridLength
 	 * @param fracFish
@@ -72,7 +64,6 @@ public class WaTorWorldSimulation extends Simulation {
 		this.sharkBreedTime = sharkBreedTime;
 		this.starveTime = starveTime;
 	}
-
 	@Override
 	public Scene init (Stage s,CellType type) {
 		setStage(s);
@@ -87,17 +78,15 @@ public class WaTorWorldSimulation extends Simulation {
 				SIMULATION_WINDOW_HEIGHT, Color.WHITE));   
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new WaTorWorldGrid(getGridLength(), getCellSize(), getRootElement(),
-				getLeftMargin(), getTopMargin(), this);
+				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
 		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
 		myGrid.initializeGrid(type);
 		myGrid.setUpButtons();
 		myGrid.setSimulationProfile(this);
 		setInitialEnvironment();
 		createGraph();
-
 		return getMyScene();
 	}
-
 	@Override
 	public void setInitialEnvironment() {
 		sharkCount = 0;
@@ -119,25 +108,22 @@ public class WaTorWorldSimulation extends Simulation {
 		}
 		seaCount = (int) Math.pow(getGridLength(), 2) - sharkCount - fishCount;
 	}
-
 	private boolean manuallyModified(int row, int col) {
-		return (myGrid.gridCell(row, col).isManuallyModified());
+		return (myGrid.getCell(row, col).isManuallyModified());
 	}
-
 	private void noLongerModified(int row, int col) {
-		myGrid.gridCell(row, col).noLongerManuallyModified();
+		myGrid.getCell(row, col).noLongerManuallyModified();
 	}
-
 	public void manuallyModifyStateOfGrid() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
 				if(manuallyModified(i, j)) {
 					noLongerModified(i, j);
-					if((myGrid.gridCell(i, j)).getState() == State.SHARK) {
+					if((myGrid.getCell(i, j)).getState() == State.SHARK) {
 						sharkCount++;
 						fishCount--;
 					} 
-					else if (myGrid.gridCell(i, j).getState() == State.FISH) {
+					else if (myGrid.getCell(i, j).getState() == State.FISH) {
 						fishCount++;
 						seaCount--;
 					}
@@ -149,23 +135,21 @@ public class WaTorWorldSimulation extends Simulation {
 			}
 		}
 	}
-
 	/**
 	 * 
 	 */
 	 public void updateState() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				if(myGrid.gridCell(i, j).getState() == State.SHARK) {
+				if(myGrid.getCell(i, j).getState() == State.SHARK) {
 					updateShark(i, j);
 				} 
-				else if (myGrid.gridCell(i, j).getState() == State.FISH) {
+				else if (myGrid.getCell(i, j).getState() == State.FISH) {
 					updateFish(i, j);
 				}
 			}
 		}
 	}
-
 	/**
 	 * @param row
 	 * @param col
@@ -174,22 +158,6 @@ public class WaTorWorldSimulation extends Simulation {
 		Location currLocation = new Location(row, col);
 		//Cell[][] grid = myGrid.getGrid();
 		ArrayList <Location> fish = new ArrayList <Location>();
-<<<<<<< HEAD
-		myGrid.gridCell(x, y).decrementBreedTime();
-		myGrid.gridCell(x, y).decrementStarveTime();
-		if(x != 0 && (myGrid.gridCell(x - 1, y).getState() == State.FISH)) {
-			fish.add(new Location(x - 1, y));
-		}
-		if(x != getGridLength() - 1 && ( myGrid.gridCell(x + 1, y).getState() == State.FISH)) {
-			fish.add(new Location(x + 1, y));
-		}
-		if(y != getGridLength() - 1 && ( myGrid.gridCell(x, y + 1).getState() == State.FISH)) {
-			fish.add(new Location(x, y + 1));
-		}
-		if(y != 0 && ( myGrid.gridCell(x, y - 1).getState() == State.FISH)) {
-			fish.add(new Location(x, y - 1));
-		}
-=======
 		myGrid.getCell(row, col).decrementBreedTime();
 		myGrid.getCell(row, col).decrementStarveTime();
          if(myGrid.getNorthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
@@ -200,18 +168,14 @@ public class WaTorWorldSimulation extends Simulation {
                  myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == State.FISH){
              fish.add(myGrid.getSouthernNeighbor(row, col));
          }
-
          if(myGrid.getEasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
                  myGrid.getEasternNeighbor(row, col).getColumn()).getState() == State.FISH){
              fish.add(myGrid.getEasternNeighbor(row, col));
          }
-
          if(myGrid.getWesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
                  myGrid.getWesternNeighbor(row, col).getColumn()).getState() == State.FISH){
              fish.add(myGrid.getWesternNeighbor(row, col));
          }
-
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		if(fish.size() == 0) {
 			Location loc = getRandomEmptyNeighbor(row, col);
 			if(loc != null) {
@@ -223,85 +187,48 @@ public class WaTorWorldSimulation extends Simulation {
 		else if(fish.size() == 1) {
 			killCell(fish.get(0).getRow(), fish.get(0).getColumn());
 			fishCount--;
-<<<<<<< HEAD
-			myGrid.gridCell(x,y).setStarveTime(starveTime);
-=======
 			myGrid.getCell(row,col).setStarveTime(starveTime);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		} 
 		else {
 			Collections.shuffle(fish);
 			killCell(fish.get(0).getRow(), fish.get(0).getColumn());
 			fishCount--;
-<<<<<<< HEAD
-			myGrid.gridCell(x, y).setStarveTime(starveTime);
-		}
-
-		if(myGrid.gridCell(currLocation.getX(), currLocation.getY()).getStarveTime() == 0) {
-			killCell(currLocation.getX(), currLocation.getY());
-		} 
-		else if(myGrid.gridCell(currLocation.getX(), currLocation.getY()).getBreedTime() == 0) {
-			Location loc = getRandomEmptyNeighbor(currLocation.getX(), currLocation.getY());
-=======
 			myGrid.getCell(row, col).setStarveTime(starveTime);
 		}
-
 		if(myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).getStarveTime() == 0) {
 			killCell(currLocation.getRow(), currLocation.getColumn());
 		} 
 		else if(myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).getBreedTime() == 0) {
 			Location loc = getRandomEmptyNeighbor(currLocation.getRow(), currLocation.getColumn());
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 			if(loc != null){
 				breedShark(loc.getRow(), loc.getColumn());
 				seaCount--;
 			}
-<<<<<<< HEAD
-			myGrid.gridCell(currLocation.getX(), currLocation.getY()).setBreedTime(sharkBreedTime);
-=======
 			myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).setBreedTime(sharkBreedTime);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		}
 	 }
-
 	 /**
 	  * @param row
 	  * @param col
 	  */
 	 public void updateFish(int row, int col) {
 		 //Cell[][] grid = myGrid.getGrid();        
-<<<<<<< HEAD
-		 myGrid.gridCell(x, y).setBreedTime(myGrid.gridCell(x, y).getBreedTime() - 1);
-		 Location loc = getRandomEmptyNeighbor(x, y);
-=======
 		 myGrid.getCell(row, col).setBreedTime(myGrid.getCell(row, col).getBreedTime() - 1);
 		 Location loc = getRandomEmptyNeighbor(row, col);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		 if(loc != null) {
 			 moveFish(new Location(row, col), loc);
 			 row = loc.getRow();
 			 col = loc.getColumn();
 		 }
-<<<<<<< HEAD
-		 if(myGrid.gridCell(x, y).getBreedTime() == 0) {
-			 Location l = getRandomEmptyNeighbor(x, y);
-=======
 		 if(myGrid.getCell(row, col).getBreedTime() == 0) {
 			 Location l = getRandomEmptyNeighbor(row, col);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 			 if(l != null) {
 				 breedFish(l.getRow(), l.getColumn());
 				 seaCount--;
 			 }
-<<<<<<< HEAD
-			 myGrid.gridCell(x,y).setBreedTime(fishBreedTime);
-=======
 			 myGrid.getCell(row,col).setBreedTime(fishBreedTime);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		 }
-
 	 }
-
 	 /**
 	  * @param row
 	  * @param col
@@ -310,20 +237,6 @@ public class WaTorWorldSimulation extends Simulation {
 	 public Location getRandomEmptyNeighbor(int row, int col) {
 		 ArrayList <Location> locations = new ArrayList <Location>();
 		 //Cell[][] grid = myGrid.getGrid();        
-<<<<<<< HEAD
-		 if(x != 0 && (myGrid.gridCell(x - 1, y).getState() == State.EMPTY)) {
-			 locations.add(new Location(x - 1, y));
-		 }
-		 if(x != getGridLength() - 1 && (myGrid.gridCell(x + 1, y).getState() == State.EMPTY)) {
-			 locations.add(new Location(x + 1, y));
-		 }
-		 if(y != getGridLength() - 1 && (myGrid.gridCell(x, y + 1).getState() == State.EMPTY)) {
-			 locations.add(new Location(x, y + 1));
-		 }
-		 if(y != 0 && (myGrid.gridCell(x, y - 1).getState() == State.EMPTY)) {
-			 locations.add(new Location(x, y - 1));
-		 }
-=======
          if(myGrid.getNorthernNeighbor(row, col) != null && myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
                  myGrid.getNorthernNeighbor(row, col).getColumn()).getState() == State.EMPTY){
              locations.add(myGrid.getNorthernNeighbor(row, col));
@@ -332,108 +245,69 @@ public class WaTorWorldSimulation extends Simulation {
                  myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == State.EMPTY){
              locations.add(myGrid.getSouthernNeighbor(row, col));
          }
-
          if(myGrid.getEasternNeighbor(row, col) != null && myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
                  myGrid.getEasternNeighbor(row, col).getColumn()).getState() == State.EMPTY){
              locations.add(myGrid.getEasternNeighbor(row, col));
          }
-
          if(myGrid.getWesternNeighbor(row, col) != null && myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
                  myGrid.getWesternNeighbor(row, col).getColumn()).getState() == State.EMPTY){
              locations.add(myGrid.getWesternNeighbor(row, col));
          }
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 		 Collections.shuffle(locations);
 		 if(locations.size() > 0){
 			 return locations.get(0);
 		 }
 		 return null;
 	 }
-
 	 /**
 	  * @param source
 	  * @param dest
 	  */
 	 public void moveFish(Location source, Location dest) {
-<<<<<<< HEAD
-		 myGrid.gridCell(dest.getX(), dest.getY()).setState(myGrid.gridCell(source.getX(), 
-				 source.getY()).getState());
-		 myGrid.gridCell(dest.getX(), dest.getY()).setBreedTime(myGrid.gridCell(source.getX(), 
-				 source.getY()).getBreedTime());
-		 killCell(source.getX(),source.getY());
-=======
 		 myGrid.getCell(dest.getRow(), dest.getColumn()).setState(myGrid.getCell(source.getRow(),
 				 source.getColumn()).getState());
 		 myGrid.getCell(dest.getRow(), dest.getColumn()).setBreedTime(myGrid.getCell(source.getRow(),
 				 source.getColumn()).getBreedTime());
 		 killCell(source.getRow(),source.getColumn());
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	 }
-
 	 /**
 	  * @param source
 	  * @param dest
 	  */
 	 public void moveShark(Location source, Location dest) {
 		 moveShark(source, dest);
-<<<<<<< HEAD
-		 myGrid.gridCell(dest.getX(), dest.getY()).setStarveTime(myGrid.gridCell(source.getX(), 
-				 source.getY()).getStarveTime());
-=======
 		 myGrid.getCell(dest.getRow(), dest.getColumn()).setStarveTime(myGrid.getCell(source.getRow(),
 				 source.getColumn()).getStarveTime());
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	 }
-
 	 /**
 	  * @param row
 	  * @param col
 	  */
 	 public void breedFish(int row, int col) {
 		 fishCount++;
-<<<<<<< HEAD
-		 myGrid.gridCell(x, y).setState(State.FISH);
-		 myGrid.gridCell(x, y).setBreedTime(fishBreedTime);
-=======
 		 myGrid.getCell(row, col).setState(State.FISH);
 		 myGrid.getCell(row, col).setBreedTime(fishBreedTime);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	 }
-
 	 /**
 	  * @param row
 	  * @param col
 	  */
 	 public void breedShark(int row, int col) {
 		 sharkCount++;
-<<<<<<< HEAD
-		 myGrid.gridCell(x, y).setState(State.SHARK);
-		 myGrid.gridCell(x, y).setStarveTime(starveTime);
-		 myGrid.gridCell(x, y).setBreedTime(sharkBreedTime);
-=======
 		 myGrid.getCell(row, col).setState(State.SHARK);
 		 myGrid.getCell(row, col).setStarveTime(starveTime);
 		 myGrid.getCell(row, col).setBreedTime(sharkBreedTime);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	 }
-
 	 /**
 	  * @param row
 	  * @param col
 	  */
 	 public void killCell(int row, int col) {
 		 seaCount = (int) Math.pow(getGridLength(), 2) - sharkCount - fishCount;
-<<<<<<< HEAD
-		 myGrid.gridCell(x, y).setState(State.EMPTY);
-		 myGrid.gridCell(x, y).setStarveTime(-1);
-		 myGrid.gridCell(x, y).setBreedTime(-1);
-=======
 		 myGrid.getCell(row, col).setState(State.EMPTY);
 		 myGrid.getCell(row, col).setStarveTime(-1);
 		 myGrid.getCell(row, col).setBreedTime(-1);
->>>>>>> 381394eec5617a6aa6fff496cfcd2922a1d7a1e9
 	 }
-
 	 /**
 	  * 
 	  */
@@ -445,7 +319,6 @@ public class WaTorWorldSimulation extends Simulation {
 		 xAxis.setMinorTickVisible(false);
 		 final NumberAxis yAxis = new NumberAxis();
 		 yAxis.setMinorTickVisible(false);
-
 		 //creating the chart
 		 final LineChart <Number, Number> lineChart = 
 				 new LineChart <Number,Number> (xAxis, yAxis);
@@ -455,21 +328,16 @@ public class WaTorWorldSimulation extends Simulation {
 		 sharkSeries.setName("Shark");
 		 seaSeries = new XYChart.Series();
 		 seaSeries.setName("Sea");
-
-
 		 //populating the series with data
 		 //series.getData().add(new XYChart.Data(1, 23));
 		 lineChart.getData().add(fishSeries);
 		 lineChart.getData().add(sharkSeries);
 		 lineChart.getData().add(seaSeries);
-
 		 lineChart.setLayoutX(25);
 		 lineChart.setPrefSize(500, 100);
 		 lineChart.setLegendVisible(true);
 		 lineChart.setLegendSide(Side.RIGHT);
 		 getRootElement().getChildren().add(lineChart);
-
-
 		 Rectangle cellCounter = new Rectangle(
 				 SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
 				 + 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), 
@@ -490,7 +358,6 @@ public class WaTorWorldSimulation extends Simulation {
 		 getRootElement().getChildren().add(numShark);
 		 getRootElement().getChildren().add(numFish);
 	 }
-
 	 /**
 	  * 
 	  */
@@ -500,7 +367,6 @@ public class WaTorWorldSimulation extends Simulation {
 		 seaSeries.getData().add(new XYChart.Data(stepCount, seaCount));
 		 updateText();
 	 }
-
 	 private void updateText() {
 		 if(fishCount < 0) {
 			 fishCount = 0;
@@ -509,13 +375,10 @@ public class WaTorWorldSimulation extends Simulation {
 		 numShark.setText(shark + sharkCount);
 		 numFish.setText(fish + fishCount);
 	 }
-
 	 @Override
 	 public void step () {
 		 updateState();
 		 updateGraph();
 		 stepCount++;
-
 	 }
-
 }

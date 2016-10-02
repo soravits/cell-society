@@ -63,6 +63,10 @@ public abstract class Grid {
         return edgeType;
     }
 
+    public void setEdgeType(gridEdgeType edgeType){
+        this.edgeType = edgeType;
+    }
+
     /**
      * @return
      */
@@ -125,7 +129,7 @@ public abstract class Grid {
         if(col != 0) {
             return new Location(row, col - 1);
         }else if(edgeType == gridEdgeType.toroidal){
-            return new Location(row-1, rowLength - 1);
+            return new Location(row, rowLength - 1);
         }
         return null;
     }
@@ -282,5 +286,23 @@ public abstract class Grid {
             }
         });
         rootElement.getChildren().add(resumeSim);
+
+        Button makeEdgesFinite = createSimButton("Make edges finite", 20, 400);
+        makeEdgesFinite.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setEdgeType(gridEdgeType.finite);
+            }
+        });
+        rootElement.getChildren().add(makeEdgesFinite);
+
+        Button makeEdgesToroidal = createSimButton("Make edges toroidal", 20, 450);
+        makeEdgesToroidal.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setEdgeType(gridEdgeType.toroidal);
+            }
+        });
+        rootElement.getChildren().add(makeEdgesToroidal);
     }
 }

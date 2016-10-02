@@ -45,15 +45,13 @@ public abstract class SimulationXMLFactory extends XMLFactory {
         return gridSize;
     }
     
-	public void errorPopup(String errorText){
+	public void errorPopup(String errorText) {
 		alert = new Alert(AlertType.ERROR);
 		alert.setTitle("XML Error");
 
 		String s = errorText + defaultVal;
 		alert.setContentText(s);
 		alert.showAndWait();
-		//		    String msg = "Invalid text entered: ";
-
 	}
 
     public abstract String getSimulationType();

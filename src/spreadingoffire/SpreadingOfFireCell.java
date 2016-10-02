@@ -5,7 +5,7 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 public class SpreadingOfFireCell extends Cell {
-	public enum States{FIRE, DEAD, ALIVE};
+	public enum States{BURNING, DEAD, ALIVE, CAUGHTFIRE};
     private States states;
     
     /**
@@ -23,7 +23,11 @@ public class SpreadingOfFireCell extends Cell {
      * 
      */
     public void burn() {
-        this.states = States.FIRE;
+        this.states = States.BURNING;
+    }
+
+    public void catchfire(){
+        this.states = States.CAUGHTFIRE;
     }
 
     /**

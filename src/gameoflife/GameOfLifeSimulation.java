@@ -67,7 +67,7 @@ public class GameOfLifeSimulation extends Simulation{
 				SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
-				getLeftMargin(), getTopMargin(), this);
+				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
 		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
 		deadOrAlive = new boolean[getGridLength()][getGridLength()];
 

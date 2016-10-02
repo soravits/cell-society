@@ -32,10 +32,6 @@ public class GameOfLifeInput extends UserInput {
 
 	@Override
 	public void startManualSimulation(CellType type) {
-//		int inputValue = gridSizeSpinner.getValue();
-//		if((gridSizeSpinner.getValue() > 45)){
-//			inputValue = 45;
-//		}
 		gameOfLife = new GameOfLifeSimulation(getGridSize(), type);
 		gameofLifeScene = gameOfLife.init(stage, type);
 		stage.setScene(gameofLifeScene);

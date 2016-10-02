@@ -1,5 +1,6 @@
 package gameoflife;
 import base.Cell;
+import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell.States;
@@ -54,8 +55,8 @@ public class GameOfLifeGrid extends Grid{
             	double horizontalShift = getSizeOfCell();
             	double verticalShift = getSizeOfCell();
             	if(type == CellType.HEX){
-            		horizontalShift = getSizeOfCell()* 6/10;
-            		verticalShift = 1.925* getSizeOfCell();
+            		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
+            		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
 	            	if(j%2 == 0){
 	            		horizontalOffset= getInitialX() + getSizeOfCell();
 	            		
@@ -64,7 +65,6 @@ public class GameOfLifeGrid extends Grid{
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
                                                              verticalShift * (i) + horizontalOffset, 
                                                              horizontalShift * (j) + getInitialY(),getRowLength(),type);
-                gridCell.fillCellWithColors();
                 gridCell.addToScene();
                 setCell(i,j,gridCell);		
                 setUpListener(gridCell);

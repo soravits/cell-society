@@ -1,6 +1,7 @@
 package segregation;
 import java.awt.Point;
 import segregation.SegregationCell.State;
+import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell;
@@ -56,39 +57,25 @@ public class SegregationGrid extends Grid {
         for(int i = 0; i < getColumnLength(); i++) {
             for(int j = 0; j < getRowLength(); j++) {
             	int horizontalOffset = getInitialX();
-            	
-            	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
-                         getSizeOfCell() * (i) + horizontalOffset, 
-                         getSizeOfCell() * (j) + getInitialY(),getRowLength(),type);
-
+            	double horizontalShift = getSizeOfCell();
+            	double verticalShift = getSizeOfCell();
+            	if(type == CellType.HEX){  
+            		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
+            		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
+	            	if(j%2 == 0){
+	            		horizontalOffset= getInitialX() + getSizeOfCell();
+	            		
+	            	}
+            	}
+            	SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
+                                                             verticalShift * (i) + horizontalOffset, 
+                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
                 gridCell.addToScene();
-                setCell(i,j,gridCell);    
-                setUpListener(gridCell);                      
+                setCell(i,j,gridCell);		
+                setUpListener(gridCell);                    
             }
         }      
         setStats();
-    }
-    
-    private void createNewCell(int i,int j){
-    	int horizontalOffset = getInitialX();
-    	double horizontalShift = getSizeOfCell();
-    	double verticalShift = getSizeOfCell();
-    	if(type == CellType.HEX){
-    		horizontalShift = getSizeOfCell()* 6/10;
-    		verticalShift = 1.925* getSizeOfCell();
-        	if(j%2 == 0){
-        		horizontalOffset= getInitialX() + getSizeOfCell();
-        		
-        	}
-    	}
-    	
-    	 SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
-                 verticalShift * (i) + horizontalOffset, 
-                 horizontalShift * (j) + getInitialY(),getRowLength(),type);
-
-        gridCell.addToScene();
-        setCell(i,j,gridCell);    
-        setUpListener(gridCell); 
     }
 
 	private void setUpListener(SegregationCell gridCell) {

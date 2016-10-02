@@ -5,6 +5,7 @@ import java.util.Random;
 import base.Cell;
 import base.Grid;
 import base.Simulation;
+import base.Simulation.CellType;
 import javafx.animation.Timeline;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -81,12 +82,18 @@ public class Segregation extends Simulation{
     public Scene init(Stage s,CellType type) {
         setStage(s);
         makeNewRootElement();
-        setMyScene(new Scene(getRootElement(), SIMULATION_WINDOW_WIDTH, 
-        		SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+
+		int screenWidth = SIMULATION_WINDOW_WIDTH;
+		if(type == CellType.HEX){
+			screenWidth *= 1.75;
+		}
+		
+		setMyScene(new Scene(getRootElement(), screenWidth, 
+				SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
         setTopMargin(getTopMargin() + marginBoxTop*4);
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
         		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-        myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
+        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);

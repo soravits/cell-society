@@ -1,5 +1,6 @@
 package spreadingoffire;
 
+import base.Grid;
 import base.Simulation;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -64,7 +65,7 @@ public class SpreadingOfFireSimulation extends Simulation{
         		SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
         setTopMargin(getTopMargin() + marginBoxTop * 4);
         this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(), this);
+        		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(SIMULATION_WINDOW_WIDTH, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid();
         myGrid.setUpButtons();

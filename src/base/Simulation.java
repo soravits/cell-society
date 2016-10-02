@@ -23,14 +23,14 @@ public abstract class Simulation{
     private int cellSize;
     private int lengthOfGridInPixels; 
     private int leftMargin;
-    private int topMargin; 
+    private int topMargin;
     private Stage stage;
     private Scene myScene;
     private Pane rootElement;
     protected Timeline animation;
 
     /**
-     * @param gridLength
+     * @param myGridLength
      */
     public Simulation(int myGridLength) {
         gridLength = myGridLength;
@@ -161,7 +161,7 @@ public abstract class Simulation{
      */
     public void setCellSize (int cellSize) {
         this.cellSize = cellSize;
-    }	
+    }
 
     /**
      * @param s

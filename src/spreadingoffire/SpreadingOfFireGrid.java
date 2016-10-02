@@ -23,8 +23,8 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param initialY
 	 */
 	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, 
-			int initialY, SpreadingOfFireSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+			int initialY, gridEdgeType edgeType, SpreadingOfFireSimulation sim) {
+		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
 

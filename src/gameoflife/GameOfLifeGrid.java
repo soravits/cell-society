@@ -24,8 +24,8 @@ public class GameOfLifeGrid extends Grid{
      * @param initialY
      */
     public GameOfLifeGrid(int rowLength, int sizeOfCell, Pane rootElement, 
-                          int initialX, int initialY, GameOfLifeSimulation sim) {
-        super(rowLength, sizeOfCell, rootElement, initialX, initialY);
+                          int initialX, int initialY, gridEdgeType edgeType, GameOfLifeSimulation sim) {
+        super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }
 
@@ -36,7 +36,6 @@ public class GameOfLifeGrid extends Grid{
     /**
      * @param row
      * @param col
-     * @param cellstate
      */
     public void updateCell(int row, int col) {
         GameOfLifeCell myCell = getCell(row, col);

@@ -41,9 +41,6 @@ public class SpreadingOfFireSimulation extends Simulation{
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
     private CellType type;
-    // 0 is empty
-    // 1 is tree
-    // 2 is burning tree
     /**
      * @param gridLength
      * @param probCatch
@@ -98,7 +95,7 @@ public class SpreadingOfFireSimulation extends Simulation{
                     	numberDead++;
                     	numberFire--;
                     }
-                    else {
+                    else if(cellState == States.ALIVE){
                     	numberAlive++;
                     	numberDead--;
                     }
@@ -146,13 +143,12 @@ public class SpreadingOfFireSimulation extends Simulation{
     public void setInitialEnvironment() {
     	numberAlive = 0;
     	numberDead = 0;
-    	
     	createGraph();
     	int fireBurnedInitially = 0;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
             	if(type != CellType.HEX){
-	                if(i == 0 || i == getGridLength() - 1 
+	                if(i == 0 || i == getGridLength() - 1
 	                		|| j == 0 || j == getGridLength()-1) {
 	                    clearCell(i, j);
 	                }
@@ -166,7 +162,7 @@ public class SpreadingOfFireSimulation extends Simulation{
 	                }
             	}
             	else{
-            		if(((i == 0) && (j%2 == 1))  || j == 1 || ((i == getGridLength() - 1)&& (j%2 == 0))  || j == 0 || j == getGridLength()-1) {
+            		if(((j == 0) && (i%2 == 1)) || (i == getGridLength() - 2) || i == 1 || (j == getGridLength() - 1 && i%2 == 0)  || i == 0 || i == getGridLength()-1) {
 	                    clearCell(i, j);
 	                }
 	                else if(i == getGridLength() / 2 
@@ -191,19 +187,19 @@ public class SpreadingOfFireSimulation extends Simulation{
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
                 if(myGrid.getCell(i,j).getState() == States.ALIVE) {
-                    if(myGrid.getCell(myGrid.getNorthernNeighbor(i,j).getRow(), myGrid.getNorthernNeighbor(i,j).getColumn()).
+                    if(myGrid.getNorthernNeighbor(i, j) != null && myGrid.getCell(myGrid.getNorthernNeighbor(i,j).getRow(), myGrid.getNorthernNeighbor(i,j).getColumn()).
                             getState() == States.BURNING) {
                         burnTree(i, j, false);
                     }
-                    if(myGrid.getCell(myGrid.getSouthernNeighbor(i,j).getRow(), myGrid.getSouthernNeighbor(i,j).getColumn()).
+                    if(myGrid.getSouthernNeighbor(i, j) != null && myGrid.getCell(myGrid.getSouthernNeighbor(i,j).getRow(), myGrid.getSouthernNeighbor(i,j).getColumn()).
                             getState() == States.BURNING) {
                         burnTree(i, j, false);
                     }
-                    if(myGrid.getCell(myGrid.getEasternNeighbor(i,j).getRow(), myGrid.getEasternNeighbor(i,j).getColumn()).
+                    if(myGrid.getEasternNeighbor(i, j) != null && myGrid.getCell(myGrid.getEasternNeighbor(i,j).getRow(), myGrid.getEasternNeighbor(i,j).getColumn()).
                             getState() == States.BURNING) {
                         burnTree(i, j, false);
                     }
-                    if(myGrid.getCell(myGrid.getWesternNeighbor(i,j).getRow(), myGrid.getWesternNeighbor(i,j).getColumn()).
+                    if(myGrid.getWesternNeighbor(i, j) != null && myGrid.getCell(myGrid.getWesternNeighbor(i,j).getRow(), myGrid.getWesternNeighbor(i,j).getColumn()).
                             getState() == States.BURNING) {
                         burnTree(i, j, false);
                     }

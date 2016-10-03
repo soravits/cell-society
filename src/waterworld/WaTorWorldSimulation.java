@@ -118,6 +118,7 @@ public class WaTorWorldSimulation extends Simulation {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
 				if(manuallyModified(i, j)) {
+                    System.out.println(i + " " + j);
 					noLongerModified(i, j);
 					if((myGrid.getCell(i, j)).getState() == State.SHARK) {
 						sharkCount++;

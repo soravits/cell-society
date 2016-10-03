@@ -71,7 +71,7 @@ public class Segregation extends Simulation{
      * @param percentEmpty
      */
     public Segregation(int gridLength, double threshold, double percentA, 
-                       double percentB, double percentEmpty,CellType type) {
+                       double percentB, double percentEmpty, CellType type) {
         super(gridLength,type);
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);

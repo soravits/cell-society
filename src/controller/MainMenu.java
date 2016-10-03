@@ -155,10 +155,13 @@ public class MainMenu {
 					stageTitle = Name;
 					stageNew = new Stage();
 					stageNew.setTitle(stageTitle);
-					SegregationXMLFactory rfactory = new SegregationXMLFactory(
+					SugarScapeXMLFactory sugarfactory = new SugarScapeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					SugarScapeSimulation mySugar = new SugarScapeSimulation(rfactory.getGridSize(), 
-							4, 300, 1, 25, 5, 1, 4, CellType.SQUARE);
+					SugarScapeSimulation mySugar = new SugarScapeSimulation(sugarfactory.getSugarGridSize(), 
+							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
+							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
+							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
+							sugarfactory.getAgentVision(), CellType.SQUARE);
 					Stage stageNew = new Stage();
 					stageNew.setTitle(stageTitle);
 					scene = mySugar.init(stageNew, CellType.SQUARE);

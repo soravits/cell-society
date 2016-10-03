@@ -36,21 +36,21 @@ public class SpreadingOfFireGrid extends Grid {
 	@Override
 	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getColumnLength(); i++) {
-            for(int j = 0; j < getColumnLength(); j++) {
+            for(int j = 0; j < getRowLength(); j++) {
             	int horizontalOffset = getInitialX();
             	double horizontalShift = getSizeOfCell();
             	double verticalShift = getSizeOfCell();
             	if(type == CellType.HEX){
             		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
             		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-	            	if(j%2 == 0){
+	            	if(i%2 == 0){
 	            		horizontalOffset= getInitialX() + getSizeOfCell();
 	            		
 	            	}
             	}
-                SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(), 
-                                                             verticalShift * (i) + horizontalOffset, 
-                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
+                SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(),
+                                                             verticalShift * (j) + horizontalOffset,
+                                                             horizontalShift * (i) + getInitialY(),getRowLength(),type);
                 gridCell.addToScene();
                 setCell(i,j,gridCell);		
                 setUpListener(gridCell);
@@ -80,7 +80,7 @@ public class SpreadingOfFireGrid extends Grid {
 	/**
 	 * @param x
 	 * @param y
-	 * @param cellState
+	 * @param state
 	 */
 	public void updateCell(int x, int y, States state) {
 		if(state == States.DEAD) {

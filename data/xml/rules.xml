@@ -19,4 +19,14 @@
 		<sharkBreedTime>20</sharkBreedTime>
 		<starveTime>3</starveTime>
 	</Simulation>
+	<Simulation SimulationType="SugarScape">
+		<sugarGridSize>51</sugarGridSize>
+		<maxSugarPerPatch>4</maxSugarPerPatch>
+		<totalAgents>300</totalAgents>
+		<growBackRate>1</growBackRate>
+		<agentMaxCarbs>25</agentMaxCarbs>
+		<agentMinCarbs>5</agentMinCarbs>
+		<agentMetabRate>1</agentMetabRate>
+		<agentVision>1</agentVision>
+	</Simulation>
 </Simulation>

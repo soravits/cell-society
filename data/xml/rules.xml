@@ -22,11 +22,11 @@
 	<Simulation SimulationType="SugarScape">
 		<sugarGridSize>51</sugarGridSize>
 		<maxSugarPerPatch>4</maxSugarPerPatch>
-		<totalAgents>300</totalAgents>
+		<totalAgents>30</totalAgents>
 		<growBackRate>1</growBackRate>
 		<agentMaxCarbs>25</agentMaxCarbs>
 		<agentMinCarbs>5</agentMinCarbs>
 		<agentMetabRate>1</agentMetabRate>
-		<agentVision>1</agentVision>
+		<agentVision>4</agentVision>
 	</Simulation>
 </Simulation>

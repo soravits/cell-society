@@ -60,8 +60,9 @@ public class SugarScapeCell extends Cell {
 		updateColor();
 	}
 	
-	public void setMovedAgent(int newSugar){
+	public void setMovedAgent(int origCarbs, int newSugar){
 		this.currState = State.AGENT;
+		this.agentCarbs = origCarbs;
 		this.agentCarbs += newSugar;
 		burnAgentCalories();
 		updateColor();
@@ -104,6 +105,7 @@ public class SugarScapeCell extends Cell {
 	}
 	
 	private void killAgent(){
+		System.out.println("agent killed");
 		setSugarAmount(0);
 		setState(State.PATCH);
 	}

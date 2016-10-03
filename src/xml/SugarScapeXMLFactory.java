@@ -25,18 +25,18 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		sugar = Integer.parseInt(getTextValue("maxSugarPerPatch"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find maximum patch sugar content in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of maximum patch sugar content in your XML is incorrect. ");
     	}
     	if(sugar < 0){
-    		errorPopup("Percentage A cannot be negative.");
+    		errorPopup("Maximum patch sugar content cannot be negative.");
         	sugar = 4;
     	}
-    	if(sugar > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
+    	if(sugar > 12){
+    		errorPopup("To observe the effects of sugarscape, " 
+    				+ " maximum patch sugar content cannot be greater than 100.");
         	sugar = 4;
     	}
     	
@@ -61,11 +61,6 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     	}
     	if(agents < 0){
     		errorPopup("Percentage A cannot be negative.");
-        	agents = 300;
-    	}
-    	if(agents > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
         	agents = 300;
     	}
     	
@@ -152,10 +147,10 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     
     /**
      */
-    public int getMaxSugarPerPatch() {
-    	int sugar = 4; //default value if xml is wrong
+    public int getAgentMetabRate() {
+    	int metab = 1; //default value if xml is wrong
     	try{
-    		sugar = Integer.parseInt(getTextValue("maxSugarPerPatch"));
+    		metab = Integer.parseInt(getTextValue("agentMetabRate"));
     	}
     	catch(NullPointerException e){
     		errorPopup("Could not find percentage A in XML.");
@@ -163,25 +158,25 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     	catch(NumberFormatException e){
     		errorPopup("The format of percentage A in your XML is incorrect. ");
     	}
-    	if(sugar < 0){
+    	if(metab < 0){
     		errorPopup("Percentage A cannot be negative.");
-        	sugar = 4;
+        	metab = 1;
     	}
-    	if(sugar > 100){
+    	if(metab > 100){
     		errorPopup("To observe the effects of segregation, " 
     				+ "Percentage A cannot be greater than 100.");
-        	sugar = 4;
+        	metab = 1;
     	}
     	
-    	return sugar;
+    	return metab;
     }
     
     /**
      */
-    public int getMaxSugarPerPatch() {
-    	int sugar = 4; //default value if xml is wrong
+    public int getAgentVision() {
+    	int vision = 4; //default value if xml is wrong
     	try{
-    		sugar = Integer.parseInt(getTextValue("maxSugarPerPatch"));
+    		vision = Integer.parseInt(getTextValue("agentVision"));
     	}
     	catch(NullPointerException e){
     		errorPopup("Could not find percentage A in XML.");
@@ -189,16 +184,16 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     	catch(NumberFormatException e){
     		errorPopup("The format of percentage A in your XML is incorrect. ");
     	}
-    	if(sugar < 0){
+    	if(vision < 0){
     		errorPopup("Percentage A cannot be negative.");
-        	sugar = 4;
+        	vision = 4;
     	}
-    	if(sugar > 100){
+    	if(vision > 100){
     		errorPopup("To observe the effects of segregation, " 
     				+ "Percentage A cannot be greater than 100.");
-        	sugar = 4;
+        	vision = 4;
     	}
     	
-    	return sugar;
+    	return vision;
     }
 }

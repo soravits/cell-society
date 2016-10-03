@@ -35,7 +35,7 @@ public class SugarScapeSimulation extends Simulation {
     
 	private static final String sugar = "Patch sugar: ";
 	private static final String carbs = "Agent carbs: ";
-	private static final String agents = "Num Agents: ";
+//	private static final String agents = "Num Agents: ";
 //	private static final String unsatisfied = "Unsatisfied: ";
 //	
     private int patchTotalSugar = 0;
@@ -52,9 +52,9 @@ public class SugarScapeSimulation extends Simulation {
     private static final Text amtCarbsText = new Text(
     		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
     		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, carbs);
-    private static final Text agentPopText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, agents);
+//    private static final Text agentPopText = new Text(
+//    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
+//    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, agents);
     
     private SugarScapeGrid myGrid;
     private int[][] sugarStates;
@@ -132,7 +132,6 @@ public class SugarScapeSimulation extends Simulation {
      * @return int value indicating cell's state
      */
     public void findAgentDestination(int row, int col) {
-        SugarScapeCell current = myGrid.getCell(row, col);
         Point origin = new Point(row, col);
         Point destination = new Point(row, col);
         ArrayList<Point> destChoices = new ArrayList<>();
@@ -140,65 +139,147 @@ public class SugarScapeSimulation extends Simulation {
         SugarScapeCell myNorth, mySouth, myEast, myWest;
         
         //checks north
-        if(myGrid.getNorthernNeighbor(row, col) != null){
-        	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(), 
-        			myGrid.getNorthernNeighbor(row, col).getColumn());
-        
-        	if(!myNorth.getColor().equals(Color.BLACK) && myNorth.getSugarAmount() >= maxNeighborSugar){
-            	destination = new Point(row - 1, col);
-            	maxNeighborSugar = myNorth.getSugarAmount();
-            	if(myNorth.getSugarAmount() == maxPatchSugar){
-            		destChoices.add(destination);
-            	}
-            }
-        }
+        checkNorthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
+        checkSouthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
+        checkEasternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
+        checkWesternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
+//        if(myGrid.getNorthernNeighbor(row, col) != null){
+//        	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(), 
+//        			myGrid.getNorthernNeighbor(row, col).getColumn());
+//        
+//        	if(!myNorth.getColor().equals(Color.BLACK) && myNorth.getSugarAmount() >= maxNeighborSugar){
+//            	destination = new Point(row - 1, col);
+//            	maxNeighborSugar = myNorth.getSugarAmount();
+//            	if(myNorth.getSugarAmount() == maxPatchSugar){
+//            		destChoices.add(destination);
+//            	}
+//            }
+//        }
         //checks south
-        if(myGrid.getSouthernNeighbor(row, col) != null){
-        	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(), 
-        			myGrid.getSouthernNeighbor(row, col).getColumn());
-        
-        	if(!mySouth.getColor().equals(Color.BLACK) && mySouth.getSugarAmount() >= maxNeighborSugar){
-            	destination = new Point(row + 1, col);
-            	maxNeighborSugar = mySouth.getSugarAmount();
-            	if(mySouth.getSugarAmount() == maxPatchSugar){
-            		destChoices.add(destination);
-            	}
-            }
-        }
+//        if(myGrid.getSouthernNeighbor(row, col) != null){
+//        	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(), 
+//        			myGrid.getSouthernNeighbor(row, col).getColumn());
+//        
+//        	if(!mySouth.getColor().equals(Color.BLACK) && mySouth.getSugarAmount() >= maxNeighborSugar){
+//            	destination = new Point(row + 1, col);
+//            	maxNeighborSugar = mySouth.getSugarAmount();
+//            	if(mySouth.getSugarAmount() == maxPatchSugar){
+//            		destChoices.add(destination);
+//            	}
+//            	System.out.println("south checked");
+//            }
+//        }
         //checks west
-        if(myGrid.getWesternNeighbor(row, col) != null){
-        	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(), 
-        			myGrid.getWesternNeighbor(row, col).getColumn());
-        
-        	if(!myWest.getColor().equals(Color.BLACK) && myWest.getSugarAmount() >= maxNeighborSugar){
-            	destination = new Point(row, col - 1);
-            	maxNeighborSugar = myWest.getSugarAmount();
-            	if(myWest.getSugarAmount() == maxPatchSugar){
-            		destChoices.add(destination);
-            	}
-            }
-        }
+//        if(myGrid.getWesternNeighbor(row, col) != null){
+//        	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(), 
+//        			myGrid.getWesternNeighbor(row, col).getColumn());
+//        
+//        	if(!myWest.getColor().equals(Color.BLACK) && myWest.getSugarAmount() >= maxNeighborSugar){
+//            	destination = new Point(row, col - 1);
+//            	maxNeighborSugar = myWest.getSugarAmount();
+//            	if(myWest.getSugarAmount() == maxPatchSugar){
+//            		destChoices.add(destination);
+//            	}
+//            	System.out.println("west checked");
+//            }
+//        }
         //checks east
-        if(myGrid.getEasternNeighbor(row, col) != null){
-        	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(), 
-        			myGrid.getEasternNeighbor(row, col).getColumn());
-        
-        	if(!myEast.getColor().equals(Color.BLACK) && myEast.getSugarAmount() >= maxNeighborSugar){
-            	destination = new Point(row, col + 1);
-            	maxNeighborSugar = myEast.getSugarAmount();
-            	if(myEast.getSugarAmount() == maxPatchSugar){
-            		destChoices.add(destination);
-            	}
-            }
-        }
-        if(destChoices.size() < 1){
-        	myGrid.moveAgent(origin, destination);
-        }
-        else{
+//        if(myGrid.getEasternNeighbor(row, col) != null){
+//        	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(), 
+//        			myGrid.getEasternNeighbor(row, col).getColumn());
+//        
+//        	if(!myEast.getColor().equals(Color.BLACK) && myEast.getSugarAmount() >= maxNeighborSugar){
+//            	destination = new Point(row, col + 1);
+//            	maxNeighborSugar = myEast.getSugarAmount();
+//            	if(myEast.getSugarAmount() == maxPatchSugar){
+//            		destChoices.add(destination);
+//            	}
+//            	System.out.println("east checked");
+//            }
+//        }
+        if(destChoices.size() > 0){
         	destination = destChoices.get(random.nextInt(destChoices.size()));
-        	myGrid.moveAgent(origin, destination);
-//        	System.out.println(destChoices.size());
         }
+//        System.out.println("origin " + myGrid.getCell(origin.x, origin.y).getState());
+        if(!(origin.x == destination.x && origin.y == destination.y)){
+        	myGrid.moveAgent(origin, destination);
+		}
+    }
+    
+    public void checkNorthernNeighbors(int row, int col, int maxNeighborSugar, 
+    		Point destination, ArrayList<Point> destChoices){
+    	SugarScapeCell myNorth;
+    	for(int i = 0; i < agentVision; i++){
+    		if(row - i >= 0 && myGrid.getNorthernNeighbor(row - i, col) != null) {
+            	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row - i, col).getRow(), 
+            			myGrid.getNorthernNeighbor(row - i, col).getColumn());
+            
+            	if(!myNorth.getColor().equals(Color.BLACK) && myNorth.getSugarAmount() >= maxNeighborSugar){
+                	destination = new Point(row - i, col);
+                	maxNeighborSugar = myNorth.getSugarAmount();
+                	if(myNorth.getSugarAmount() == maxPatchSugar){
+                		destChoices.add(destination);
+                	}
+                }
+            }
+    	}
+    }
+    
+    public void checkSouthernNeighbors(int row, int col, int maxNeighborSugar, 
+    		Point destination, ArrayList<Point> destChoices){
+    	SugarScapeCell mySouth;
+    	for(int i = 0; i < agentVision; i++){
+    		if(row + i < getGridLength() && myGrid.getSouthernNeighbor(row + i, col) != null) {
+            	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row + i, col).getRow(), 
+            			myGrid.getSouthernNeighbor(row + i, col).getColumn());
+            
+            	if(!mySouth.getColor().equals(Color.BLACK) && mySouth.getSugarAmount() >= maxNeighborSugar){
+                	destination = new Point(row + i, col);
+                	maxNeighborSugar = mySouth.getSugarAmount();
+                	if(mySouth.getSugarAmount() == maxPatchSugar){
+                		destChoices.add(destination);
+                	}
+                }
+            }
+    	}
+    }
+    
+    public void checkEasternNeighbors(int row, int col, int maxNeighborSugar, 
+    		Point destination, ArrayList<Point> destChoices){
+    	SugarScapeCell myEast;
+    	for(int i = 0; i < agentVision; i++){
+    		if(col + i < getGridLength() && myGrid.getEasternNeighbor(row, col + i) != null) {
+            	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col + i).getRow(), 
+            			myGrid.getEasternNeighbor(row, col + i).getColumn());
+            
+            	if(!myEast.getColor().equals(Color.BLACK) && myEast.getSugarAmount() >= maxNeighborSugar){
+                	destination = new Point(row, col + i);
+                	maxNeighborSugar = myEast.getSugarAmount();
+                	if(myEast.getSugarAmount() == maxPatchSugar){
+                		destChoices.add(destination);
+                	}
+                }
+            }
+    	}
+    }
+    
+    public void checkWesternNeighbors(int row, int col, int maxNeighborSugar, 
+    		Point destination, ArrayList<Point> destChoices){
+    	SugarScapeCell myWest;
+    	for(int i = 0; i < agentVision; i++){
+    		if(col - i >= 0 && myGrid.getWesternNeighbor(row, col - i) != null) {
+            	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col - i).getRow(), 
+            			myGrid.getWesternNeighbor(row, col - i).getColumn());
+            
+            	if(!myWest.getColor().equals(Color.BLACK) && myWest.getSugarAmount() >= maxNeighborSugar){
+                	destination = new Point(row, col - i);
+                	maxNeighborSugar = myWest.getSugarAmount();
+                	if(myWest.getSugarAmount() == maxPatchSugar){
+                		destChoices.add(destination);
+                	}
+                }
+            }
+    	}
     }
 	
 	public void updateState(){
@@ -272,17 +353,17 @@ public class SugarScapeSimulation extends Simulation {
         getRootElement().getChildren().add(cellCounter);
         amtSugarText.setFill(Color.GRAY);
         amtCarbsText.setFill(Color.DARKBLUE);
-        agentPopText.setFill(Color.BLACK);
+//        agentPopText.setFill(Color.BLACK);
         updateText();
         getRootElement().getChildren().add(amtSugarText);
         getRootElement().getChildren().add(amtCarbsText);
-        getRootElement().getChildren().add(agentPopText);
+//        getRootElement().getChildren().add(agentPopText);
     }
 	
     private void updateText(){
     	amtSugarText.setText(sugar + patchTotalSugar);
         amtCarbsText.setText(carbs + agentTotalCarbs);
-        agentPopText.setText(agents + numTotalAgents); 
+//        agentPopText.setText(agents + numTotalAgents); 
     }
     
     /**

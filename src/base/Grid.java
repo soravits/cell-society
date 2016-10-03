@@ -100,6 +100,15 @@ public abstract class Grid {
     /**
      * @return
      */
+    
+    public Location getGeneralNeighbor(int row, int col, int ns, int ew) {
+        if(row + ns >= 0 && col + ew >= 0) {
+            return new Location(row + ns, col + ew);
+        }else if(edgeType == gridEdgeType.toroidal) {
+            return new Location(columnLength - 1, col);
+        }
+        return null;
+    }
 
     public Location getNorthernNeighbor(int row, int col) {
         if(row != 0) {

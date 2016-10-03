@@ -12,11 +12,27 @@
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
 	</Simulation>
-		<Simulation SimulationType="WaTor World">
+	<Simulation SimulationType="WaTor World">
 		<fracFish>0.4</fracFish>
 		<fracShark>0.1</fracShark>
 		<fishBreedTime>3</fishBreedTime>
 		<sharkBreedTime>20</sharkBreedTime>
 		<starveTime>3</starveTime>
+	</Simulation>
+	<Simulation SimulationType="Foraging Ants">
+		<simDuration>5000</simDuration>
+		<nestLocationRow>49</nestLocationRow>
+		<nestLocationColumn>0</nestLocationColumn>
+		<foodSourceLocationRow>0</foodSourceLocationRow>
+		<foodSourceLocationColumn>0</foodSourceLocationColumn>
+		<maxAntsPerSim>1000</maxAntsPerSim>
+		<maxAntsPerLocation>10</maxAntsPerLocation>
+		<antLifetime>500</antLifetime>
+		<numInitialAnts>2</numInitialAnts>
+		<AntsBornPerStep>2</AntsBornPerStep>
+		<minPheromone>0.0</minPheromone>
+		<maxPheromone>1000.0</maxPheromone>
+		<evapRatio>0.001</evapRatio>
+		<diffusionRatio>10.0</diffusionRatio>
 	</Simulation>
 </Simulation>

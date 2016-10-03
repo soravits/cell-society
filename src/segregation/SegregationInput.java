@@ -9,12 +9,12 @@ import base.UserInput;
 import base.Simulation.CellType;
 
 public class SegregationInput extends UserInput{
-	private String segName = "Segregation";
+	private String segName = "SegregationSimulation";
 	private Scene segScene;
-	private Segregation segregation;
+	private SegregationSimulation segregation;
 	private Spinner<Double> percEmptySpinner, percASpinner, percBSpinner, threshSpinner;
 
-	public SegregationInput(Stage s, SegregationXMLFactory factory, Segregation mySim) {
+	public SegregationInput(Stage s, SegregationXMLFactory factory, SegregationSimulation mySim) {
 		super(s);
 		this.segregation = mySim;
 	}
@@ -78,7 +78,7 @@ public class SegregationInput extends UserInput{
 
 
 	public void startManualSimulation(CellType type) {
-		segregation = new Segregation(getGridSize(), threshSpinner.getValue(),
+		segregation = new SegregationSimulation(getGridSize(), threshSpinner.getValue(),
 				percASpinner.getValue(), percBSpinner.getValue(), percEmptySpinner.getValue(),type);
 		segScene = segregation.init(stage,type);
 		stage.setScene(segScene);

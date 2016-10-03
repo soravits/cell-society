@@ -1,6 +1,8 @@
 
 package controller;
 
+import foragingants.ForagingAntsInput;
+import foragingants.ForagingAntsSimulation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -144,7 +146,7 @@ public class MainMenu {
 					stageNew.setTitle(stageTitle);
 					SegregationXMLFactory segfactory = new SegregationXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					Segregation mySeg = new Segregation(segfactory.getGridSize(), 
+					SegregationSimulation mySeg = new SegregationSimulation(segfactory.getGridSize(),
 							segfactory.getSatisfyThreshold(), segfactory.getPercA(), 
 							segfactory.getPercB(), segfactory.getPercEmpty(),CellType.SQUARE);
 
@@ -163,6 +165,23 @@ public class MainMenu {
 							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
+					case "FORAGING ANTS":
+						stageTitle = Name;
+						stageNew = new Stage();
+						stageNew.setTitle(stageTitle);
+						ForagingAntsXMLFactory FAXMLFactory = new ForagingAntsXMLFactory(
+								parser.getRootElement(xmlFileRoot));
+						ForagingAntsSimulation myForagingAntsSimulation = new ForagingAntsSimulation(
+								FAXMLFactory.getGridSize(), CellType.SQUARE,FAXMLFactory.getDuration(),
+								FAXMLFactory.getNestLocationRow(), FAXMLFactory.getNestLocationColumn(),
+								FAXMLFactory.getFoodSourceLocationRow(), FAXMLFactory.getFoodSourceLocationColumn(),
+								FAXMLFactory.getMaxAntsPerSim(), FAXMLFactory.getMaxAntsPerLocation(),
+								FAXMLFactory.getAntLifetime(), FAXMLFactory.getNumInitialAnts(),
+								FAXMLFactory.getAntsBornPerStep(), FAXMLFactory.getMinPheromone(),
+								FAXMLFactory.getMaxPheromone(), FAXMLFactory.getEvapRatio(),
+								FAXMLFactory.getDiffusionRatio());
+						input = new ForagingAntsInput(stageNew, FAXMLFactory, myForagingAntsSimulation);
+						break;
 				}
 				
 //				Stage stageNew = new Stage();
@@ -198,7 +217,8 @@ public class MainMenu {
 				new MenuItem("FOREST BURNING"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
-				new MenuItem("GAME OF LIFE"));
+				new MenuItem("GAME OF LIFE"),
+				new MenuItem(("FORAGING ANTS")));
 		optionList.setTranslateX(200);
 		optionList.setTranslateY(350);
 		gameWindow.getChildren().add(optionList);

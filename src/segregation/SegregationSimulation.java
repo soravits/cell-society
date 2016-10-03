@@ -21,7 +21,7 @@ import segregation.SegregationCell.State;
 import waterworld.WaTorWorldCell;
 
 /**
- * This is the Segregation class of Cell Society. 
+ * This is the SegregationSimulation class of Cell Society.
  * This runs the simulation for a grid that consists of 2 cell types, red and blue, and empty spots.
  * The cells will move into empty spots based on a set of criteria determining whether they are 
  * "satisfied" or not, thus eventually forming clusters of cells that are similar.
@@ -30,7 +30,7 @@ import waterworld.WaTorWorldCell;
  * @author Delia
  *
  */
-public class Segregation extends Simulation{
+public class SegregationSimulation extends Simulation{
     private static final int EMPTY = 0;
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
@@ -70,8 +70,8 @@ public class Segregation extends Simulation{
      * @param percentB
      * @param percentEmpty
      */
-    public Segregation(int gridLength, double threshold, double percentA, 
-                       double percentB, double percentEmpty,CellType type) {
+    public SegregationSimulation(int gridLength, double threshold, double percentA,
+                                 double percentB, double percentEmpty, CellType type) {
         super(gridLength,type);
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
@@ -87,11 +87,11 @@ public class Segregation extends Simulation{
 		if(type == CellType.HEX){
 			screenWidth *= 1.75;
 		}
-		
-		setMyScene(new Scene(getRootElement(), screenWidth, 
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
+
+		setMyScene(new Scene(getRootElement(), screenWidth,
+				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
         setTopMargin(getTopMargin() + marginBoxTop*4);
-        this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(), 
+        this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(),
         		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid(type);
@@ -101,7 +101,7 @@ public class Segregation extends Simulation{
         setInitialEnvironment();
         return getMyScene();
     }
-    
+
 
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()

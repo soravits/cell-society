@@ -4,7 +4,6 @@ import segregation.SegregationCell.State;
 import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -21,7 +20,7 @@ import javafx.scene.text.Text;
 public class SegregationGrid extends Grid {
 
     private Text stats;
-    private Segregation sim;
+    private SegregationSimulation sim;
     private CellType type;
 
     /**
@@ -32,7 +31,7 @@ public class SegregationGrid extends Grid {
      * @param initialY
      */
     public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                           int initialX, int initialY, gridEdgeType edgeType, Segregation sim) {
+                           int initialX, int initialY, gridEdgeType edgeType, SegregationSimulation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }

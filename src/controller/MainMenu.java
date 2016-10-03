@@ -158,7 +158,7 @@ public class MainMenu {
 					SegregationXMLFactory rfactory = new SegregationXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					SugarScapeSimulation mySugar = new SugarScapeSimulation(rfactory.getGridSize(), 
-							4, 300, 1, 25, 5, 1, CellType.SQUARE);
+							4, 300, 1, 25, 5, 1, 4, CellType.SQUARE);
 					Stage stageNew = new Stage();
 					stageNew.setTitle(stageTitle);
 					scene = mySugar.init(stageNew, CellType.SQUARE);

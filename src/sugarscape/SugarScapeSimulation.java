@@ -58,13 +58,13 @@ public class SugarScapeSimulation extends Simulation {
     
     private SugarScapeGrid myGrid;
     private int[][] sugarStates;
-    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate;
+    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate, agentVision;
     private double percAgents;
     private int totalSteps = 0;
     private Random random = new Random();
     
 	public SugarScapeSimulation(int myGridLength, int maxSugarPerPatch, int totalAgents, 
-			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, CellType type) {
+			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, int agentVision, CellType type) {
 		super(myGridLength, type);
 		this.maxPatchSugar = maxSugarPerPatch;
 		this.numAgents = totalAgents;
@@ -74,6 +74,7 @@ public class SugarScapeSimulation extends Simulation {
 		this.agentMaxCarbs = agentMaxCarbs;
 		this.agentMinCarbs = agentMinCarbs;
 		this.agentMetabRate = agentMetabRate;
+		this.agentVision = agentVision;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spreadingoffire.*;
-import sugarscape.SugarScapeSimulation;
+import sugarscape.*;
 import waterworld.*;
 import segregation.*;
 import gameoflife.*;
@@ -161,13 +161,13 @@ public class MainMenu {
 							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
 							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
 							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
-							sugarfactory.getAgentVision(), CellType.SQUARE);
-					Stage stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
-					scene = mySugar.init(stageNew, CellType.SQUARE);
-					stageNew.setScene(scene);
-					stageNew.show();
-//					input = new SegregationInput(stageNew, segfactory, mySeg);
+							sugarfactory.getAgentVision(), sugarfactory.getPreset(), CellType.SQUARE);
+//					Stage stageNew = new Stage();
+//					stageNew.setTitle(stageTitle);
+//					scene = mySugar.init(stageNew, CellType.SQUARE);
+//					stageNew.setScene(scene);
+//					stageNew.show();
+					input = new SugarScapeInput(stageNew, sugarfactory, mySugar);
 					break;
 
 				case "PREDATOR PREY":

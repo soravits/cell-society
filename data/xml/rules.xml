@@ -12,21 +12,22 @@
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
 	</Simulation>
-		<Simulation SimulationType="WaTor World">
+	<Simulation SimulationType="WaTor World">
 		<fracFish>0.4</fracFish>
 		<fracShark>0.1</fracShark>
 		<fishBreedTime>3</fishBreedTime>
 		<sharkBreedTime>20</sharkBreedTime>
 		<starveTime>3</starveTime>
 	</Simulation>
-	<Simulation SimulationType="SugarScape">
+		<Simulation SimulationType="SugarScape">
 		<sugarGridSize>51</sugarGridSize>
-		<maxSugarPerPatch>4</maxSugarPerPatch>
-		<totalAgents>30</totalAgents>
+		<maxSugarPerPatch>6</maxSugarPerPatch>
+		<totalAgents>200</totalAgents>
 		<growBackRate>1</growBackRate>
 		<agentMaxCarbs>25</agentMaxCarbs>
 		<agentMinCarbs>5</agentMinCarbs>
 		<agentMetabRate>1</agentMetabRate>
 		<agentVision>4</agentVision>
-	</Simulation>
+		<preset>1</preset>
+	</Simulation>	
 </Simulation>

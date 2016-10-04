@@ -58,13 +58,14 @@ public class SugarScapeSimulation extends Simulation {
     
     private SugarScapeGrid myGrid;
     private int[][] sugarStates;
-    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate, agentVision;
+    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate, agentVision, preset;
     private double percAgents;
     private int totalSteps = 0;
     private Random random = new Random();
     
 	public SugarScapeSimulation(int myGridLength, int maxSugarPerPatch, int totalAgents, 
-			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, int agentVision, CellType type) {
+			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, int agentVision,
+			int preset, CellType type) {
 		super(myGridLength, type);
 		this.maxPatchSugar = maxSugarPerPatch;
 		this.numAgents = totalAgents;
@@ -75,6 +76,7 @@ public class SugarScapeSimulation extends Simulation {
 		this.agentMinCarbs = agentMinCarbs;
 		this.agentMetabRate = agentMetabRate;
 		this.agentVision = agentVision;
+		this.preset = preset;
 	}
 
 	@Override
@@ -97,19 +99,21 @@ public class SugarScapeSimulation extends Simulation {
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
         sugarStates = new int[getGridLength()][getGridLength()];
+        createGraph();
         setInitialEnvironment();
+        if(preset == 2) setClusterEnvironment();
+//        else 
         return getMyScene();
 	}
 
 	@Override
 	public void setInitialEnvironment() {
-		createGraph();
         int cellType;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
                 int cellLottery = random.nextInt(100);
                 //if the cell is an agent
-                if(cellLottery <= (percAgents * 100)) {
+                if(preset == 1 && cellLottery <= (percAgents * 100)) {
                     cellType = 1;
 //                    numberEmpty++;
                 }
@@ -122,6 +126,27 @@ public class SugarScapeSimulation extends Simulation {
 //        numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
         updateText();
 
+	}
+	
+	public void setClusterEnvironment() {
+		int clusterGrid = 20;
+		int cellType;
+		percAgents = (double) numAgents / (double) (clusterGrid * clusterGrid);
+		System.out.println("cluster agents " + percAgents);
+        for(int i = 0; i < clusterGrid; i++) {
+            for(int j = 0; j < clusterGrid; j++) {
+                int cellLottery = random.nextInt(100);
+                //if the cell is an agent
+                if(cellLottery <= (percAgents * 100)) {
+                    cellType = 1;
+//                    numberEmpty++;
+                }
+                else { //if the cell is a patch
+                    cellType = 0;
+                }
+                myGrid.updateCell(i, j, cellType);
+            }
+        }
 	}
 	
     /**

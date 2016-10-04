@@ -22,6 +22,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spreadingoffire.*;
+import sugarscape.SugarScapeSimulation;
 import waterworld.*;
 import segregation.*;
 import gameoflife.*;
@@ -152,6 +153,24 @@ public class MainMenu {
 
 					input = new SegregationInput(stageNew, segfactory, mySeg);
 					break;
+				case "SUGARSCAPE":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					SugarScapeXMLFactory sugarfactory = new SugarScapeXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					SugarScapeSimulation mySugar = new SugarScapeSimulation(sugarfactory.getSugarGridSize(), 
+							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
+							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
+							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
+							sugarfactory.getAgentVision(), CellType.SQUARE);
+					Stage stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					scene = mySugar.init(stageNew, CellType.SQUARE);
+					stageNew.setScene(scene);
+					stageNew.show();
+//					input = new SegregationInput(stageNew, segfactory, mySeg);
+					break;
 
 				case "PREDATOR PREY":
 					stageTitle = Name;
@@ -210,7 +229,7 @@ public class MainMenu {
 
 		BigGameNameText titleText = new BigGameNameText("CELL SOCIETY");
 		titleText.setTranslateX(125);
-		titleText.setTranslateY(200);
+		titleText.setTranslateY(120);
 		gameWindow.getChildren().add(titleText);
 
 		OptionContainer optionList = new OptionContainer(
@@ -218,9 +237,11 @@ public class MainMenu {
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
 				new MenuItem("GAME OF LIFE"),
-				new MenuItem(("FORAGING ANTS")));
+				new MenuItem("FORAGING ANTS"),
+				new MenuItem("SUGARSCAPE"),
+				new MenuItem("GAME OF LIFE"));
 		optionList.setTranslateX(200);
-		optionList.setTranslateY(350);
+		optionList.setTranslateY(200);
 		gameWindow.getChildren().add(optionList);
 
 		return gameWindow;

@@ -102,50 +102,59 @@ public abstract class Grid {
     /**
      * @return
      */
-
-    public Location getNorthernNeighbor(int row, int col){
-        if(row != 0) {
-            return new Location(row-1, col);
-        }else if(edgeType == gridEdgeType.toroidal){
+    
+    public Location getGeneralNeighbor(int row, int col, int ns, int ew) {
+        if(row + ns >= 0 && col + ew >= 0) {
+            return new Location(row + ns, col + ew);
+        }else if(edgeType == gridEdgeType.toroidal) {
             return new Location(columnLength - 1, col);
         }
         return null;
     }
 
-    public Location getSouthernNeighbor(int row, int col){
+    public Location getNorthernNeighbor(int row, int col) {
+        if(row != 0) {
+            return new Location(row - 1, col);
+        }else if(edgeType == gridEdgeType.toroidal) {
+            return new Location(columnLength - 1, col);
+        }
+        return null;
+    }
+
+    public Location getSouthernNeighbor(int row, int col) {
         if(row != columnLength - 1) {
             return new Location(row + 1, col);
-        }else if(edgeType == gridEdgeType.toroidal){
+        }else if(edgeType == gridEdgeType.toroidal) {
             return new Location(0, col);
         }
         return null;
     }
 
-    public Location getEasternNeighbor(int row, int col){
-        if(col != rowLength-1) {
+    public Location getEasternNeighbor(int row, int col) {
+        if(col != rowLength - 1) {
             return new Location(row, col + 1);
-        }else if(edgeType == gridEdgeType.toroidal){
+        }else if(edgeType == gridEdgeType.toroidal) {
             return new Location(row, 0);
         }
         return null;
     }
 
-    public Location getWesternNeighbor(int row, int col){
+    public Location getWesternNeighbor(int row, int col) {
         if(col != 0) {
             return new Location(row, col - 1);
-        }else if(edgeType == gridEdgeType.toroidal){
+        }else if(edgeType == gridEdgeType.toroidal) {
             return new Location(row, rowLength - 1);
         }
         return null;
     }
 
-    public Location getNorthwesternNeighbor(int row, int col){
+    public Location getNorthwesternNeighbor(int row, int col) {
         if(row != 0 && col != 0) {
             return new Location(row - 1, col - 1);
-        }else if(edgeType == gridEdgeType.toroidal){
+        }else if(edgeType == gridEdgeType.toroidal) {
             if(row == 0 && col != 0){
                 return new Location(columnLength - 1, col - 1);
-            }else if (row == 0 && col != 0){
+            }else if (row == 0 && col != 0) {
                 return new Location(row - 1, rowLength - 1);
             }
             else {
@@ -156,43 +165,43 @@ public abstract class Grid {
         return null;
     }
 
-    public Location getNortheasternNeighbor(int row, int col){
+    public Location getNortheasternNeighbor(int row, int col) {
         if(row != 0 && col != rowLength - 1) {
             return new Location(row - 1, col + 1);
-        }else if(edgeType == gridEdgeType.toroidal){
-            if(row == 0 && col != rowLength - 1){
+        }else if(edgeType == gridEdgeType.toroidal) {
+            if(row == 0 && col != rowLength - 1) {
                 return new Location(columnLength - 1, col + 1);
-            }else if(row != 0 && col == rowLength - 1){
+            }else if(row != 0 && col == rowLength - 1) {
                 return new Location (row - 1, 0);
-            }else{
+            }else {
                 return new Location(columnLength - 1, 0);
             }
         }
         return null;
     }
 
-    public Location getSouthwesternNeighbor(int row, int col){
+    public Location getSouthwesternNeighbor(int row, int col) {
         if(row != columnLength - 1 && col != 0) {
             return new Location(row + 1, col - 1);
-        }else if(edgeType == gridEdgeType.toroidal){
-            if(row == columnLength - 1 && col != 0){
+        }else if(edgeType == gridEdgeType.toroidal) {
+            if(row == columnLength - 1 && col != 0) {
                 return new Location(0, col - 1);
-            }else if(row != columnLength - 1 && col == 0){
+            }else if(row != columnLength - 1 && col == 0) {
                 return new Location (row + 1, rowLength - 1);
-            }else{
+            }else {
                 return new Location(0, rowLength - 1);
             }
         }
         return null;
     }
 
-    public Location getSoutheasternNeighbor(int row, int col){
+    public Location getSoutheasternNeighbor(int row, int col) {
         if(row != columnLength - 1 && col != rowLength - 1) {
             return new Location(row + 1, col + 1);
         }else if(edgeType == gridEdgeType.toroidal){
-            if(row == columnLength - 1 && col != rowLength -1){
+            if(row == columnLength - 1 && col != rowLength - 1) {
                 return new Location(0, col + 1);
-            }else if(row != columnLength - 1 && col == rowLength - 1){
+            }else if(row != columnLength - 1 && col == rowLength - 1) {
                 return new Location (row + 1, 0);
             }else{
                 return new Location(0, 0);

@@ -27,7 +27,7 @@ public abstract class UserInput {
 	
 	public static Stage stage;
 	public Pane segWindow;
-	private Scene mySimScene;
+	private Scene foragingAntsScene;
 	private Spinner<Integer> gridSizeSpinner;
 	
 	private GridPane grid = new GridPane();
@@ -136,13 +136,13 @@ public abstract class UserInput {
     
 //	@Override
 	public void manualInput() {
-		mySimScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
+		foragingAntsScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
 
 		grid.setHgap(50);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10));
 		generateNodes();
-		stage.setScene(mySimScene);
+		stage.setScene(foragingAntsScene);
 		stage.show();
 	}
 

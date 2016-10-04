@@ -14,7 +14,8 @@ public class SugarScapeInput extends UserInput {
 	private static final int GRIDSIZE = 51;
 	private Scene sugarScene;
 	private SugarScapeSimulation sugar;
-	private Spinner<Integer> maxSugarSpinner, totalAgentsSpinner, growBackSpinner, maxCarbsSpinner, minCarbsSpinner, visionSpinner, metabSpinner, presetSpinner;
+	private Spinner<Integer> maxSugarSpinner, totalAgentsSpinner, growBackSpinner, maxCarbsSpinner, 
+	minCarbsSpinner, visionSpinner, metabSpinner, presetSpinner;
 
 	public SugarScapeInput(Stage s, SugarScapeXMLFactory factory, SugarScapeSimulation mySim) {
 		super(s);
@@ -96,13 +97,14 @@ public class SugarScapeInput extends UserInput {
 		
 		
 	}
-//	private Spinner<Integer> maxSugarSpinner, totalAgentsSpinner, growBackSpinner, maxCarbsSpinner, minCarbsSpinner, visionSpinner, metabSpinner, presetSpinner;
 
 
 	@Override
 	public void startManualSimulation(CellType cellType) {
 		sugar = new SugarScapeSimulation(GRIDSIZE, maxSugarSpinner.getValue(),
-				totalAgentsSpinner.getValue(), growBackSpinner.getValue(), maxCarbsSpinner.getValue(), minCarbsSpinner.getValue(), metabSpinner.getValue(), visionSpinner.getValue(), presetSpinner.getValue(), cellType);
+				totalAgentsSpinner.getValue(), growBackSpinner.getValue(), maxCarbsSpinner.getValue(), 
+				minCarbsSpinner.getValue(), metabSpinner.getValue(), visionSpinner.getValue(), 
+				presetSpinner.getValue(), cellType);
 		sugarScene = sugar.init(stage, cellType);
 		stage.setScene(sugarScene);
 		stage.show();
@@ -123,10 +125,5 @@ public class SugarScapeInput extends UserInput {
 		getGrid().add(beginTriangleButton(sugarName), 0, 9);
 		getGrid().add(beginSquareButton(sugarName), 0, 10);
 	}
-//	
-//	sharkBreedSpinner = new Spinner<>(1, 20, 15, 1);
-//	sharkBreedSpinner.setEditable(true);
-//	getGrid().add(new Label("Shark Breed Time"), 0, 4);
-//	getGrid().add(sharkBreedSpinner, 1, 4);
 
 }

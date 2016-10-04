@@ -1,5 +1,7 @@
 package base;
 
+import java.util.ArrayList;
+
 import base.Simulation.CellType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -208,6 +210,21 @@ public abstract class Grid {
             }
         }
         return null;
+    }
+    
+    public ArrayList<Location> getAllNeighbors(Location location){
+        int row = location.getRow();
+        int col = location.getColumn();
+        ArrayList<Location> neighbors = new ArrayList<Location>();
+        neighbors.add(getNorthernNeighbor(row, col));
+        neighbors.add(getNortheasternNeighbor(row, col));
+        neighbors.add(getEasternNeighbor(row, col));
+        neighbors.add(getSoutheasternNeighbor(row, col));
+        neighbors.add(getSouthernNeighbor(row, col));
+        neighbors.add(getSouthwesternNeighbor(row, col));
+        neighbors.add(getWesternNeighbor(row, col));
+        neighbors.add(getNorthwesternNeighbor(row, col));
+        return neighbors;
     }
 
     public ArrayList<Location> getAllNeighbors(Location location){

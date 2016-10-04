@@ -196,4 +196,27 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     	
     	return vision;
     }
+    
+    public int getPreset() {
+    	int preset = 1; //default value if xml is wrong
+    	try{
+    		preset = Integer.parseInt(getTextValue("preset"));
+    	}
+    	catch(NullPointerException e){
+    		errorPopup("Could not find percentage A in XML.");
+    	}
+    	catch(NumberFormatException e){
+    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    	}
+    	if(preset < 0){
+    		errorPopup("Preset must be 1 or 2.");
+        	preset = 1;
+    	}
+    	if(preset > 2){
+    		errorPopup("Preset cannot be greater than 2.");
+        	preset = 1;
+    	}
+    	
+    	return preset;
+    }
 }

@@ -38,14 +38,14 @@ public class WaTorWorldGrid extends Grid {
             	if(type == CellType.HEX){
             		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
             		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-	            	if(j%2 == 0){
+	            	if(i%2 == 0){
 	            		horizontalOffset= getInitialX() + getSizeOfCell();
 	            		
 	            	}
             	}
                 WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
-                                                             verticalShift * (i) + horizontalOffset, 
-                                                             horizontalShift * (j) + getInitialY(),State.EMPTY,getRowLength(),type);
+                                                             verticalShift * (j) + horizontalOffset,
+                                                             horizontalShift * (i) + getInitialY(),State.EMPTY,getRowLength(),type);
    
                 gridCell.addToScene();
                 setCell(i,j,gridCell);		
@@ -66,7 +66,7 @@ public class WaTorWorldGrid extends Grid {
 				gridCell.setState(State.EMPTY);
 			}
 			gridCell.updateColor();
-			//sim.manuallyModifyStateOfGrid();
+			sim.manuallyModifyStateOfGrid();
 			sim.updateGraph();
 		});
 	}

@@ -1,6 +1,8 @@
 
 package controller;
 
+import foragingants.ForagingAntsInput;
+import foragingants.ForagingAntsSimulation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,12 +22,17 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spreadingoffire.*;
+import sugarscape.*;
 import waterworld.*;
 import segregation.*;
+import slimemolds.SlimeMoldsInput;
+import slimemolds.SlimeMoldsSimulation;
+import foragingants.*;
 import gameoflife.*;
 import xml.*;
 import base.Simulation;
 import base.Simulation.CellType;
+import controller.MainMenu.MenuItem;
 import base.UserInput;
 
 /**
@@ -135,7 +142,7 @@ public class MainMenu {
 					GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					GameOfLifeSimulation myGoL = new GameOfLifeSimulation(
-							GoLFactory.getGridSize(),CellType.SQUARE); 
+							GoLFactory.getGridSize(),GoLFactory.getPercentageAlive(),CellType.SQUARE); 
 					input = new GameOfLifeInput(stageNew, GoLFactory, myGoL);
 					break;
 				case "SEGREGATION":
@@ -144,11 +151,24 @@ public class MainMenu {
 					stageNew.setTitle(stageTitle);
 					SegregationXMLFactory segfactory = new SegregationXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					Segregation mySeg = new Segregation(segfactory.getGridSize(), 
+					SegregationSimulation mySeg = new SegregationSimulation(segfactory.getGridSize(), 
 							segfactory.getSatisfyThreshold(), segfactory.getPercA(), 
 							segfactory.getPercB(), segfactory.getPercEmpty(),CellType.SQUARE);
 
 					input = new SegregationInput(stageNew, segfactory, mySeg);
+					break;
+				case "SUGARSCAPE":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					SugarScapeXMLFactory sugarfactory = new SugarScapeXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					SugarScapeSimulation mySugar = new SugarScapeSimulation(sugarfactory.getSugarGridSize(), 
+							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
+							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
+							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
+							sugarfactory.getAgentVision(), sugarfactory.getPreset(), CellType.SQUARE);
+					input = new SugarScapeInput(stageNew, sugarfactory, mySugar);
 					break;
 
 				case "PREDATOR PREY":
@@ -163,13 +183,37 @@ public class MainMenu {
 							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
+					
+				case "FORAGING ANTS":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					ForagingAntsXMLFactory FAXMLFactory = new ForagingAntsXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					ForagingAntsSimulation myForagingAntsSimulation = new ForagingAntsSimulation(
+							FAXMLFactory.getGridSize(), CellType.SQUARE,FAXMLFactory.getDuration(),
+							FAXMLFactory.getNestLocationRow(), FAXMLFactory.getNestLocationColumn(),
+							FAXMLFactory.getFoodSourceLocationRow(), FAXMLFactory.getFoodSourceLocationColumn(),
+							FAXMLFactory.getMaxAntsPerSim(), FAXMLFactory.getMaxAntsPerLocation(),
+							FAXMLFactory.getAntLifetime(), FAXMLFactory.getNumInitialAnts(),
+							FAXMLFactory.getAntsBornPerStep(), FAXMLFactory.getMinPheromone(),
+							FAXMLFactory.getMaxPheromone(), FAXMLFactory.getEvapRatio(),
+							FAXMLFactory.getDiffusionRatio());
+					input = new ForagingAntsInput(stageNew, FAXMLFactory, myForagingAntsSimulation);
+					break;
+				case "SLIME MOLD":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					SlimeXMLFactory slimeFactory = new SlimeXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					SlimeMoldsSimulation sim = new SlimeMoldsSimulation(slimeFactory.getGridSize(), 
+							slimeFactory.getDiffusionAmt(), slimeFactory.getStepAmt(), 
+							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),slimeFactory.getProbMold(),CellType.SQUARE);
+
+					input = new SlimeMoldsInput(stageNew, slimeFactory, sim);
+					break;
 				}
-				
-//				Stage stageNew = new Stage();
-//				stageNew.setTitle(stageTitle);
-//				scene = mySim.init(stageNew);
-//				stageNew.setScene(scene);
-//				stageNew.show();
 
 			});
 		}//Closes MenuItem Object
@@ -191,16 +235,19 @@ public class MainMenu {
 
 		BigGameNameText titleText = new BigGameNameText("CELL SOCIETY");
 		titleText.setTranslateX(125);
-		titleText.setTranslateY(200);
+		titleText.setTranslateY(120);
 		gameWindow.getChildren().add(titleText);
 
 		OptionContainer optionList = new OptionContainer(
 				new MenuItem("FOREST BURNING"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
-				new MenuItem("GAME OF LIFE"));
+				new MenuItem("GAME OF LIFE"),
+				new MenuItem("FORAGING ANTS"),
+				new MenuItem("SUGARSCAPE"),
+				new MenuItem("SLIME MOLD"));
 		optionList.setTranslateX(200);
-		optionList.setTranslateY(350);
+		optionList.setTranslateY(200);
 		gameWindow.getChildren().add(optionList);
 
 		return gameWindow;

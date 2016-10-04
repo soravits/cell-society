@@ -5,7 +5,6 @@ import java.util.Random;
 import base.Cell;
 import base.Grid;
 import base.Simulation;
-import base.Simulation.CellType;
 import javafx.animation.Timeline;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -19,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import segregation.SegregationCell.State;
 import waterworld.WaTorWorldCell;
-
 /**
  * This is the Segregation class of Cell Society. 
  * This runs the simulation for a grid that consists of 2 cell types, red and blue, and empty spots.
@@ -30,7 +28,7 @@ import waterworld.WaTorWorldCell;
  * @author Delia
  *
  */
-public class Segregation extends Simulation{
+public class SegregationSimulation extends Simulation{
     private static final int EMPTY = 0;
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
@@ -70,19 +68,17 @@ public class Segregation extends Simulation{
      * @param percentB
      * @param percentEmpty
      */
-    public Segregation(int gridLength, double threshold, double percentA, 
+    public SegregationSimulation(int gridLength, double threshold, double percentA, 
                        double percentB, double percentEmpty,CellType type) {
         super(gridLength,type);
         this.satisfyThresh = threshold;
         this.percA = percentA * (1 - percentEmpty);
         this.percEmpty = percentEmpty;
     }
-
     @Override
     public Scene init(Stage s,CellType type) {
         setStage(s);
         makeNewRootElement();
-
 		int screenWidth = SIMULATION_WINDOW_WIDTH;
 		if(type == CellType.HEX){
 			screenWidth *= 1.75;
@@ -102,7 +98,6 @@ public class Segregation extends Simulation{
         return getMyScene();
     }
     
-
     /* (non-Javadoc)
      * @see base.Simulation#setInitialEnvironment()
      */
@@ -130,7 +125,6 @@ public class Segregation extends Simulation{
         }
         numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
         updateText();
-
     }
     
     /**
@@ -164,7 +158,6 @@ public class Segregation extends Simulation{
             return EMPTY;
         }
         //checks north
-
         if(myGrid.getNorthernNeighbor(row, col) != null && !myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
                 myGrid.getNorthernNeighbor(row, col).getColumn()).getColor().equals(Color.WHITE)) {
             totalNeighbors++;
@@ -267,7 +260,6 @@ public class Segregation extends Simulation{
             myGrid.switchCells(unhappySpots.get(i), emptySpots.get(destinationIndex));
             emptySpots.remove(destinationIndex);
         }
-
         numberEmpty = emptySpots.size();
         numberUnsatisfied = unhappySpots.size();
         numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
@@ -338,7 +330,6 @@ public class Segregation extends Simulation{
         numSatisfiedText.setText(satisfied + numberSatisfied);
         numUnsatisfiedText.setText(unsatisfied + numberUnsatisfied);
     }
-
     /**
      * 
      */

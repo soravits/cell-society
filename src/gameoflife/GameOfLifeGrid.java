@@ -6,8 +6,7 @@ import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell.States;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import waterworld.WaTorWorldCell;
-import waterworld.WaTorWorldCell.State;
+
 /**
  * @author Brian
  *

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation>
-	<gridSize>50</gridSize>
+	<gridSize>20</gridSize>
 	<Simulation SimulationType="Spreading of Fire">	
 	    <probCatch>0.5</probCatch>
 	</Simulation>
@@ -11,12 +11,46 @@
 		<percentageEmpty>0.2</percentageEmpty>
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
+		<percentageAlive>0.70</percentageAlive>
 	</Simulation>
-		<Simulation SimulationType="WaTor World">
+	<Simulation SimulationType="SlimeMolds">
+		<threshold>1.5</threshold>
+		<diffusionAmt>0.7</diffusionAmt>
+		<stepAmt>1.5</stepAmt>
+		<dissipateAmt>0.5</dissipateAmt>
+		<probMold>0.03</probMold>
+	</Simulation>
+	<Simulation SimulationType="WaTor World">
 		<fracFish>0.4</fracFish>
 		<fracShark>0.1</fracShark>
 		<fishBreedTime>3</fishBreedTime>
 		<sharkBreedTime>20</sharkBreedTime>
 		<starveTime>3</starveTime>
+	</Simulation>
+	<Simulation SimulationType="Foraging Ants">
+		<simDuration>5000</simDuration>
+		<nestLocationRow>15</nestLocationRow>
+		<nestLocationColumn>0</nestLocationColumn>
+		<foodSourceLocationRow>0</foodSourceLocationRow>
+		<foodSourceLocationColumn>0</foodSourceLocationColumn>
+		<maxAntsPerSim>1000</maxAntsPerSim>
+		<maxAntsPerLocation>10</maxAntsPerLocation>
+		<antLifetime>500</antLifetime>
+		<numInitialAnts>2</numInitialAnts>
+		<AntsBornPerStep>2</AntsBornPerStep>
+		<minPheromone>0.0</minPheromone>
+		<maxPheromone>1000.0</maxPheromone>
+		<evapRatio>0.001</evapRatio>
+		<diffusionRatio>10.0</diffusionRatio>
+	</Simulation>
+	<Simulation SimulationType="SugarScape">
+		<sugarGridSize>51</sugarGridSize>
+		<maxSugarPerPatch>4</maxSugarPerPatch>
+		<totalAgents>30</totalAgents>
+		<growBackRate>1</growBackRate>
+		<agentMaxCarbs>25</agentMaxCarbs>
+		<agentMinCarbs>5</agentMinCarbs>
+		<agentMetabRate>1</agentMetabRate>
+		<agentVision>4</agentVision>
 	</Simulation>
 </Simulation>

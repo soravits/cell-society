@@ -1,5 +1,7 @@
 package gameoflife;
 import java.util.Arrays;
+import java.util.Random;
+
 import base.Grid;
 import base.Simulation;
 import gameoflife.GameOfLifeCell.States;
@@ -20,6 +22,8 @@ import waterworld.WaTorWorldCell;
 public class GameOfLifeSimulation extends Simulation{
 	private static final String dead = "Dead: ";
 	private static final String alive = "Alive: ";
+    private static final Random random = new Random();
+    
 	private CellType type;
 	
 	private int numberAlive;
@@ -27,6 +31,7 @@ public class GameOfLifeSimulation extends Simulation{
 	private XYChart.Series deadLine;
 	private XYChart.Series aliveLine;
 	private int stepCount = 0;
+	private double percentageAlive;
 	private static final Text numDeadText = new Text(
 			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
 			0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
@@ -38,9 +43,10 @@ public class GameOfLifeSimulation extends Simulation{
 	/**
 	 * @param gridLength
 	 */
-	public GameOfLifeSimulation(int gridLength, CellType type) {
+	public GameOfLifeSimulation(int gridLength,double percentageAlive, CellType type) {
 		super(gridLength, type);
 		this.type = type;
+		this.percentageAlive = percentageAlive;
 	}
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage)
@@ -143,9 +149,20 @@ public class GameOfLifeSimulation extends Simulation{
 		numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
 		
 		
-		for (boolean[] row : deadOrAlive) {
-			Arrays.fill(row, false);
-		}
+		for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                int cellLottery = random.nextInt(100);
+                if(cellLottery <= (percentageAlive * 100)) {
+                	deadOrAlive[i][j] = true;
+                    numberAlive++;
+                }
+                else {
+                    numberDead++;
+                    deadOrAlive[i][j] = false;
+                }
+            }
+        }
+		
 		updateCellUI();
 		createGraph();
 	}
@@ -169,16 +186,16 @@ public class GameOfLifeSimulation extends Simulation{
 	 * @param col
 	 */
 	private void killCell(int row, int col) {
-		myGrid.updateCell(row, col);
 		myGrid.getCell(row, col).killCell();
+		myGrid.updateCell(row, col);
 	}
 	/**
 	 * @param row
 	 * @param col
 	 */
 	private void reviveCell(int row, int col) {
-		myGrid.updateCell(row, col);
 		myGrid.getCell(row, col).reviveCell();
+		myGrid.updateCell(row, col);
 	}
 	private boolean isAlive(int row, int col) {
 		return (myGrid.getCell(row, col).getState() == States.ALIVE);

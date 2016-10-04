@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 public class SegregationCell extends Cell {
 	
 	public enum State {EMPTY, COLORA, COLORB};
-//    private boolean manuallyModified = false;
     private State currState;
     
     /**
@@ -17,8 +16,9 @@ public class SegregationCell extends Cell {
      * @param xCoord
      * @param yCoord
      */
-    public SegregationCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord,int gridLength,CellType type) {
-        super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
+    public SegregationCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
+    		int gridLength, CellType type) {
+        super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
         this.currState = State.EMPTY;
     }
     

@@ -4,13 +4,11 @@ import segregation.SegregationCell.State;
 import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 /**
  * This is the Grid class for segregation. 
  * It's responsible for some specific behaviors such as switching cells,
@@ -19,11 +17,9 @@ import javafx.scene.text.Text;
  *
  */
 public class SegregationGrid extends Grid {
-
     private Text stats;
-    private Segregation sim;
+    private SegregationSimulation sim;
     private CellType type;
-
     /**
      * @param rowLength
      * @param sizeOfCell
@@ -32,11 +28,10 @@ public class SegregationGrid extends Grid {
      * @param initialY
      */
     public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                           int initialX, int initialY, gridEdgeType edgeType, Segregation sim) {
+                           int initialX, int initialY, gridEdgeType edgeType, SegregationSimulation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }
-
     /**
      * @param row
      * @param col
@@ -45,7 +40,6 @@ public class SegregationGrid extends Grid {
     public SegregationCell getCell(int row, int col) {
         return (SegregationCell) super.getCell(row, col);
     }
-
     /* (non-Javadoc)
      * @see base.Grid#initializeGrid()
      * maybe we should put this in the superclass and have separate methods 
@@ -77,7 +71,6 @@ public class SegregationGrid extends Grid {
         }      
         setStats();
     }
-
 	private void setUpListener(SegregationCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -94,7 +87,6 @@ public class SegregationGrid extends Grid {
 			sim.updateGraph();
 		});
 	}
-
 	/**
 	 * Switches two cells on the grid.
 	 * Stores the destination color as local Paint object
@@ -112,7 +104,6 @@ public class SegregationGrid extends Grid {
 		updateCell(p2.x, p2.y, origin);
 //		System.out.println(origin);
 	}
-
 	/**
 	 * Sets the text that will display grid statistics
 	 */
@@ -122,7 +113,6 @@ public class SegregationGrid extends Grid {
 		stats.setFill(Color.WHITE);
 		getRootElement().getChildren().add(stats);
 	}
-
 	/**
 	 * Updates the stats for the grid
 	 * @param stepNumber			Which step in the simulation it is
@@ -132,8 +122,6 @@ public class SegregationGrid extends Grid {
 		String currentStat = "Round " + stepNumber;
 		stats.setText(currentStat);
 	}
-
-
 	public void updateCell(int x, int y, State cellState) {		
 		if(cellState.equals(State.EMPTY)) {
 			getCell(x, y).setColor(Color.WHITE);
@@ -148,7 +136,6 @@ public class SegregationGrid extends Grid {
 			getCell(x, y).setState(State.COLORB);
 		}
 	}
-
 	/**
 	 * Sets the color of cell at those coordinates based on its int state
 	 * @param x

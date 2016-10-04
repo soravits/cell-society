@@ -6,6 +6,8 @@ package gameoflife;
 
 import xml.GameOfLifeXMLFactory;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.stage.Stage;
 import base.Simulation.CellType;
 import base.UserInput;
@@ -14,6 +16,7 @@ public class GameOfLifeInput extends UserInput {
     private Scene gameofLifeScene;
     private String lifeString = "Game of Life";
     private GameOfLifeSimulation gameOfLife;
+    private Spinner<Double> percentAliveSpinner;
 
     public GameOfLifeInput(Stage s, GameOfLifeXMLFactory factory, GameOfLifeSimulation mySim) {
         super(s);
@@ -28,11 +31,17 @@ public class GameOfLifeInput extends UserInput {
         stage.show();
 
     }
-
+    
+	public void selectPercAlive() {
+		percentAliveSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
+		percentAliveSpinner.setEditable(true);
+		getGrid().add(new Label("(%) Percentage Alive"), 0, 2);
+		getGrid().add(percentAliveSpinner, 1, 2);
+	}
 
 	@Override
 	public void startManualSimulation(CellType type) {
-		gameOfLife = new GameOfLifeSimulation(getGridSize(), type);
+		gameOfLife = new GameOfLifeSimulation(getGridSize(), percentAliveSpinner.getValue(),type);
 		gameofLifeScene = gameOfLife.init(stage, type);
 		stage.setScene(gameofLifeScene);
 		stage.show();
@@ -42,8 +51,9 @@ public class GameOfLifeInput extends UserInput {
 	@Override
 	public void generateNodes() {
 		selectGridSize();
-		getGrid().add(beginHexButton(lifeString), 0, 1);
-		getGrid().add(beginTriangleButton(lifeString), 0, 2);
-		getGrid().add(beginSquareButton(lifeString), 0, 3);
+		selectPercAlive();
+		getGrid().add(beginHexButton(lifeString), 0, 3);
+		getGrid().add(beginTriangleButton(lifeString), 0, 4);
+		getGrid().add(beginSquareButton(lifeString), 0, 5);
 	}
 }

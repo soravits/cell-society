@@ -4,7 +4,6 @@ import segregation.SegregationCell.State;
 import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;

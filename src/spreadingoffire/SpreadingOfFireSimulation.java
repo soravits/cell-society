@@ -58,11 +58,11 @@ public class SpreadingOfFireSimulation extends Simulation{
 		if(type == CellType.HEX){
 			screenWidth *= 1.75;
 		}
-		
-        setMyScene(new Scene(getRootElement(), screenWidth, 
-        		SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
+
+        setMyScene(new Scene(getRootElement(), screenWidth,
+        		SIMULATION_WINDOW_HEIGHT, Color.WHITE));
         setTopMargin(getTopMargin() + marginBoxTop * 4);
-        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(), 
+        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(),
         		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
         myGrid.initializeGrid(type);

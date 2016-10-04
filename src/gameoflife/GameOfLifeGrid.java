@@ -56,14 +56,14 @@ public class GameOfLifeGrid extends Grid{
             	if(type == CellType.HEX){
             		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
             		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-	            	if(j%2 == 0){
+	            	if(i%2 == 0){
 	            		horizontalOffset= getInitialX() + getSizeOfCell();
 	            		
 	            	}
             	}
                 GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
-                                                             verticalShift * (i) + horizontalOffset, 
-                                                             horizontalShift * (j) + getInitialY(),getRowLength(),type);
+                                                             verticalShift * (j) + horizontalOffset,
+                                                             horizontalShift * (i) + getInitialY(),getRowLength(),type);
                 gridCell.addToScene();
                 setCell(i,j,gridCell);		
                 setUpListener(gridCell);

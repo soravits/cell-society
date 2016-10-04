@@ -40,7 +40,6 @@ public class GameOfLifeSimulation extends Simulation{
 	 */
 	public GameOfLifeSimulation(int gridLength, CellType type) {
 		super(gridLength, type);
-		this.type = type;
 	}
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage)
@@ -49,14 +48,12 @@ public class GameOfLifeSimulation extends Simulation{
 	public Scene init(Stage s,CellType type) {
 		setStage(s);
 		makeNewRootElement();
-		
 		int screenWidth = SIMULATION_WINDOW_WIDTH;
 		if(type == CellType.HEX){
 			screenWidth *= 1.75;
 		}
-		
-		setMyScene(new Scene(getRootElement(), screenWidth, 
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));  
+		setMyScene(new Scene(getRootElement(), screenWidth,
+				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
 		setTopMargin(getTopMargin() + marginBoxTop * 4);
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);

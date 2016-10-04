@@ -1,6 +1,8 @@
 
 package controller;
 
+import foragingants.ForagingAntsInput;
+import foragingants.ForagingAntsSimulation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -38,8 +38,8 @@ public abstract class Simulation{
      * @param myGridLength
      */
     public Simulation(int myGridLength, CellType type) {
-    	this.cellType = type;
         gridLength = myGridLength;
+        cellType = type;
         rootElement = new Pane();
         cellSize = GRID_DIMENSION / gridLength;
         lengthOfGridInPixels = gridLength * cellSize - 100;
@@ -58,7 +58,7 @@ public abstract class Simulation{
         animation.getKeyFrames().add(frame);
         animation.play();    
     };
-    
+
 
     /**
      * 
@@ -174,7 +174,7 @@ public abstract class Simulation{
      * @return
      */
     public abstract Scene init(Stage s, CellType type);
-    
+
     /**
      * 
      */

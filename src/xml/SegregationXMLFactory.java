@@ -18,7 +18,7 @@ public class SegregationXMLFactory extends SimulationXMLFactory {
 
     @Override
     public String getSimulationType() {
-        return "Segregation";
+        return "SegregationSimulation";
     }
 
     /**

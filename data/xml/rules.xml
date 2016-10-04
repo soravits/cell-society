@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation>
-	<gridSize>50</gridSize>
+	<gridSize>20</gridSize>
 	<Simulation SimulationType="Spreading of Fire">	
 	    <probCatch>0.5</probCatch>
 	</Simulation>
@@ -36,7 +36,7 @@
 		<diffusionRatio>10.0</diffusionRatio>
 	</Simulation>
 	<Simulation SimulationType="SugarScape">
-		<sugarGridSize>51</sugarGridSize>
+		<sugarGridSize>20</sugarGridSize>
 		<maxSugarPerPatch>4</maxSugarPerPatch>
 		<totalAgents>30</totalAgents>
 		<growBackRate>1</growBackRate>

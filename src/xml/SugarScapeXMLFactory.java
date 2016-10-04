@@ -14,7 +14,7 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
 	}
 
     public int getSugarGridSize() {
-    	return 51;
+    	return 20;
     }
 
     /**

@@ -42,7 +42,7 @@ public abstract class Grid {
      * @param initialX
      * @param initialY
      */
-    public Grid(int gridLength,int sizeOfCell, Pane rootElement, int initialX, 
+    public Grid(int gridLength, int sizeOfCell, Pane rootElement, int initialX, 
     		int initialY, gridEdgeType edgeType) {
         this.rootElement = rootElement;
         this.rowLength = gridLength;        

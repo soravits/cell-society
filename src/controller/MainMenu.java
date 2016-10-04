@@ -23,6 +23,7 @@ import spreadingoffire.*;
 import sugarscape.*;
 import waterworld.*;
 import segregation.*;
+import foragingants.*;
 import gameoflife.*;
 import xml.*;
 import base.Simulation;
@@ -145,7 +146,7 @@ public class MainMenu {
 					stageNew.setTitle(stageTitle);
 					SegregationXMLFactory segfactory = new SegregationXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					Segregation mySeg = new Segregation(segfactory.getGridSize(), 
+					SegregationSimulation mySeg = new SegregationSimulation(segfactory.getGridSize(), 
 							segfactory.getSatisfyThreshold(), segfactory.getPercA(), 
 							segfactory.getPercB(), segfactory.getPercEmpty(),CellType.SQUARE);
 
@@ -162,11 +163,6 @@ public class MainMenu {
 							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
 							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
 							sugarfactory.getAgentVision(), sugarfactory.getPreset(), CellType.SQUARE);
-//					Stage stageNew = new Stage();
-//					stageNew.setTitle(stageTitle);
-//					scene = mySugar.init(stageNew, CellType.SQUARE);
-//					stageNew.setScene(scene);
-//					stageNew.show();
 					input = new SugarScapeInput(stageNew, sugarfactory, mySugar);
 					break;
 
@@ -182,13 +178,25 @@ public class MainMenu {
 							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
+					
+				case "FORAGING ANTS":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					ForagingAntsXMLFactory FAXMLFactory = new ForagingAntsXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					ForagingAntsSimulation myForagingAntsSimulation = new ForagingAntsSimulation(
+							FAXMLFactory.getGridSize(), CellType.SQUARE,FAXMLFactory.getDuration(),
+							FAXMLFactory.getNestLocationRow(), FAXMLFactory.getNestLocationColumn(),
+							FAXMLFactory.getFoodSourceLocationRow(), FAXMLFactory.getFoodSourceLocationColumn(),
+							FAXMLFactory.getMaxAntsPerSim(), FAXMLFactory.getMaxAntsPerLocation(),
+							FAXMLFactory.getAntLifetime(), FAXMLFactory.getNumInitialAnts(),
+							FAXMLFactory.getAntsBornPerStep(), FAXMLFactory.getMinPheromone(),
+							FAXMLFactory.getMaxPheromone(), FAXMLFactory.getEvapRatio(),
+							FAXMLFactory.getDiffusionRatio());
+					input = new ForagingAntsInput(stageNew, FAXMLFactory, myForagingAntsSimulation);
+					break;
 				}
-				
-//				Stage stageNew = new Stage();
-//				stageNew.setTitle(stageTitle);
-//				scene = mySim.init(stageNew);
-//				stageNew.setScene(scene);
-//				stageNew.show();
 
 			});
 		}//Closes MenuItem Object
@@ -217,6 +225,7 @@ public class MainMenu {
 				new MenuItem("FOREST BURNING"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
+				new MenuItem("FORAGING ANTS"),
 				new MenuItem("SUGARSCAPE"),
 				new MenuItem("GAME OF LIFE"));
 		optionList.setTranslateX(200);

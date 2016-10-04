@@ -2,7 +2,6 @@ package sugarscape;
 
 import java.awt.Point;
 
-import segregation.Segregation;
 import segregation.SegregationCell;
 import sugarscape.SugarScapeCell.State;
 import base.Cell;

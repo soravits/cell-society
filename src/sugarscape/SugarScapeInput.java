@@ -1,6 +1,5 @@
 package sugarscape;
 
-import segregation.Segregation;
 import xml.SugarScapeXMLFactory;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

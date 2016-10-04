@@ -19,7 +19,7 @@ import javafx.scene.text.Text;
  */
 public class SegregationGrid extends Grid {
     private Text stats;
-    private Segregation sim;
+    private SegregationSimulation sim;
     private CellType type;
     /**
      * @param rowLength
@@ -29,7 +29,7 @@ public class SegregationGrid extends Grid {
      * @param initialY
      */
     public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                           int initialX, int initialY, gridEdgeType edgeType, Segregation sim) {
+                           int initialX, int initialY, gridEdgeType edgeType, SegregationSimulation sim) {
         super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
     }

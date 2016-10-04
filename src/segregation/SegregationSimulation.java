@@ -28,7 +28,7 @@ import waterworld.WaTorWorldCell;
  * @author Delia
  *
  */
-public class Segregation extends Simulation{
+public class SegregationSimulation extends Simulation{
     private static final int EMPTY = 0;
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
@@ -68,7 +68,7 @@ public class Segregation extends Simulation{
      * @param percentB
      * @param percentEmpty
      */
-    public Segregation(int gridLength, double threshold, double percentA, 
+    public SegregationSimulation(int gridLength, double threshold, double percentA, 
                        double percentB, double percentEmpty,CellType type) {
         super(gridLength,type);
         this.satisfyThresh = threshold;

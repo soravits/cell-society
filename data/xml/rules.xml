@@ -19,15 +19,30 @@
 		<sharkBreedTime>20</sharkBreedTime>
 		<starveTime>3</starveTime>
 	</Simulation>
-		<Simulation SimulationType="SugarScape">
+	<Simulation SimulationType="Foraging Ants">
+		<simDuration>5000</simDuration>
+		<nestLocationRow>15</nestLocationRow>
+		<nestLocationColumn>0</nestLocationColumn>
+		<foodSourceLocationRow>0</foodSourceLocationRow>
+		<foodSourceLocationColumn>0</foodSourceLocationColumn>
+		<maxAntsPerSim>1000</maxAntsPerSim>
+		<maxAntsPerLocation>10</maxAntsPerLocation>
+		<antLifetime>500</antLifetime>
+		<numInitialAnts>2</numInitialAnts>
+		<AntsBornPerStep>2</AntsBornPerStep>
+		<minPheromone>0.0</minPheromone>
+		<maxPheromone>1000.0</maxPheromone>
+		<evapRatio>0.001</evapRatio>
+		<diffusionRatio>10.0</diffusionRatio>
+	</Simulation>
+	<Simulation SimulationType="SugarScape">
 		<sugarGridSize>51</sugarGridSize>
-		<maxSugarPerPatch>6</maxSugarPerPatch>
-		<totalAgents>200</totalAgents>
+		<maxSugarPerPatch>4</maxSugarPerPatch>
+		<totalAgents>30</totalAgents>
 		<growBackRate>1</growBackRate>
 		<agentMaxCarbs>25</agentMaxCarbs>
 		<agentMinCarbs>5</agentMinCarbs>
 		<agentMetabRate>1</agentMetabRate>
 		<agentVision>4</agentVision>
-		<preset>1</preset>
-	</Simulation>	
+	</Simulation>
 </Simulation>

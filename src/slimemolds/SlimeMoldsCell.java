@@ -3,9 +3,9 @@ package slimemolds;
 import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
-import spreadingoffire.SpreadingOfFireCell.States;
 
-public class SlimeMoldsCell extends Cell{
+public class SlimeMoldsCell extends Cell {
+	
 	public enum MoldStatus{MOLD, EMPTY};
     private MoldStatus moldStatus;
     private double chemicalAmount = 0;
@@ -16,12 +16,17 @@ public class SlimeMoldsCell extends Cell{
      * @param xCoord
      * @param yCoord
      */
-    public SlimeMoldsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord,int gridLength,CellType type) {
+    public SlimeMoldsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
+    		int gridLength, CellType type) {
         super(sizeOfCell, rootElement, xCoord, yCoord,gridLength,type);
         this.moldStatus = MoldStatus.EMPTY;
     }
     
-    public boolean isAttracting(double threshold){
+    /**
+     * @param threshold
+     * @return
+     */
+    public boolean isAttracting(double threshold) {
     	return (chemicalAmount > threshold); 	
     }
     
@@ -32,17 +37,27 @@ public class SlimeMoldsCell extends Cell{
         this.chemicalAmount += diffuseAmount;
     }
     
-    public void dissipate(double dissipateAmount){
+    /**
+     * @param dissipateAmount
+     */
+    public void dissipate(double dissipateAmount) {
     	this.chemicalAmount -= dissipateAmount;
     }
     
-    public double getChemicalAmount(){
+    /**
+     * @return
+     */
+    public double getChemicalAmount() {
     	return this.chemicalAmount;
     }
 
-    public void pollute(double stepChemicalAmount){
+    /**
+     * @param stepChemicalAmount
+     */
+    public void pollute(double stepChemicalAmount) {
         this.chemicalAmount += stepChemicalAmount;
     }
+    
     /**
      * 
      */
@@ -50,10 +65,14 @@ public class SlimeMoldsCell extends Cell{
         this.moldStatus = MoldStatus.MOLD;
     }
     
+    /**
+     * 
+     */
     public void killMold() {
     	this.moldStatus = MoldStatus.EMPTY;
     	this.chemicalAmount = 0;
     }
+    
     /**
      * @return
      */

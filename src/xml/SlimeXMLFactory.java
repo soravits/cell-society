@@ -2,6 +2,11 @@ package xml;
 
 import org.w3c.dom.Element;
 
+/**
+ * @author Brian
+ *MAKE SURE ERROR MESSAGES DONT SAY PERCENTAGE A
+ *
+ */
 public class SlimeXMLFactory extends SimulationXMLFactory{
 
     /**

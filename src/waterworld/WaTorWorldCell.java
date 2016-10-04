@@ -34,6 +34,7 @@ public class WaTorWorldCell extends Cell {
     public State getState () {
         return currState;
     }
+    
     /**
      * @param currState
      */
@@ -41,24 +42,29 @@ public class WaTorWorldCell extends Cell {
         this.currState = currState;
         updateColor();
     }
+    
     /**
      * @return
      */
     public int getBreedTime () {
         return breedTime;
     }
+    
     /**
      * @param breedTime
      */
     public void setBreedTime (int breedTime) {
         this.breedTime = breedTime;
     }
+    
     /**
+     * 
      * @return
      */
     public int getStarveTime () {
         return starveTime;
     }
+    
     /**
      * @param starveTime
      */

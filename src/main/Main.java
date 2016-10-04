@@ -12,6 +12,9 @@ import javafx.application.Application;
 public class Main extends Application {
 	Stage stage;
 
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
 	public void start(Stage primaryStage) {	
 		stage = primaryStage;
 		Scene scene = new Scene(new MainMenu(primaryStage).setUpWindow());

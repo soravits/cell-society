@@ -3,18 +3,16 @@ import base.Cell;
 import base.CellShape;
 import base.Grid;
 import base.Simulation.CellType;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import spreadingoffire.SpreadingOfFireCell.States;
-import waterworld.WaTorWorldCell;
-import waterworld.WaTorWorldCell.State;
 /**
  * @author Soravit
  *
  */
 public class SpreadingOfFireGrid extends Grid {
 	private SpreadingOfFireSimulation sim;
+
 	/**
 	 * @param rowLength
 	 * @param sizeOfCell
@@ -27,36 +25,45 @@ public class SpreadingOfFireGrid extends Grid {
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
+
+	/* (non-Javadoc)
+	 * @see base.Grid#getCell(int, int)
+	 */
 	public SpreadingOfFireCell getCell(int row, int col) {
 		return (SpreadingOfFireCell) super.getCell(row,col);
 	}
+
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
 	@Override
 	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getColumnLength(); i++) {
-            for(int j = 0; j < getRowLength(); j++) {
-            	int horizontalOffset = getInitialX();
-            	double horizontalShift = getSizeOfCell();
-            	double verticalShift = getSizeOfCell();
-            	if(type == CellType.HEX){
-            		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
-            		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-	            	if(i%2 == 0){
-	            		horizontalOffset= getInitialX() + getSizeOfCell();
-	            		
-	            	}
-            	}
-                SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(),
-                                                             verticalShift * (j) + horizontalOffset,
-                                                             horizontalShift * (i) + getInitialY(),getRowLength(),type);
-                gridCell.addToScene();
-                setCell(i,j,gridCell);		
-                setUpListener(gridCell);
-            }
-        }	      
+			for(int j = 0; j < getRowLength(); j++) {
+				int horizontalOffset = getInitialX();
+				double horizontalShift = getSizeOfCell();
+				double verticalShift = getSizeOfCell();
+				if(type == CellType.HEX){
+					horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
+					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
+					if(i % 2 == 0){
+						horizontalOffset= getInitialX() + getSizeOfCell();
+
+					}
+				}
+				SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(),
+						verticalShift * (j) + horizontalOffset,
+						horizontalShift * (i) + getInitialY(),getRowLength(),type);
+				gridCell.addToScene();
+				setCell(i,j,gridCell);		
+				setUpListener(gridCell);
+			}
+		}	      
 	}
+	
+	/**
+	 * @param gridCell
+	 */
 	private void setUpListener(SpreadingOfFireCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -76,7 +83,7 @@ public class SpreadingOfFireGrid extends Grid {
 			sim.updateGraph();
 		});
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
@@ -87,10 +94,10 @@ public class SpreadingOfFireGrid extends Grid {
 			getCell(x,y).setColor(Color.YELLOW);
 		}
 		else if(state == States.ALIVE || state == States.CAUGHTFIRE) {
-		        getCell(x,y).setColor(Color.FORESTGREEN);
+			getCell(x,y).setColor(Color.FORESTGREEN);
 		}
 		else {
-		        getCell(x,y).setColor(Color.BROWN);
+			getCell(x,y).setColor(Color.BROWN);
 		}
 	}
 }

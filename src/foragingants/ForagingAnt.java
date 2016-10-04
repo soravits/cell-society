@@ -9,56 +9,88 @@ public class ForagingAnt {
 
     private int row;
     private int col;
-
     private int orientation = 0;
-
     private ForagingAntsGrid myGrid;
-
     private boolean hasFood;
 
-    public ForagingAnt(int row, int col, ForagingAntsGrid myGrid){
+    /**
+     * @param row
+     * @param col
+     * @param myGrid
+     */
+    public ForagingAnt(int row, int col, ForagingAntsGrid myGrid) {
         this.row = row;
         this.col = col;
         this.myGrid = myGrid;
     }
 
+    /**
+     * @return
+     */
     public int getOrientation() {
         return orientation;
     }
 
+    /**
+     * @param orientation
+     */
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
 
+    /**
+     * @return
+     */
     public int getRow() {
         return row;
     }
 
-    public void setRow(int row){
+    /**
+     * @param row
+     */
+    public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * @return
+     */
     public int getColumn() {
         return col;
     }
 
-    public Location getLocation(){
+    /**
+     * @return
+     */
+    public Location getLocation() {
         return new Location(row, col);
     }
 
-    public void setCol(int col){
+    /**
+     * @param col
+     */
+    public void setCol(int col) {
         this.col = col;
     }
 
+    /**
+     * @return
+     */
     public boolean hasFood() {
         return hasFood;
     }
 
-    public void setHasFood(boolean hasFood){
+    /**
+     * @param hasFood
+     */
+    public void setHasFood(boolean hasFood) {
         this.hasFood = hasFood;
     }
 
-    public void move(Location location){
+    /**
+     * @param location
+     */
+    public void move(Location location) {
             myGrid.getCell(row, col).decrementAntCount();
             setRow(location.getRow());
             setCol(location.getColumn());

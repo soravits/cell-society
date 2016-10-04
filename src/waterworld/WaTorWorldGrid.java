@@ -3,7 +3,6 @@ import base.CellShape;
 import base.Grid;
 import base.Simulation;
 import base.Simulation.CellType;
-import gameoflife.GameOfLifeCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
@@ -25,6 +24,7 @@ public class WaTorWorldGrid extends Grid {
 		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
+
 	/* (non-Javadoc)
 	 * @see base.Grid#initializeGrid()
 	 */
@@ -33,26 +33,30 @@ public class WaTorWorldGrid extends Grid {
 		for(int i = 0; i < getColumnLength(); i++) {
 			for(int j = 0; j < getRowLength(); j++) {
 				int horizontalOffset = getInitialX();
-            	double horizontalShift = getSizeOfCell();
-            	double verticalShift = getSizeOfCell();
-            	if(type == CellType.HEX){
-            		horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
-            		verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-	            	if(i%2 == 0){
-	            		horizontalOffset= getInitialX() + getSizeOfCell();
-	            		
-	            	}
-            	}
-                WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
-                                                             verticalShift * (j) + horizontalOffset,
-                                                             horizontalShift * (i) + getInitialY(),State.EMPTY,getRowLength(),type);
-   
-                gridCell.addToScene();
-                setCell(i,j,gridCell);		
-                setUpListener(gridCell);
+				double horizontalShift = getSizeOfCell();
+				double verticalShift = getSizeOfCell();
+				if(type == CellType.HEX){
+					horizontalShift = getSizeOfCell() * CellShape.horizontalOffsetHexagon;
+					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
+					if(i % 2 == 0){
+						horizontalOffset= getInitialX() + getSizeOfCell();
+
+					}
+				}
+				WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
+						verticalShift * (j) + horizontalOffset,
+						horizontalShift * (i) + getInitialY(), State.EMPTY,getRowLength(), type);
+
+				gridCell.addToScene();
+				setCell(i,j,gridCell);		
+				setUpListener(gridCell);
 			}
 		} 
 	}
+
+	/**
+	 * @param gridCell
+	 */
 	private void setUpListener(WaTorWorldCell gridCell) {
 		gridCell.returnBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModified();
@@ -70,6 +74,7 @@ public class WaTorWorldGrid extends Grid {
 			sim.updateGraph();
 		});
 	}
+	
 	/**
 	 * @param row
 	 * @param col

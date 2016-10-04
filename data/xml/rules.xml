@@ -52,5 +52,6 @@
 		<agentMinCarbs>5</agentMinCarbs>
 		<agentMetabRate>1</agentMetabRate>
 		<agentVision>4</agentVision>
+		<preset>1</preset>
 	</Simulation>
 </Simulation>

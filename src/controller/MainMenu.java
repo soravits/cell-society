@@ -25,11 +25,14 @@ import spreadingoffire.*;
 import sugarscape.*;
 import waterworld.*;
 import segregation.*;
+import slimemolds.SlimeMoldsInput;
+import slimemolds.SlimeMoldsSimulation;
 import foragingants.*;
 import gameoflife.*;
 import xml.*;
 import base.Simulation;
 import base.Simulation.CellType;
+import controller.MainMenu.MenuItem;
 import base.UserInput;
 
 /**
@@ -139,7 +142,7 @@ public class MainMenu {
 					GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					GameOfLifeSimulation myGoL = new GameOfLifeSimulation(
-							GoLFactory.getGridSize(),CellType.SQUARE); 
+							GoLFactory.getGridSize(),GoLFactory.getPercentageAlive(),CellType.SQUARE); 
 					input = new GameOfLifeInput(stageNew, GoLFactory, myGoL);
 					break;
 				case "SEGREGATION":
@@ -198,6 +201,18 @@ public class MainMenu {
 							FAXMLFactory.getDiffusionRatio());
 					input = new ForagingAntsInput(stageNew, FAXMLFactory, myForagingAntsSimulation);
 					break;
+				case "SLIME MOLD":
+					stageTitle = Name;
+					stageNew = new Stage();
+					stageNew.setTitle(stageTitle);
+					SlimeXMLFactory slimeFactory = new SlimeXMLFactory(
+							parser.getRootElement(xmlFileRoot));
+					SlimeMoldsSimulation sim = new SlimeMoldsSimulation(slimeFactory.getGridSize(), 
+							slimeFactory.getDiffusionAmt(), slimeFactory.getStepAmt(), 
+							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),slimeFactory.getProbMold(),CellType.SQUARE);
+
+					input = new SlimeMoldsInput(stageNew, slimeFactory, sim);
+					break;
 				}
 
 			});
@@ -227,9 +242,10 @@ public class MainMenu {
 				new MenuItem("FOREST BURNING"),
 				new MenuItem("PREDATOR PREY"),
 				new MenuItem("SEGREGATION"),
+				new MenuItem("GAME OF LIFE"),
 				new MenuItem("FORAGING ANTS"),
 				new MenuItem("SUGARSCAPE"),
-				new MenuItem("GAME OF LIFE"));
+				new MenuItem("SLIME MOLD"));
 		optionList.setTranslateX(200);
 		optionList.setTranslateY(200);
 		gameWindow.getChildren().add(optionList);

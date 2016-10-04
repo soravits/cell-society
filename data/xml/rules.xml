@@ -11,6 +11,14 @@
 		<percentageEmpty>0.2</percentageEmpty>
 	</Simulation>
 	<Simulation SimulationType="Game Of Life">
+		<percentageAlive>0.70</percentageAlive>
+	</Simulation>
+	<Simulation SimulationType="SlimeMolds">
+		<threshold>1.5</threshold>
+		<diffusionAmt>0.7</diffusionAmt>
+		<stepAmt>1.5</stepAmt>
+		<dissipateAmt>0.5</dissipateAmt>
+		<probMold>0.03</probMold>
 	</Simulation>
 	<Simulation SimulationType="WaTor World">
 		<fracFish>0.4</fracFish>

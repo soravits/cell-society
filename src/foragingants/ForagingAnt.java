@@ -10,7 +10,7 @@ public class ForagingAnt {
     private int row;
     private int col;
 
-    private int orientation = 1;
+    private int orientation = 0;
 
     private ForagingAntsGrid myGrid;
 
@@ -28,14 +28,6 @@ public class ForagingAnt {
 
     public void setOrientation(int orientation) {
         this.orientation = orientation;
-    }
-
-    public void turn(){
-        if(orientation == 1){
-            orientation = 2;
-        }else{
-            orientation = 1;
-        }
     }
 
     public int getRow() {

@@ -1,9 +1,5 @@
 package gameoflife;
 
-//why does it only show a third of the grid when I run it with XML??
-
-//running it with hex is perfect. But with triangle and square, we get strange coloring on the left side
-
 import xml.GameOfLifeXMLFactory;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,26 +8,41 @@ import javafx.stage.Stage;
 import base.Simulation.CellType;
 import base.UserInput;
 
+/**
+ * @author Delia
+ *
+ */
 public class GameOfLifeInput extends UserInput {
-    private Scene gameofLifeScene;
-    private String lifeString = "Game of Life";
-    private GameOfLifeSimulation gameOfLife;
-    private Spinner<Double> percentAliveSpinner;
+	private Scene gameofLifeScene;
+	private String lifeString = "Game of Life";
+	private GameOfLifeSimulation gameOfLife;
+	private Spinner<Double> percentAliveSpinner;
 
-    public GameOfLifeInput(Stage s, GameOfLifeXMLFactory factory, GameOfLifeSimulation mySim) {
-        super(s);
-        this.gameOfLife = mySim;
-    }
+	/**
+	 * @param s
+	 * @param factory
+	 * @param mySim
+	 */
+	public GameOfLifeInput(Stage s, GameOfLifeXMLFactory factory, GameOfLifeSimulation mySim) {
+		super(s);
+		this.gameOfLife = mySim;
+	}
 
 
-    @Override
-    public void startXMLSimulation() {
-        gameofLifeScene = gameOfLife.init(stage, CellType.SQUARE);
-        stage.setScene(gameofLifeScene);
-        stage.show();
+	/* (non-Javadoc)
+	 * @see base.UserInput#startXMLSimulation()
+	 */
+	@Override
+	public void startXMLSimulation() {
+		gameofLifeScene = gameOfLife.init(stage, CellType.SQUARE);
+		stage.setScene(gameofLifeScene);
+		stage.show();
 
-    }
-    
+	}
+
+	/**
+	 * 
+	 */
 	public void selectPercAlive() {
 		percentAliveSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		percentAliveSpinner.setEditable(true);
@@ -39,6 +50,9 @@ public class GameOfLifeInput extends UserInput {
 		getGrid().add(percentAliveSpinner, 1, 2);
 	}
 
+	/* (non-Javadoc)
+	 * @see base.UserInput#startManualSimulation(base.Simulation.CellType)
+	 */
 	@Override
 	public void startManualSimulation(CellType type) {
 		gameOfLife = new GameOfLifeSimulation(getGridSize(), percentAliveSpinner.getValue(),type);
@@ -48,6 +62,9 @@ public class GameOfLifeInput extends UserInput {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see base.UserInput#generateNodes()
+	 */
 	@Override
 	public void generateNodes() {
 		selectGridSize();

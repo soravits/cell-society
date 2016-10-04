@@ -4,7 +4,7 @@ import org.w3c.dom.Element;
 
 /**
  * @author Soravit
- *
+ * Error checking- Delia
  */
 public class WaTorWorldXMLFactory extends SimulationXMLFactory {
 

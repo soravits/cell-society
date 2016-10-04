@@ -37,9 +37,9 @@ import base.UserInput;
 
 /**
  * @author Brian, Delia, Soravit
- *fix lambdas, action event methods
  */
 public class MainMenu {
+	
 	public static final int MAIN_MENU_WIDTH = 700;
 	public static final int MAIN_MENU_HEIGHT = 600;	
 	public static final int FRAMES_PER_SECOND = 60;
@@ -82,7 +82,6 @@ public class MainMenu {
 	 *
 	 */
 	public class MenuItem extends StackPane {
-		private Scene scene = null;
 		/**
 		 * @param Name
 		 */
@@ -116,9 +115,9 @@ public class MainMenu {
 
 			setOnMouseReleased(event -> {
 				bg.setFill(gradient);
-				Simulation mySim = null;
 				XMLParser parser = new XMLParser();
 				UserInput input;
+				
 				if(Name == null) {
 					System.out.println("null");
 				}
@@ -132,7 +131,7 @@ public class MainMenu {
 					FireXMLFactory factory = new FireXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					SpreadingOfFireSimulation myFire = new SpreadingOfFireSimulation(
-							factory.getGridSize(), factory.getProbCatch(),CellType.SQUARE); 
+							factory.getGridSize(), factory.getProbCatch(), CellType.SQUARE); 
 					input = new SpreadingOfFireInput(stageNew, factory, myFire);
 					break;
 				case "GAME OF LIFE":
@@ -142,7 +141,7 @@ public class MainMenu {
 					GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					GameOfLifeSimulation myGoL = new GameOfLifeSimulation(
-							GoLFactory.getGridSize(),GoLFactory.getPercentageAlive(),CellType.SQUARE); 
+							GoLFactory.getGridSize(), GoLFactory.getPercentageAlive(), CellType.SQUARE); 
 					input = new GameOfLifeInput(stageNew, GoLFactory, myGoL);
 					break;
 				case "SEGREGATION":
@@ -163,7 +162,8 @@ public class MainMenu {
 					stageNew.setTitle(stageTitle);
 					SugarScapeXMLFactory sugarfactory = new SugarScapeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					SugarScapeSimulation mySugar = new SugarScapeSimulation(sugarfactory.getSugarGridSize(), 
+					SugarScapeSimulation mySugar = new SugarScapeSimulation(
+							sugarfactory.getSugarGridSize(), 
 							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
 							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
 							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
@@ -180,10 +180,11 @@ public class MainMenu {
 					WaTorWorldSimulation myWater = new WaTorWorldSimulation(
 							WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), 
 							WWXMLFactory.getFracShark(), WWXMLFactory.getFishBreedTime(), 
-							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
+							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),
+							CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
-					
+
 				case "FORAGING ANTS":
 					stageTitle = Name;
 					stageNew = new Stage();
@@ -191,7 +192,7 @@ public class MainMenu {
 					ForagingAntsXMLFactory FAXMLFactory = new ForagingAntsXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					ForagingAntsSimulation myForagingAntsSimulation = new ForagingAntsSimulation(
-							FAXMLFactory.getGridSize(), CellType.SQUARE,FAXMLFactory.getDuration(),
+							FAXMLFactory.getGridSize(), CellType.SQUARE, FAXMLFactory.getDuration(),
 							FAXMLFactory.getNestLocationRow(), FAXMLFactory.getNestLocationColumn(),
 							FAXMLFactory.getFoodSourceLocationRow(), FAXMLFactory.getFoodSourceLocationColumn(),
 							FAXMLFactory.getMaxAntsPerSim(), FAXMLFactory.getMaxAntsPerLocation(),
@@ -209,7 +210,8 @@ public class MainMenu {
 							parser.getRootElement(xmlFileRoot));
 					SlimeMoldsSimulation sim = new SlimeMoldsSimulation(slimeFactory.getGridSize(), 
 							slimeFactory.getDiffusionAmt(), slimeFactory.getStepAmt(), 
-							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),slimeFactory.getProbMold(),CellType.SQUARE);
+							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),
+							slimeFactory.getProbMold(), CellType.SQUARE);
 
 					input = new SlimeMoldsInput(stageNew, slimeFactory, sim);
 					break;

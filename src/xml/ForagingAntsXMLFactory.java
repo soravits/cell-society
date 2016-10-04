@@ -13,11 +13,17 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         super(rootElement);
     }
 
+    /* (non-Javadoc)
+     * @see xml.SimulationXMLFactory#getSimulationType()
+     */
     @Override
     public String getSimulationType() {
         return "Foraging Ants";
     }
 
+    /**
+     * @return
+     */
     public int getDuration(){
         int duration = 5000;
         try{
@@ -36,6 +42,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return duration;
     }
 
+    /**
+     * @return
+     */
     public int getNestLocationRow(){
         int row = 0;
         try{
@@ -54,6 +63,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return row;
     }
 
+    /**
+     * @return
+     */
     public int getNestLocationColumn(){
         int col = 0;
         try{
@@ -72,6 +84,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return col;
     }
 
+    /**
+     * @return
+     */
     public int getFoodSourceLocationRow(){
         int row = getGridSize()/2;
         try{
@@ -90,6 +105,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return row;
     }
 
+    /**
+     * @return
+     */
     public int getFoodSourceLocationColumn(){
         int col = getGridSize()/2;
         try{
@@ -108,6 +126,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return col;
     }
 
+    /**
+     * @return
+     */
     public int getMaxAntsPerSim(){
         int max = 1000;
         try{
@@ -126,6 +147,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return max;
     }
 
+    /**
+     * @return
+     */
     public int getMaxAntsPerLocation(){
         int max = 10;
         try{
@@ -144,6 +168,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return max;
     }
 
+    /**
+     * @return
+     */
     public int getAntLifetime(){
         int lifetime = 500;
         try{
@@ -162,6 +189,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return lifetime;
     }
 
+    /**
+     * @return
+     */
     public int getNumInitialAnts(){
         int numAnts = 2;
         try{
@@ -180,6 +210,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return numAnts;
     }
 
+    /**
+     * @return
+     */
     public int getAntsBornPerStep(){
         int antsBorn = 2;
         try{
@@ -198,6 +231,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return antsBorn;
     }
 
+    /**
+     * @return
+     */
     public double getMinPheromone(){
         double minPheromone = 0.0;
         try{
@@ -216,6 +252,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return minPheromone;
     }
 
+    /**
+     * @return
+     */
     public double getMaxPheromone(){
         double maxPheromone = 1000.0;
         try{
@@ -234,6 +273,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return maxPheromone;
     }
 
+    /**
+     * @return
+     */
     public double getEvapRatio(){
         double evapRatio = 0.001;
         try{
@@ -252,6 +294,9 @@ public class ForagingAntsXMLFactory extends SimulationXMLFactory{
         return evapRatio;
     }
 
+    /**
+     * @return
+     */
     public double getDiffusionRatio(){
         double diffusionRatio = 0.001;
         try{

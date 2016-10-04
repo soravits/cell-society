@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import segregation.SegregationCell;
-import segregation.SegregationGrid;
 import sugarscape.SugarScapeCell.State;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -21,22 +19,15 @@ import base.Simulation;
 import base.Simulation.CellType;
 
 /**
- * PLAN preset 1: implement like segregation
- * Cell: 2 states- patch and agent
- * 	patch data: amount of sugar, max sugar capacity, color indicating amount of sugar, sugar growback rate
- * 	agent data: current amount of sugar stored, rate of sugar metabolism, and vision
- * 
- * plan preset 2: pretty much the same but with different parameter ranges
+ * @author Delia
+ *
  */
-
 public class SugarScapeSimulation extends Simulation {
     private static final int PATCH = 0;
     private static final int AGENT = 1;
     
 	private static final String sugar = "Patch sugar: ";
 	private static final String carbs = "Agent carbs: ";
-//	private static final String agents = "Num Agents: ";
-//	private static final String unsatisfied = "Unsatisfied: ";
 //	
     private int patchTotalSugar = 0;
     private int agentTotalCarbs = 0;
@@ -54,14 +45,27 @@ public class SugarScapeSimulation extends Simulation {
     		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, carbs);
     
     private SugarScapeGrid myGrid;
-    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate, agentVision, preset;
+    private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, 
+    	agentMetabRate, agentVision, preset;
     private double percAgents;
     private int totalSteps = 0;
     private Random random = new Random();
     
+	/**
+	 * @param myGridLength
+	 * @param maxSugarPerPatch
+	 * @param totalAgents
+	 * @param growSugarBackRate
+	 * @param agentMaxCarbs
+	 * @param agentMinCarbs
+	 * @param agentMetabRate
+	 * @param agentVision
+	 * @param preset
+	 * @param type
+	 */
 	public SugarScapeSimulation(int myGridLength, int maxSugarPerPatch, int totalAgents, 
-			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, int agentVision,
-			int preset, CellType type) {
+			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, 
+			int agentVision, int preset, CellType type) {
 		super(myGridLength, type);
 		this.maxPatchSugar = maxSugarPerPatch;
 		this.numAgents = totalAgents;
@@ -74,6 +78,9 @@ public class SugarScapeSimulation extends Simulation {
 		this.preset = preset;
 	}
 
+	/* (non-Javadoc)
+	 * @see base.Simulation#init(javafx.stage.Stage, base.Simulation.CellType)
+	 */
 	@Override
 	public Scene init(Stage s, CellType type) {
         setStage(s);
@@ -99,6 +106,9 @@ public class SugarScapeSimulation extends Simulation {
         return getMyScene();
 	}
 
+	/* (non-Javadoc)
+	 * @see base.Simulation#setInitialEnvironment()
+	 */
 	@Override
 	public void setInitialEnvironment() {
         int cellType;
@@ -119,6 +129,9 @@ public class SugarScapeSimulation extends Simulation {
 
 	}
 	
+	/**
+	 * 
+	 */
 	public void setClusterEnvironment() {
 		int clusterGrid = 20;
 		int cellType;
@@ -166,15 +179,22 @@ public class SugarScapeSimulation extends Simulation {
 		}
     }
     
+    /**
+     * @param row
+     * @param col
+     * @param maxNeighborSugar
+     * @param destination
+     * @param destChoices
+     */
     public void checkNorthernNeighbors(int row, int col, int maxNeighborSugar, 
-    		Point destination, ArrayList<Point> destChoices){
+    		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myNorth;
     	for(int i = 0; i < agentVision; i++){
     		if(row - i >= 0 && myGrid.getNorthernNeighbor(row - i, col) != null) {
             	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row - i, col).getRow(), 
             			myGrid.getNorthernNeighbor(row - i, col).getColumn());
             //myNorth.getColor().equals(Color.BLACK)
-            	if(myNorth.getState() != State.AGENT && myNorth.getSugarAmount() >= maxNeighborSugar){
+            	if(myNorth.getState() != State.AGENT && myNorth.getSugarAmount() >= maxNeighborSugar) {
                 	destination = new Point(row - i, col);
                 	maxNeighborSugar = myNorth.getSugarAmount();
                 	if(myNorth.getSugarAmount() == maxPatchSugar){
@@ -185,18 +205,26 @@ public class SugarScapeSimulation extends Simulation {
     	}
     }
     
+    /**
+     * @param row
+     * @param col
+     * @param maxNeighborSugar
+     * @param destination
+     * @param destChoices
+     */
     public void checkSouthernNeighbors(int row, int col, int maxNeighborSugar, 
-    		Point destination, ArrayList<Point> destChoices){
+    		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell mySouth;
     	for(int i = 0; i < agentVision; i++){
     		if(row + i < getGridLength() && myGrid.getSouthernNeighbor(row + i, col) != null) {
             	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row + i, col).getRow(), 
             			myGrid.getSouthernNeighbor(row + i, col).getColumn());
             
-            	if(mySouth.getState() != State.AGENT && mySouth.getSugarAmount() >= maxNeighborSugar){
+            	if(mySouth.getState() != State.AGENT 
+            			&& mySouth.getSugarAmount() >= maxNeighborSugar) {
                 	destination = new Point(row + i, col);
                 	maxNeighborSugar = mySouth.getSugarAmount();
-                	if(mySouth.getSugarAmount() == maxPatchSugar){
+                	if(mySouth.getSugarAmount() == maxPatchSugar) {
                 		destChoices.add(destination);
                 	}
                 }
@@ -204,18 +232,25 @@ public class SugarScapeSimulation extends Simulation {
     	}
     }
     
+    /**
+     * @param row
+     * @param col
+     * @param maxNeighborSugar
+     * @param destination
+     * @param destChoices
+     */
     public void checkEasternNeighbors(int row, int col, int maxNeighborSugar, 
-    		Point destination, ArrayList<Point> destChoices){
+    		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myEast;
-    	for(int i = 0; i < agentVision; i++){
+    	for(int i = 0; i < agentVision; i++) {
     		if(col + i < getGridLength() && myGrid.getEasternNeighbor(row, col + i) != null) {
             	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col + i).getRow(), 
             			myGrid.getEasternNeighbor(row, col + i).getColumn());
             
-            	if(myEast.getState() != State.AGENT && myEast.getSugarAmount() >= maxNeighborSugar){
+            	if(myEast.getState() != State.AGENT && myEast.getSugarAmount() >= maxNeighborSugar) {
                 	destination = new Point(row, col + i);
                 	maxNeighborSugar = myEast.getSugarAmount();
-                	if(myEast.getSugarAmount() == maxPatchSugar){
+                	if(myEast.getSugarAmount() == maxPatchSugar) {
                 		destChoices.add(destination);
                 	}
                 }
@@ -223,6 +258,13 @@ public class SugarScapeSimulation extends Simulation {
     	}
     }
     
+    /**
+     * @param row
+     * @param col
+     * @param maxNeighborSugar
+     * @param destination
+     * @param destChoices
+     */
     public void checkWesternNeighbors(int row, int col, int maxNeighborSugar, 
     		Point destination, ArrayList<Point> destChoices){
     	SugarScapeCell myWest;
@@ -242,6 +284,9 @@ public class SugarScapeSimulation extends Simulation {
     	}
     }
 	
+	/**
+	 * 
+	 */
 	public void updateState(){
 		int updateSugarAmt = 0;
 		int updateCarbAmt = 0;
@@ -329,7 +374,7 @@ public class SugarScapeSimulation extends Simulation {
     /**
      * 
      */
-    public void updateGraph(){
+    public void updateGraph() {
     	patchLine.getData().add(new XYChart.Data(totalSteps, patchTotalSugar));
     	agentSugarLine.getData().add(new XYChart.Data(totalSteps, agentTotalCarbs));
     	agentPopulationLine.getData().add(new XYChart.Data(totalSteps, numTotalAgents));
@@ -346,27 +391,45 @@ public class SugarScapeSimulation extends Simulation {
 		
 	}
 
-	public int getMaxPatchSugar(){
+	/**
+	 * @return
+	 */
+	public int getMaxPatchSugar() {
 		return maxPatchSugar;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getAgentMaxCarbs() {
 		return agentMaxCarbs;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getAgentMinCarbs() {
 		return agentMinCarbs;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getMetabRate() {
 		return agentMetabRate;
 	}
 	
-	public void updateTotalSugar(int newSugar){
+	/**
+	 * @param newSugar
+	 */
+	public void updateTotalSugar(int newSugar) {
 		patchTotalSugar += newSugar;
 	}
 	
-	public void updateTotalCarbs(int newCarbs){
+	/**
+	 * @param newCarbs
+	 */
+	public void updateTotalCarbs(int newCarbs) {
 		agentTotalCarbs += newCarbs;
 	}
 }

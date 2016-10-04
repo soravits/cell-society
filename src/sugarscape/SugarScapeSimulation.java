@@ -52,12 +52,8 @@ public class SugarScapeSimulation extends Simulation {
     private static final Text amtCarbsText = new Text(
     		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
     		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, carbs);
-//    private static final Text agentPopText = new Text(
-//    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-//    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, agents);
     
     private SugarScapeGrid myGrid;
-    private int[][] sugarStates;
     private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, agentMetabRate, agentVision, preset;
     private double percAgents;
     private int totalSteps = 0;
@@ -71,7 +67,6 @@ public class SugarScapeSimulation extends Simulation {
 		this.numAgents = totalAgents;
 		this.growBackRate = growSugarBackRate;
 		this.percAgents = (double) totalAgents / (double) (myGridLength * myGridLength);
-		System.out.println("percent agents " + percAgents);
 		this.agentMaxCarbs = agentMaxCarbs;
 		this.agentMinCarbs = agentMinCarbs;
 		this.agentMetabRate = agentMetabRate;
@@ -98,11 +93,9 @@ public class SugarScapeSimulation extends Simulation {
         myGrid.initializeGrid(type);
         myGrid.setUpButtons();
         myGrid.setSimulationProfile(this);
-        sugarStates = new int[getGridLength()][getGridLength()];
         createGraph();
         setInitialEnvironment();
         if(preset == 2) setClusterEnvironment();
-//        else 
         return getMyScene();
 	}
 
@@ -115,7 +108,6 @@ public class SugarScapeSimulation extends Simulation {
                 //if the cell is an agent
                 if(preset == 1 && cellLottery <= (percAgents * 100)) {
                     cellType = 1;
-//                    numberEmpty++;
                 }
                 else { //if the cell is a patch
                     cellType = 0;
@@ -123,7 +115,6 @@ public class SugarScapeSimulation extends Simulation {
                 myGrid.updateCell(i, j, cellType);
             }
         }
-//        numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
         updateText();
 
 	}
@@ -132,7 +123,6 @@ public class SugarScapeSimulation extends Simulation {
 		int clusterGrid = 20;
 		int cellType;
 		percAgents = (double) numAgents / (double) (clusterGrid * clusterGrid);
-		System.out.println("cluster agents " + percAgents);
         for(int i = 0; i < clusterGrid; i++) {
             for(int j = 0; j < clusterGrid; j++) {
                 int cellLottery = random.nextInt(100);
@@ -161,71 +151,16 @@ public class SugarScapeSimulation extends Simulation {
         Point destination = new Point(row, col);
         ArrayList<Point> destChoices = new ArrayList<>();
         int maxNeighborSugar = -1;
-        SugarScapeCell myNorth, mySouth, myEast, myWest;
         
         //checks north
         checkNorthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkSouthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkEasternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkWesternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
-//        if(myGrid.getNorthernNeighbor(row, col) != null){
-//        	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(), 
-//        			myGrid.getNorthernNeighbor(row, col).getColumn());
-//        
-//        	if(!myNorth.getColor().equals(Color.BLACK) && myNorth.getSugarAmount() >= maxNeighborSugar){
-//            	destination = new Point(row - 1, col);
-//            	maxNeighborSugar = myNorth.getSugarAmount();
-//            	if(myNorth.getSugarAmount() == maxPatchSugar){
-//            		destChoices.add(destination);
-//            	}
-//            }
-//        }
-        //checks south
-//        if(myGrid.getSouthernNeighbor(row, col) != null){
-//        	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(), 
-//        			myGrid.getSouthernNeighbor(row, col).getColumn());
-//        
-//        	if(!mySouth.getColor().equals(Color.BLACK) && mySouth.getSugarAmount() >= maxNeighborSugar){
-//            	destination = new Point(row + 1, col);
-//            	maxNeighborSugar = mySouth.getSugarAmount();
-//            	if(mySouth.getSugarAmount() == maxPatchSugar){
-//            		destChoices.add(destination);
-//            	}
-//            	System.out.println("south checked");
-//            }
-//        }
-        //checks west
-//        if(myGrid.getWesternNeighbor(row, col) != null){
-//        	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(), 
-//        			myGrid.getWesternNeighbor(row, col).getColumn());
-//        
-//        	if(!myWest.getColor().equals(Color.BLACK) && myWest.getSugarAmount() >= maxNeighborSugar){
-//            	destination = new Point(row, col - 1);
-//            	maxNeighborSugar = myWest.getSugarAmount();
-//            	if(myWest.getSugarAmount() == maxPatchSugar){
-//            		destChoices.add(destination);
-//            	}
-//            	System.out.println("west checked");
-//            }
-//        }
-        //checks east
-//        if(myGrid.getEasternNeighbor(row, col) != null){
-//        	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(), 
-//        			myGrid.getEasternNeighbor(row, col).getColumn());
-//        
-//        	if(!myEast.getColor().equals(Color.BLACK) && myEast.getSugarAmount() >= maxNeighborSugar){
-//            	destination = new Point(row, col + 1);
-//            	maxNeighborSugar = myEast.getSugarAmount();
-//            	if(myEast.getSugarAmount() == maxPatchSugar){
-//            		destChoices.add(destination);
-//            	}
-//            	System.out.println("east checked");
-//            }
-//        }
+
         if(destChoices.size() > 0){
         	destination = destChoices.get(random.nextInt(destChoices.size()));
         }
-//        System.out.println("origin " + myGrid.getCell(origin.x, origin.y).getState());
         if(!(origin.x == destination.x && origin.y == destination.y)){
         	myGrid.moveAgent(origin, destination);
 		}
@@ -238,8 +173,8 @@ public class SugarScapeSimulation extends Simulation {
     		if(row - i >= 0 && myGrid.getNorthernNeighbor(row - i, col) != null) {
             	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row - i, col).getRow(), 
             			myGrid.getNorthernNeighbor(row - i, col).getColumn());
-            
-            	if(!myNorth.getColor().equals(Color.BLACK) && myNorth.getSugarAmount() >= maxNeighborSugar){
+            //myNorth.getColor().equals(Color.BLACK)
+            	if(myNorth.getState() != State.AGENT && myNorth.getSugarAmount() >= maxNeighborSugar){
                 	destination = new Point(row - i, col);
                 	maxNeighborSugar = myNorth.getSugarAmount();
                 	if(myNorth.getSugarAmount() == maxPatchSugar){
@@ -258,7 +193,7 @@ public class SugarScapeSimulation extends Simulation {
             	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row + i, col).getRow(), 
             			myGrid.getSouthernNeighbor(row + i, col).getColumn());
             
-            	if(!mySouth.getColor().equals(Color.BLACK) && mySouth.getSugarAmount() >= maxNeighborSugar){
+            	if(mySouth.getState() != State.AGENT && mySouth.getSugarAmount() >= maxNeighborSugar){
                 	destination = new Point(row + i, col);
                 	maxNeighborSugar = mySouth.getSugarAmount();
                 	if(mySouth.getSugarAmount() == maxPatchSugar){
@@ -277,7 +212,7 @@ public class SugarScapeSimulation extends Simulation {
             	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col + i).getRow(), 
             			myGrid.getEasternNeighbor(row, col + i).getColumn());
             
-            	if(!myEast.getColor().equals(Color.BLACK) && myEast.getSugarAmount() >= maxNeighborSugar){
+            	if(myEast.getState() != State.AGENT && myEast.getSugarAmount() >= maxNeighborSugar){
                 	destination = new Point(row, col + i);
                 	maxNeighborSugar = myEast.getSugarAmount();
                 	if(myEast.getSugarAmount() == maxPatchSugar){
@@ -296,7 +231,7 @@ public class SugarScapeSimulation extends Simulation {
             	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col - i).getRow(), 
             			myGrid.getWesternNeighbor(row, col - i).getColumn());
             
-            	if(!myWest.getColor().equals(Color.BLACK) && myWest.getSugarAmount() >= maxNeighborSugar){
+            	if(myWest.getState() != State.AGENT && myWest.getSugarAmount() >= maxNeighborSugar){
                 	destination = new Point(row, col - i);
                 	maxNeighborSugar = myWest.getSugarAmount();
                 	if(myWest.getSugarAmount() == maxPatchSugar){

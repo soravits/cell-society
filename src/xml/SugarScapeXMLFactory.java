@@ -54,13 +54,13 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		agents = Integer.parseInt(getTextValue("totalAgents"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find total agents in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of total agents in your XML is incorrect. ");
     	}
     	if(agents < 0){
-    		errorPopup("Percentage A cannot be negative.");
+    		errorPopup("total agents cannot be negative.");
         	agents = 300;
     	}
     	
@@ -75,13 +75,13 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		grow = Integer.parseInt(getTextValue("growBackRate"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find growback rate in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of growback rate in your XML is incorrect. ");
     	}
     	if(grow < 0){
-    		errorPopup("Percentage A cannot be negative.");
+    		errorPopup("Growback rate cannot be negative.");
         	grow = 1;
     	}
     	if(grow > 100){
@@ -101,18 +101,13 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		carbs = Integer.parseInt(getTextValue("agentMaxCarbs"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find agent max carbs in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of agent max carbs in your XML is incorrect. ");
     	}
     	if(carbs < 0){
-    		errorPopup("Percentage A cannot be negative.");
-        	carbs = 25;
-    	}
-    	if(carbs > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
+    		errorPopup("Agent max carbs cannot be negative.");
         	carbs = 25;
     	}
     	
@@ -127,18 +122,13 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		carbs = Integer.parseInt(getTextValue("agentMinCarbs"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find agent min carbs in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of agent min carbs in your XML is incorrect. ");
     	}
     	if(carbs < 0){
-    		errorPopup("Percentage A cannot be negative.");
-        	carbs = 4;
-    	}
-    	if(carbs > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
+    		errorPopup("Agent min carbs cannot be negative.");
         	carbs = 4;
     	}
     	
@@ -153,21 +143,15 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		metab = Integer.parseInt(getTextValue("agentMetabRate"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find agent metab rate in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of agent metab rate in your XML is incorrect. ");
     	}
     	if(metab < 0){
-    		errorPopup("Percentage A cannot be negative.");
+    		errorPopup("Agent metab rate cannot be negative.");
         	metab = 1;
     	}
-    	if(metab > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
-        	metab = 1;
-    	}
-    	
     	return metab;
     }
     
@@ -179,18 +163,18 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		vision = Integer.parseInt(getTextValue("agentVision"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find vision in XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of vision in your XML is incorrect. ");
     	}
     	if(vision < 0){
-    		errorPopup("Percentage A cannot be negative.");
+    		errorPopup("Vision cannot be negative.");
         	vision = 4;
     	}
-    	if(vision > 100){
-    		errorPopup("To observe the effects of segregation, " 
-    				+ "Percentage A cannot be greater than 100.");
+    	if(vision > 51){
+    		errorPopup("To observe the effects of SugarScape, " 
+    				+ "vision cannot be greater than 51.");
         	vision = 4;
     	}
     	
@@ -203,12 +187,12 @@ public class SugarScapeXMLFactory  extends SimulationXMLFactory {
     		preset = Integer.parseInt(getTextValue("preset"));
     	}
     	catch(NullPointerException e){
-    		errorPopup("Could not find percentage A in XML.");
+    		errorPopup("Could not find presetin XML.");
     	}
     	catch(NumberFormatException e){
-    		errorPopup("The format of percentage A in your XML is incorrect. ");
+    		errorPopup("The format of preset in your XML is incorrect. ");
     	}
-    	if(preset < 0){
+    	if(preset < 1){
     		errorPopup("Preset must be 1 or 2.");
         	preset = 1;
     	}

@@ -64,7 +64,7 @@ public class SugarScapeCell extends Cell {
 		this.currState = State.AGENT;
 		this.agentCarbs = origCarbs;
 		this.agentCarbs += newSugar;
-		burnAgentCalories();
+//		burnAgentCalories();
 		updateColor();
 	}
 	
@@ -99,13 +99,13 @@ public class SugarScapeCell extends Cell {
 		return vision;
 	}
 	
-	public void burnAgentCalories(){
-		agentCarbs -= metabRate;
+	public void burnAgentCalories(int distanceMoved){
+		agentCarbs -= (metabRate * distanceMoved);
 		if(agentCarbs < 0) killAgent();
 	}
 	
 	private void killAgent(){
-		System.out.println("agent killed");
+//		System.out.println("agent killed");
 		setSugarAmount(0);
 		setState(State.PATCH);
 	}

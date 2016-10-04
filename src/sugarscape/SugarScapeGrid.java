@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class SugarScapeGrid extends Grid {
-    private Text stats;
     private SugarScapeSimulation sim;
     private CellType type;
     
@@ -57,7 +56,6 @@ public class SugarScapeGrid extends Grid {
 				gridCell.addToScene();
 				setUpListener(gridCell);   
 			    setCell(i, j, gridCell);
-//				System.out.println(gridCell);
 			}
 		}      
 	}
@@ -86,32 +84,22 @@ public class SugarScapeGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void moveAgent(Point p1, Point p2) {
-//		System.out.println("origin " + getCell(p1.x, p1.y).getState());
-//		System.out.println("destination " + getCell(p2.x, p2.y).getState());
 		int origCarbs = getCell(p1.x, p1.y).getAgentCarbs();
-		//set destination with all attributes of agent, except for metabolized sugar
+		int distanceMoved = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+		if(getCell(p2.x, p2.y).getState() != State.AGENT){
+			//set destination with all attributes of agent, except for metabolized sugar
 			getCell(p2.x, p2.y).setMovedAgent(origCarbs, getCell(p1.x, p1.y).getSugarAmount());
-		
-		//set agent original position as empty patch
+			getCell(p2.x, p2.y).burnAgentCalories(distanceMoved);
+			//set agent original position as empty patch
 			getCell(p1.x, p1.y).setAgentMovedPatch();
-
-//		updateCell(p1.x, p1.y, destination);
-		//		System.out.println(destination);
-//		updateCell(p2.x, p2.y, origin);
-		//		System.out.println(origin);
-//			System.out.println("origin " + getCell(p1.x, p1.y).getState());
-//			System.out.println("destination " + getCell(p2.x, p2.y).getState());
-			
+		}
 	}
 
 	public void updateCell(int x, int y, int cellState) {
-//		System.out.println(getCell(x, y));
 		if(cellState == 0) {
-//			getCell(x, y).setSugarAmount()
 			getCell(x, y).setState(State.PATCH);
 		}
 		else {
-//			getCell(x, y).setColor(Color.LIMEGREEN);
 			getCell(x, y).setState(State.AGENT);
 		}
 	}

@@ -82,9 +82,6 @@ public class SugarScapeSimulation extends Simulation {
 		this.preset = preset;
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Simulation#init(javafx.stage.Stage, base.Simulation.CellType)
-	 */
 	@Override
 	public Scene init(Stage s, CellType type) {
 		super.init(s, type);
@@ -92,10 +89,6 @@ public class SugarScapeSimulation extends Simulation {
         return getMyScene();
 	}
 
-
-	/* (non-Javadoc)
-	 * @see base.Simulation#instantiateGrid()
-	 */
 	@Override
 	public Grid instantiateGrid(){
         this.myGrid = new SugarScapeGrid(getGridLength(), getCellSize(), getRootElement(),
@@ -103,9 +96,6 @@ public class SugarScapeSimulation extends Simulation {
         return myGrid;
     }
 
-	/* (non-Javadoc)
-	 * @see base.Simulation#setInitialEnvironment()
-	 */
 	@Override
 	public void setInitialEnvironment() {
 		createGraph();
@@ -306,23 +296,9 @@ public class SugarScapeSimulation extends Simulation {
         numTotalAgents = updateAgentPop;
 	}
 	
-	
-	 /**
-     * 
-     */
-    public void createGraph() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setMinorTickVisible(false);
-        
-        //creating the chart
-        final LineChart <Number, Number> lineChart = 
-                new LineChart <Number, Number> (xAxis, yAxis);
-        agentSugarLine = new XYChart.Series();
+	@Override
+	public void createSeries(LineChart lineChart) {
+		agentSugarLine = new XYChart.Series();
         agentSugarLine.setName("Agent Carbs");
         patchLine = new XYChart.Series();
         patchLine.setName("Patch Sugar");
@@ -333,31 +309,24 @@ public class SugarScapeSimulation extends Simulation {
         lineChart.getData().add(agentSugarLine);
         lineChart.getData().add(patchLine);
         lineChart.getData().add(agentPopulationLine);
-        
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
-        
+		
+	}
+
+	@Override
+	public void createCellCounter() {
         Rectangle cellCounter = new Rectangle(
         		SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
         		+ 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
         		DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
-        cellCounter.setStyle(
-			    "-fx-background-radius: 8,7,6;" + 
-			    "-fx-background-insets: 0,1,2;" +
-			    "-fx-text-fill: black;" +
-			    "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-		);
+        cellCounter.setStyle(getCellCounterStyle());
         getRootElement().getChildren().add(cellCounter);
         amtSugarText.setFill(Color.GRAY);
         amtCarbsText.setFill(Color.DARKBLUE);
         updateText();
         getRootElement().getChildren().add(amtSugarText);
         getRootElement().getChildren().add(amtCarbsText);
-    }
+	}
 	
     private void updateText(){
     	amtSugarText.setText(sugar + patchTotalSugar);
@@ -422,4 +391,6 @@ public class SugarScapeSimulation extends Simulation {
 	public void updateTotalCarbs(int newCarbs) {
 		agentTotalCarbs += newCarbs;
 	}
+
+
 }

@@ -264,52 +264,25 @@ public class SlimeMoldsSimulation extends Simulation {
 		myGrid.getCell(location).diffuse(diffusionAmt);
 	}
 
-	/**
-	 * 
-	 */
-	public void createGraph() {
-		//defining the axes
-		final NumberAxis xAxis = new NumberAxis();
-		xAxis.setTickLabelsVisible(false);
-		xAxis.setTickMarkVisible(false);
-		xAxis.setMinorTickVisible(false);
-		final NumberAxis yAxis = new NumberAxis();
-		yAxis.setMinorTickVisible(false);
-
-		//creating the chart
-		final LineChart <Number, Number> lineChart = 
-				new LineChart <Number, Number> (xAxis, yAxis);
+	@Override
+	public void createSeries(LineChart lineChart) {
 		moldLine = new XYChart.Series();
-
-
 		lineChart.getData().add(moldLine);
+	}
 
-
-		lineChart.setLayoutX(25);
-		lineChart.setPrefSize(500, 100);
-		lineChart.setLegendVisible(true);
-		lineChart.setLegendSide(Side.RIGHT);
-		getRootElement().getChildren().add(lineChart);
-
-
+	@Override
+	public void createCellCounter() {
 		Rectangle cellCounter = new Rectangle(
 				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
 				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
 				DIMENSIONS_OF_CELL_COUNTER);
 		cellCounter.setFill(Color.WHITE);
-		cellCounter.setStyle(
-				"-fx-background-radius: 8,7,6;" + 
-						"-fx-background-insets: 0,1,2;" +
-						"-fx-text-fill: black;" +
-						"-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-				);
+		cellCounter.setStyle(getCellCounterStyle());
 		getRootElement().getChildren().add(cellCounter);
 		numMoldText.setFill(Color.RED);
 
 		updateText();
 		getRootElement().getChildren().add(numMoldText);
-
-
 	}
 
 	/**
@@ -326,6 +299,7 @@ public class SlimeMoldsSimulation extends Simulation {
 		moldLine.getData().add(new XYChart.Data(stepCount, numberMold));
 		updateText();
 	}
+	
 	@Override
 	public void step () {
 		updateState();

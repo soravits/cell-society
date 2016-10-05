@@ -4,7 +4,11 @@ import base.Grid;
 import base.Location;
 import base.Simulation;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -30,6 +34,14 @@ public class ForagingAntsSimulation extends Simulation {
     private double diffusionRatio;
     private double K;
     private double N;
+
+    private int antPopulation = 0;
+    private int totalSteps = 0;
+    private static final String pop = "Ant population: ";
+    private XYChart.Series populationLine;
+    private static final Text numAntsText = new Text(
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, pop);
 
     private ForagingAntsGrid myGrid;
     private ArrayList<ForagingAnt> ants = new ArrayList<ForagingAnt>();
@@ -79,6 +91,7 @@ public class ForagingAntsSimulation extends Simulation {
      * @param type The shape of the cell
      * @return The current scene
      */
+    @Override
     public Scene init(Stage s, CellType type) {
         super.init(s, type);
         return getMyScene();
@@ -100,6 +113,7 @@ public class ForagingAntsSimulation extends Simulation {
      */
     @Override
     public void setInitialEnvironment() {
+    	createGraph();
         birthAnts(numInitialAnts);
         for(int i = 0; i < getGridLength(); i++){
             for(int j = 0; j < getGridLength(); j++){
@@ -111,6 +125,7 @@ public class ForagingAntsSimulation extends Simulation {
     }
 
     private void updateAnts(){
+    	antPopulation = ants.size();
         for(int i = 0; i < ants.size(); i++){
             ForagingAnt ant = ants.get(i);
             if(ant.getLife() == 0){
@@ -137,11 +152,13 @@ public class ForagingAntsSimulation extends Simulation {
      */
     @Override
     public void step() {
+    	totalSteps++;
         if(ants.size() <= maxAntsPerSim - antsBornPerStep) {
             birthAnts(antsBornPerStep);
         }
         updateAnts();
         updateCells();
+        updateGraph();
     }
 
     private void forage(ForagingAnt ant) {
@@ -373,5 +390,52 @@ public class ForagingAntsSimulation extends Simulation {
             myGrid.getCell(nestLocation).incrementAntCount();
             ants.add(ant);
         }
+    }
+
+    @Override
+    public void createSeries(LineChart lineChart){
+    	populationLine = new XYChart.Series();
+        populationLine.setName("Ants");
+
+        //populating the series with data
+        lineChart.getData().add(populationLine);
+    }
+
+
+    /**
+     *
+     */
+    @Override
+    public void createCellCounter() {
+
+        //createCellCounter();
+        Rectangle cellCounter = new Rectangle(
+                SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
+                        + 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
+                DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
+        cellCounter.setFill(Color.WHITE);
+        cellCounter.setStyle(getCellCounterStyle());
+        getRootElement().getChildren().add(cellCounter);
+        
+        numAntsText.setFill(Color.GRAY);
+        updateText();
+        getRootElement().getChildren().add(numAntsText);
+
+
+    }
+
+    /**
+     *
+     */
+    private void updateText() {
+        numAntsText.setText(pop + antPopulation);
+    }
+
+    /**
+     *
+     */
+    public void updateGraph() {
+        populationLine.getData().add(new XYChart.Data(totalSteps, antPopulation));
+        updateText();
     }
 }

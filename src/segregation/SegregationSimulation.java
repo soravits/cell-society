@@ -75,21 +75,22 @@ public class SegregationSimulation extends Simulation {
         this.percEmpty = percentEmpty;
     }
 
-    public Scene init(Stage s,CellType type) {
+	@Override
+    public Scene init(Stage s, CellType type) {
         cellSatisfied = new int[getGridLength()][getGridLength()];
         super.init(s, type);
         return getMyScene();
     }
 
+	@Override
     public Grid instantiateGrid(){
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(),
                 getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         return myGrid;
     }
 
-    /* (non-Javadoc)
-     * @see base.Simulation#setInitialEnvironment()
-     */
+
+	@Override
     public void setInitialEnvironment() {
         createGraph();
         int cellType;
@@ -195,24 +196,10 @@ public class SegregationSimulation extends Simulation {
         numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
         myGrid.updateStats(totalSteps, numberUnsatisfied);
     }
-
-
-    /**
-     *
-     */
-    public void createGraph() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setMinorTickVisible(false);
-
-        //creating the chart
-        final LineChart <Number, Number> lineChart =
-                new LineChart <Number, Number> (xAxis, yAxis);
-        emptyLine = new XYChart.Series();
+    
+    @Override
+    public void createSeries(LineChart lineChart){
+    	emptyLine = new XYChart.Series();
         emptyLine.setName("Empty");
         satisfiedLine = new XYChart.Series();
         satisfiedLine.setName("Satisfied");
@@ -220,30 +207,28 @@ public class SegregationSimulation extends Simulation {
         unsatisfiedLine.setName("Unsatisfied");
 
         //populating the series with data
-        //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(emptyLine);
         lineChart.getData().add(satisfiedLine);
         lineChart.getData().add(unsatisfiedLine);
 
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
+    }
 
 
+    /**
+     *
+     */
+    @Override
+    public void createCellCounter() {
+
+        //createCellCounter();
         Rectangle cellCounter = new Rectangle(
                 SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
                         + 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
                 DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
-        cellCounter.setStyle(
-                "-fx-background-radius: 8,7,6;" +
-                        "-fx-background-insets: 0,1,2;" +
-                        "-fx-text-fill: black;" +
-                        "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-        );
+        cellCounter.setStyle(getCellCounterStyle());
         getRootElement().getChildren().add(cellCounter);
+        
         numEmptyText.setFill(Color.GRAY);
         numSatisfiedText.setFill(Color.DARKBLUE);
         numUnsatisfiedText.setFill(Color.LIGHTGREEN);
@@ -274,9 +259,6 @@ public class SegregationSimulation extends Simulation {
         updateText();
     }
 
-    /* (non-Javadoc)
-     * @see base.Simulation#step()
-     */
     @Override
     public void step() {
         totalSteps++;

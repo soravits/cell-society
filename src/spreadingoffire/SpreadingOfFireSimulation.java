@@ -227,19 +227,9 @@ public class SpreadingOfFireSimulation extends Simulation {
             }
         }
     }
-
-    private void createGraph() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setMinorTickVisible(false);
-
-        //creating the chart
-        final LineChart <Number, Number> lineChart =
-                new LineChart <Number, Number> (xAxis, yAxis);
+    
+	@Override
+	public void createSeries(LineChart lineChart) {
         fireLine = new XYChart.Series();
         fireLine.setName("Fire");
         yellowLine = new XYChart.Series();
@@ -253,25 +243,16 @@ public class SpreadingOfFireSimulation extends Simulation {
         lineChart.getData().add(fireLine);
         lineChart.getData().add(yellowLine);
         lineChart.getData().add(aliveLine);
+	}
 
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
-
-
+	@Override
+	public void createCellCounter() {
         Rectangle cellCounter = new Rectangle(
                 SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
                 (DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
                 DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
-        cellCounter.setStyle(
-                "-fx-background-radius: 8,7,6;" +
-                        "-fx-background-insets: 0,1,2;" +
-                        "-fx-text-fill: black;" +
-                        "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-        );
+        cellCounter.setStyle(getCellCounterStyle());
         getRootElement().getChildren().add(cellCounter);
         numFireText.setFill(Color.RED);
         numDeadText.setFill(Color.ORANGE);
@@ -281,8 +262,7 @@ public class SpreadingOfFireSimulation extends Simulation {
         getRootElement().getChildren().add(numDeadText);
         getRootElement().getChildren().add(numAliveText);
 
-
-    }
+	}
 
     /**
      *

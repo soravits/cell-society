@@ -123,6 +123,7 @@ public class MainMenu {
 				}
 				String stageTitle = "";
 
+				//let's make a factory to return these sims instead of hardcoding them after each case
 				switch(Name) {
 				case "FOREST BURNING":
 					stageTitle = Name;

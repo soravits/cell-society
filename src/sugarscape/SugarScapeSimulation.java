@@ -19,6 +19,9 @@ import base.Grid;
 import base.Simulation;
 
 /**
+ * This is the simulation class for SugarScape. 
+ * It inherits from the Simulation superclass and implements both Preset 1 and Preset 2
+ * of the agent-based SugarScape simulation. 
  * @author Delia
  *
  */
@@ -28,8 +31,8 @@ public class SugarScapeSimulation extends Simulation {
     
 	private static final String sugar = "Patch sugar: ";
 	private static final String carbs = "Agent carbs: ";
-//	
-    private int patchTotalSugar = 0;
+
+	private int patchTotalSugar = 0;
     private int agentTotalCarbs = 0;
     private int numTotalAgents = 0;
     
@@ -52,16 +55,17 @@ public class SugarScapeSimulation extends Simulation {
     private Random random = new Random();
     
 	/**
-	 * @param myGridLength
-	 * @param maxSugarPerPatch
-	 * @param totalAgents
-	 * @param growSugarBackRate
-	 * @param agentMaxCarbs
-	 * @param agentMinCarbs
-	 * @param agentMetabRate
-	 * @param agentVision
-	 * @param preset
-	 * @param type
+	 * This is the constructor of SugarScapeSimulation
+	 * @param myGridLength		int, size of grid
+	 * @param maxSugarPerPatch	int, maximum sugar content of a cell
+	 * @param totalAgents		int, total population of agents
+	 * @param growSugarBackRate	int, amount of sugar units replenished per time step
+	 * @param agentMaxCarbs		int, max amount of carbs an agent can be born with
+	 * @param agentMinCarbs		int, min ''
+	 * @param agentMetabRate	int, amount of carbs agent burns to move one distance unit
+	 * @param agentVision		int, distance an agent can "see" and move to
+	 * @param preset			int, either mode 1 or mode 2
+	 * @param type				CellType, the shape of each cell
 	 */
 	public SugarScapeSimulation(int myGridLength, int maxSugarPerPatch, int totalAgents, 
 			int growSugarBackRate, int agentMaxCarbs, int agentMinCarbs, int agentMetabRate, 
@@ -81,12 +85,18 @@ public class SugarScapeSimulation extends Simulation {
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage, base.Simulation.CellType)
 	 */
+	@Override
 	public Scene init(Stage s, CellType type) {
-        if(preset == 2) setClusterEnvironment();
 		super.init(s, type);
+        if(preset == 2) setClusterEnvironment();
         return getMyScene();
 	}
 
+
+	/* (non-Javadoc)
+	 * @see base.Simulation#instantiateGrid()
+	 */
+	@Override
 	public Grid instantiateGrid(){
         this.myGrid = new SugarScapeGrid(getGridLength(), getCellSize(), getRootElement(),
                 getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
@@ -105,22 +115,24 @@ public class SugarScapeSimulation extends Simulation {
                 int cellLottery = random.nextInt(100);
                 //if the cell is an agent
                 if(preset == 1 && cellLottery <= (percAgents * 100)) {
-                    cellType = 1;
+                    cellType = AGENT;
                 }
                 else { //if the cell is a patch
-                    cellType = 0;
+                    cellType = PATCH;
                 }
                 myGrid.updateCell(new Location(i, j), cellType);
             }
         }
         updateText();
-
 	}
 	
 	/**
-	 * 
+	 * This method is called if user wishes to run Preset 2. 
+	 * This method only spawns agents in the upper left-hand corner of the grid, 
+	 * in order for the simulation to model a clustered initial population that 
+	 * migrates and disperses
 	 */
-	public void setClusterEnvironment() {
+	private void setClusterEnvironment() {
 		int clusterGrid = 20;
 		int cellType;
 		percAgents = (double) numAgents / (double) (clusterGrid * clusterGrid);
@@ -130,7 +142,6 @@ public class SugarScapeSimulation extends Simulation {
                 //if the cell is an agent
                 if(cellLottery <= (percAgents * 100)) {
                     cellType = 1;
-//                    numberEmpty++;
                 }
                 else { //if the cell is a patch
                     cellType = 0;
@@ -141,24 +152,22 @@ public class SugarScapeSimulation extends Simulation {
 	}
 	
     /**
-     * MUST CHANGE THIS
-     * WORST METHOD EVER BUT IT WORKS
+     * Method where agents search for vacant patches in their 4 cardinal directions
+     * and decide which patch is the best one to relocate.
      * @param row
      * @param col
-     * @return int value indicating cell's state
      */
-    public void findAgentDestination(int row, int col) {
+    private void findAgentDestination(int row, int col) {
         Point origin = new Point(row, col);
         Point destination = new Point(row, col);
         ArrayList<Point> destChoices = new ArrayList<>();
         int maxNeighborSugar = -1;
         
-        //checks north
         checkNorthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkSouthernNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkEasternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
         checkWesternNeighbors(row, col, maxNeighborSugar, destination, destChoices);
-
+        
         if(destChoices.size() > 0){
         	destination = destChoices.get(random.nextInt(destChoices.size()));
         }
@@ -174,7 +183,7 @@ public class SugarScapeSimulation extends Simulation {
      * @param destination
      * @param destChoices
      */
-    public void checkNorthernNeighbors(int row, int col, int maxNeighborSugar, 
+    private void checkNorthernNeighbors(int row, int col, int maxNeighborSugar, 
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myNorth;
     	for(int i = 0; i < agentVision; i++){
@@ -200,7 +209,7 @@ public class SugarScapeSimulation extends Simulation {
      * @param destination
      * @param destChoices
      */
-    public void checkSouthernNeighbors(int row, int col, int maxNeighborSugar, 
+    private void checkSouthernNeighbors(int row, int col, int maxNeighborSugar, 
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell mySouth;
     	for(int i = 0; i < agentVision; i++){
@@ -227,7 +236,7 @@ public class SugarScapeSimulation extends Simulation {
      * @param destination
      * @param destChoices
      */
-    public void checkEasternNeighbors(int row, int col, int maxNeighborSugar, 
+    private void checkEasternNeighbors(int row, int col, int maxNeighborSugar, 
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myEast;
     	for(int i = 0; i < agentVision; i++) {
@@ -252,7 +261,7 @@ public class SugarScapeSimulation extends Simulation {
      * @param destination
      * @param destChoices
      */
-    public void checkWesternNeighbors(int row, int col, int maxNeighborSugar, 
+    private void checkWesternNeighbors(int row, int col, int maxNeighborSugar, 
     		Point destination, ArrayList<Point> destChoices){
     	SugarScapeCell myWest;
     	for(int i = 0; i < agentVision; i++){
@@ -297,6 +306,7 @@ public class SugarScapeSimulation extends Simulation {
         numTotalAgents = updateAgentPop;
 	}
 	
+	
 	 /**
      * 
      */
@@ -320,7 +330,6 @@ public class SugarScapeSimulation extends Simulation {
         agentPopulationLine.setName("Agent Population");
              
         //populating the series with data
-        //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(agentSugarLine);
         lineChart.getData().add(patchLine);
         lineChart.getData().add(agentPopulationLine);
@@ -330,7 +339,6 @@ public class SugarScapeSimulation extends Simulation {
         lineChart.setLegendVisible(true);
         lineChart.setLegendSide(Side.RIGHT);
         getRootElement().getChildren().add(lineChart);
-        
         
         Rectangle cellCounter = new Rectangle(
         		SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
@@ -346,17 +354,14 @@ public class SugarScapeSimulation extends Simulation {
         getRootElement().getChildren().add(cellCounter);
         amtSugarText.setFill(Color.GRAY);
         amtCarbsText.setFill(Color.DARKBLUE);
-//        agentPopText.setFill(Color.BLACK);
         updateText();
         getRootElement().getChildren().add(amtSugarText);
         getRootElement().getChildren().add(amtCarbsText);
-//        getRootElement().getChildren().add(agentPopText);
     }
 	
     private void updateText(){
     	amtSugarText.setText(sugar + patchTotalSugar);
         amtCarbsText.setText(carbs + agentTotalCarbs);
-//        agentPopText.setText(agents + numTotalAgents); 
     }
     
     /**
@@ -372,11 +377,8 @@ public class SugarScapeSimulation extends Simulation {
 	@Override
 	public void step() {
         totalSteps++;
-//        setSatisfiedGrid();
         updateState();
         updateGraph();
-//        if(numberUnsatisfied == 0) stopSimulation();
-		
 	}
 
 	/**

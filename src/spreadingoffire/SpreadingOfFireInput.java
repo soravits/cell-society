@@ -59,10 +59,6 @@ public class SpreadingOfFireInput extends UserInput{
 	 */
 	@Override
 	public void startManualSimulation(CellType type) {
-		//		int inputValue = gridSizeSpinner.getValue();
-		//		if((gridSizeSpinner.getValue() > 45)){
-		//			inputValue = 45;
-		//		}
 		fireSim = new SpreadingOfFireSimulation(getGridSize(), 
 				probCatchSpinner.getValue(),type);
 		fireScene = fireSim.init(stage,type);
@@ -79,7 +75,6 @@ public class SpreadingOfFireInput extends UserInput{
 	public void generateNodes() {
 		selectGridSize();
 		selectProbCatch();
-		//		selectColors();
 		getGrid().add(beginHexButton(fireString), 0, 6);
 		getGrid().add(beginTriangleButton(fireString), 0, 7);
 		getGrid().add(beginSquareButton(fireString), 0, 8);

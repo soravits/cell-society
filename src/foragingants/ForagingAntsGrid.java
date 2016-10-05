@@ -41,8 +41,8 @@ public class ForagingAntsGrid extends Grid {
 	/* (non-Javadoc)
 	 * @see base.Grid#getCell(int, int)
 	 */
-	public ForagingAntsCell getCell(int row, int col) {
-		return (ForagingAntsCell) super.getCell(row,col);
+	public ForagingAntsCell getCell(Location location) {
+		return (ForagingAntsCell) super.getCell(location);
 	}
 
 	/* (non-Javadoc)
@@ -50,8 +50,8 @@ public class ForagingAntsGrid extends Grid {
 	 */
 	@Override
 	public void initializeGrid(Simulation.CellType type) {
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -66,24 +66,23 @@ public class ForagingAntsGrid extends Grid {
 				}
 				ForagingAntsCell gridCell = new ForagingAntsCell(getSizeOfCell(), getRootElement(),
 						verticalShift * (j) + horizontalOffset,
-						horizontalShift * (i) + getInitialY(), getRowLength(), type);
-
+						horizontalShift * (i) + getInitialY(), getGridLength(), type);
+				Location cellLocation = new Location(i,j);
 				gridCell.addToScene();
-				setCell(i, j, gridCell);
+				setCell(cellLocation, gridCell);
 			}
 		}
-		getCell(nest.getRow(), nest.getColumn()).setColor(Color.BROWN);
-		getCell(foodSource.getRow(), foodSource.getColumn()).setColor(Color.YELLOW);
+		getCell(nest).setColor(Color.BROWN);
+		getCell(foodSource).setColor(Color.YELLOW);
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void updateCell(int row, int col) {
-		ForagingAntsCell gridCell = getCell(row, col);
-		if (gridCell != getCell(nest.getRow(), nest.getColumn()) 
-				&& gridCell != getCell(foodSource.getRow(), foodSource.getColumn())) {
+	public void updateCell(Location location) {
+		ForagingAntsCell gridCell = getCell(location);
+		if (gridCell != getCell(nest)
+				&& gridCell != getCell(foodSource)) {
 			if (gridCell.getAntCount() > 0) {
 				gridCell.setColor(Color.RED);
 			} 

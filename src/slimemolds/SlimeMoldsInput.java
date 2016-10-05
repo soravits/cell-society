@@ -8,6 +8,10 @@ import javafx.scene.control.Spinner;
 import javafx.stage.Stage;
 import xml.SlimeXMLFactory;
 
+/**
+ * @author Brian
+ *
+ */
 public class SlimeMoldsInput extends UserInput{
 	private String segName = "SlimeMolds";
 	private Scene segScene;

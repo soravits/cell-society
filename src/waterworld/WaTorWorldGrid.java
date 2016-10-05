@@ -1,10 +1,9 @@
 package waterworld;
 import base.CellShape;
 import base.Grid;
-import base.Simulation;
+import base.Location;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import waterworld.WaTorWorldCell.State;
 /**
  * @author Soravit
@@ -30,8 +29,8 @@ public class WaTorWorldGrid extends Grid {
 	 */
 	@Override
 	public void initializeGrid(CellType type) {
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -45,10 +44,10 @@ public class WaTorWorldGrid extends Grid {
 				}
 				WaTorWorldCell gridCell = new WaTorWorldCell(getSizeOfCell(), getRootElement(), 
 						verticalShift * (j) + horizontalOffset,
-						horizontalShift * (i) + getInitialY(), State.EMPTY,getRowLength(), type);
+						horizontalShift * (i) + getInitialY(), State.EMPTY,getGridLength(), type);
 
 				gridCell.addToScene();
-				setCell(i,j,gridCell);		
+				setCell(new Location(i, j),gridCell);
 				setUpListener(gridCell);
 			}
 		} 
@@ -58,8 +57,8 @@ public class WaTorWorldGrid extends Grid {
 	 * @param gridCell
 	 */
 	private void setUpListener(WaTorWorldCell gridCell) {
-		gridCell.returnBlock().setOnMousePressed(event -> {
-			gridCell.setAsManuallyModified();
+		gridCell.getBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModifiedByUser();
 			if(gridCell.getState() == State.EMPTY) {
 				gridCell.setState(State.FISH);
 			}
@@ -76,11 +75,10 @@ public class WaTorWorldGrid extends Grid {
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	public WaTorWorldCell getCell(int row, int col) {
-		return (WaTorWorldCell) super.getCell(row,col);
+	public WaTorWorldCell getCell(Location location) {
+		return (WaTorWorldCell) super.getCell(location);
 	}
 }

@@ -149,7 +149,7 @@ public abstract class UserInput {
 	 */
 	public void manualInput() {
 		myScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-
+		grid.setStyle("-fx-background-color: #02f7c6;");
 		grid.setHgap(50);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10));

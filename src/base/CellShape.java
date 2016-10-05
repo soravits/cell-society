@@ -1,7 +1,6 @@
 package base;
 
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Polyline;
 
 /**
  * @author Brian
@@ -12,11 +11,11 @@ public class CellShape {
 	public static final double horizontalOffsetHexagon = 0.6;
 	public static final double verticalOffsetHexagon = 1.925;
 
+    private double verticalOffset = 0; // For aligning them together
+    private double horizontalOffset = 0; // For subsequent rows getting aligned horizontally
+    private int gridLength;
+
 	private Polygon cellShape;
-	private double verticleOffset = 0; // For aligning them together
-	private double horizontalOffset = 0; // For subsequent rows getting aligned horizontally
-	private int gridLength;
-	//private boolean needsManipulation;
 
 	/**
 	 * @param gridLength
@@ -32,14 +31,14 @@ public class CellShape {
 	 */
 	public void setCoords(double xCoord, double yCoord) {
 		cellShape.setLayoutX(xCoord + horizontalOffset);
-		cellShape.setLayoutY(yCoord - verticleOffset);
+		cellShape.setLayoutY(yCoord - verticalOffset);
 	}
 
 	/**
 	 * 
 	 */
 	public void setHexagonalCell() {
-		verticleOffset = 20;
+		verticalOffset = 20;
 		horizontalOffset = 10;
 		cellShape = new Polygon();
 		double currIterWidth = 50;

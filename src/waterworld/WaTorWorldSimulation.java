@@ -1,11 +1,10 @@
 package waterworld;
 import java.util.ArrayList;
 import java.util.Collections;
-import base.Cell;
+
 import base.Grid;
 import base.Location;
 import base.Simulation;
-import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -65,46 +64,35 @@ public class WaTorWorldSimulation extends Simulation {
 		this.starveTime = starveTime;
 	}
 
-	@Override
 	public Scene init (Stage s,CellType type) {
-		setStage(s);
-		makeNewRootElement();
+		super.init(s, type);
+		return getMyScene();
+	}
 
-		int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
-		}
-
-		setMyScene(new Scene(getRootElement(), screenWidth,
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-		setTopMargin(getTopMargin() + marginBoxTop * 4);
+	public Grid instantiateGrid(){
 		this.myGrid = new WaTorWorldGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-		myGrid.initializeGrid(type);
-		myGrid.setUpButtons();
-		myGrid.setSimulationProfile(this);
-		setInitialEnvironment();
-		createGraph();
-		return getMyScene();
+		return myGrid;
 	}
 
 	@Override
 	public void setInitialEnvironment() {
+		createGraph();
 		sharkCount = 0;
 		fishCount = 0;
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
+				Location location = new Location(i, j);
 				double rand = Math.random();
 				if(rand < fracFish) {
-					breedFish(i, j);
+					breedFish(location);
 				}
 				else if(rand > fracFish 
 						&& rand < fracFish + fracShark) {
-					breedShark(i, j);
+					breedShark(location);
 				}
 				else {
-					killCell(i, j);
+					killCell(location);
 				}
 			}
 		}
@@ -112,20 +100,18 @@ public class WaTorWorldSimulation extends Simulation {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private boolean manuallyModified(int row, int col) {
-		return (myGrid.getCell(row, col).isManuallyModified());
+	private boolean manuallyModified(Location location) {
+		return (myGrid.getCell(location).isManuallyModifiedByUser());
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void noLongerModified(int row, int col) {
-		myGrid.getCell(row, col).noLongerManuallyModified();
+	private void noLongerModified(Location location) {
+		myGrid.getCell(location).noLongerManuallyModified();
 	}
 
 	/**
@@ -134,20 +120,21 @@ public class WaTorWorldSimulation extends Simulation {
 	public void manuallyModifyStateOfGrid() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				if(manuallyModified(i, j)) {
+				Location location = new Location(i, j);
+				if(manuallyModified(location)) {
 					System.out.println(i + " " + j);
-					noLongerModified(i, j);
-					if((myGrid.getCell(i, j)).getState() == State.SHARK) {
+					noLongerModified(location);
+					if((myGrid.getCell(location)).getState() == State.SHARK) {
 						sharkCount++;
 						fishCount--;
 					} 
-					else if (myGrid.getCell(i, j).getState() == State.FISH) {
+					else if (myGrid.getCell(location).getState() == State.FISH) {
 						fishCount++;
 						seaCount--;
 					}
 					else {
 						sharkCount--;
-						killCell(i, j);
+						killCell(new Location(i, j));
 					}
 				}
 			}
@@ -160,129 +147,117 @@ public class WaTorWorldSimulation extends Simulation {
 	public void updateState() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				if(myGrid.getCell(i, j).getState() == State.SHARK) {
-					updateShark(i, j);
+				Location location = new Location(i, j);
+				if(myGrid.getCell(location).getState() == State.SHARK) {
+					updateShark(location);
 				} 
-				else if (myGrid.getCell(i, j).getState() == State.FISH) {
-					updateFish(i, j);
+				else if (myGrid.getCell(location).getState() == State.FISH) {
+					updateFish(location);
 				}
 			}
 		}
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void updateShark(int row, int col) {
-		Location currLocation = new Location(row, col);
-		//Cell[][] grid = myGrid.getGrid();
+	public void updateShark(Location location) {
+		Location currLocation = new Location(location.getRow(), location.getColumn());
 		ArrayList <Location> fish = new ArrayList <Location>();
-		myGrid.getCell(row, col).decrementBreedTime();
-		myGrid.getCell(row, col).decrementStarveTime();
-		if(myGrid.getNorthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
-				myGrid.getNorthernNeighbor(row, col).getColumn()).getState() == State.FISH) {
-			fish.add(myGrid.getNorthernNeighbor(row, col));
+		myGrid.getCell(location).decrementBreedTime();
+		myGrid.getCell(location).decrementStarveTime();
+		if(myGrid.getNorthernNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getNorthernNeighbor(location)).getState() == State.FISH) {
+			fish.add(myGrid.getNorthernNeighbor(location));
 		}
-		if(myGrid.getSouthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
-				myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == State.FISH) {
-			fish.add(myGrid.getSouthernNeighbor(row, col));
+		if(myGrid.getSouthernNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getSouthernNeighbor(location)).getState() == State.FISH) {
+			fish.add(myGrid.getSouthernNeighbor(location));
 		}
-		if(myGrid.getEasternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
-				myGrid.getEasternNeighbor(row, col).getColumn()).getState() == State.FISH) {
-			fish.add(myGrid.getEasternNeighbor(row, col));
+		if(myGrid.getEasternNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getEasternNeighbor(location)).getState() == State.FISH) {
+			fish.add(myGrid.getEasternNeighbor(location));
 		}
-		if(myGrid.getWesternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
-				myGrid.getWesternNeighbor(row, col).getColumn()).getState() == State.FISH) {
-			fish.add(myGrid.getWesternNeighbor(row, col));
+		if(myGrid.getWesternNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getWesternNeighbor(location)).getState() == State.FISH) {
+			fish.add(myGrid.getWesternNeighbor(location));
 		}
 		if(fish.size() == 0) {
-			Location loc = getRandomEmptyNeighbor(row, col);
+			Location loc = getRandomEmptyNeighbor(location);
 			if(loc != null) {
-				moveFish(currLocation, loc); 
+				moveFish(location, loc);
 				currLocation.setRow(loc.getRow());
-				currLocation.setColumn(loc.getColumn());
+				currLocation.setCol(loc.getColumn());
 			}
 		}
 		else if(fish.size() == 1) {
-			killCell(fish.get(0).getRow(), fish.get(0).getColumn());
+			killCell(fish.get(0));
 			fishCount--;
-			myGrid.getCell(row,col).setStarveTime(starveTime);
+			myGrid.getCell(currLocation).setStarveTime(starveTime);
 		} 
 		else {
 			Collections.shuffle(fish);
-			killCell(fish.get(0).getRow(), fish.get(0).getColumn());
+			killCell(fish.get(0));
 			fishCount--;
-			myGrid.getCell(row, col).setStarveTime(starveTime);
+			myGrid.getCell(currLocation).setStarveTime(starveTime);
 		}
-		if(myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).getStarveTime() == 0) {
-			killCell(currLocation.getRow(), currLocation.getColumn());
+		if(myGrid.getCell(currLocation).getStarveTime() == 0) {
+			killCell(currLocation);
 		} 
-		else if(myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).getBreedTime() == 0) {
-			Location loc = getRandomEmptyNeighbor(currLocation.getRow(), currLocation.getColumn());
+		else if(myGrid.getCell(currLocation).getBreedTime() == 0) {
+			Location loc = getRandomEmptyNeighbor(currLocation);
 			if(loc != null){
-				breedShark(loc.getRow(), loc.getColumn());
+				breedShark(loc);
 				seaCount--;
 			}
-			myGrid.getCell(currLocation.getRow(), currLocation.getColumn()).setBreedTime(sharkBreedTime);
+			myGrid.getCell(currLocation).setBreedTime(sharkBreedTime);
 		}
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void updateFish(int row, int col) {
+	public void updateFish(Location location) {
 		//Cell[][] grid = myGrid.getGrid();        
-		myGrid.getCell(row, col).setBreedTime(myGrid.getCell(row, col).getBreedTime() - 1);
-		Location loc = getRandomEmptyNeighbor(row, col);
+		myGrid.getCell(location).setBreedTime(myGrid.getCell(location).getBreedTime() - 1);
+		Location loc = getRandomEmptyNeighbor(location);
 		if(loc != null) {
-			moveFish(new Location(row, col), loc);
-			row = loc.getRow();
-			col = loc.getColumn();
+			moveFish(location, loc);
+			location = loc;
 		}
-		if(myGrid.getCell(row, col).getBreedTime() == 0) {
-			Location l = getRandomEmptyNeighbor(row, col);
+		if(myGrid.getCell(location).getBreedTime() == 0) {
+			Location l = getRandomEmptyNeighbor(location);
 			if(l != null) {
-				breedFish(l.getRow(), l.getColumn());
+				breedFish(l);
 				seaCount--;
 			}
-			myGrid.getCell(row,col).setBreedTime(fishBreedTime);
+			myGrid.getCell(location).setBreedTime(fishBreedTime);
 		}
 	}
 	
 	/**
 	 * 
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	public Location getRandomEmptyNeighbor(int row, int col) {
+	public Location getRandomEmptyNeighbor(Location location) {
 		ArrayList <Location> locations = new ArrayList <Location>();
 		//Cell[][] grid = myGrid.getGrid();        
-		if(myGrid.getNorthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
-				myGrid.getNorthernNeighbor(row, col).getColumn()).getState() == State.EMPTY) {
-			locations.add(myGrid.getNorthernNeighbor(row, col));
+		if(myGrid.getNorthernNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getNorthernNeighbor(location)).getState() == State.EMPTY) {
+			locations.add(myGrid.getNorthernNeighbor(location));
 		}
-		if(myGrid.getSouthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
-				myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == State.EMPTY) {
-			locations.add(myGrid.getSouthernNeighbor(row, col));
+		if(myGrid.getSouthernNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getSouthernNeighbor(location)).getState() == State.EMPTY) {
+			locations.add(myGrid.getSouthernNeighbor(location));
 		}
-		if(myGrid.getEasternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
-				myGrid.getEasternNeighbor(row, col).getColumn()).getState() == State.EMPTY) {
-			locations.add(myGrid.getEasternNeighbor(row, col));
+		if(myGrid.getWesternNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getWesternNeighbor(location)).getState() == State.EMPTY) {
+			locations.add(myGrid.getWesternNeighbor(location));
 		}
-		if(myGrid.getWesternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
-				myGrid.getWesternNeighbor(row, col).getColumn()).getState() == State.EMPTY) {
-			locations.add(myGrid.getWesternNeighbor(row, col));
+		if(myGrid.getEasternNeighbor(location) != null
+				&& myGrid.getCell(myGrid.getEasternNeighbor(location)).getState() == State.EMPTY) {
+			locations.add(myGrid.getEasternNeighbor(location));
 		}
 		
 		Collections.shuffle(locations);
@@ -297,11 +272,9 @@ public class WaTorWorldSimulation extends Simulation {
 	 * @param dest
 	 */
 	public void moveFish(Location source, Location dest) {
-		myGrid.getCell(dest.getRow(), dest.getColumn()).setState(myGrid.getCell(source.getRow(),
-				source.getColumn()).getState());
-		myGrid.getCell(dest.getRow(), dest.getColumn()).setBreedTime(myGrid.getCell(source.getRow(),
-				source.getColumn()).getBreedTime());
-		killCell(source.getRow(),source.getColumn());
+		myGrid.getCell(dest).setState(myGrid.getCell(source).getState());
+		myGrid.getCell(dest).setBreedTime(myGrid.getCell(source).getBreedTime());
+		killCell(source);
 	}
 	
 	/**
@@ -310,40 +283,36 @@ public class WaTorWorldSimulation extends Simulation {
 	 */
 	public void moveShark(Location source, Location dest) {
 		moveShark(source, dest);
-		myGrid.getCell(dest.getRow(), dest.getColumn()).setStarveTime(myGrid.getCell(source.getRow(),
-				source.getColumn()).getStarveTime());
+		myGrid.getCell(dest).setStarveTime(myGrid.getCell(source).getStarveTime());
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void breedFish(int row, int col) {
+	public void breedFish(Location location) {
 		fishCount++;
-		myGrid.getCell(row, col).setState(State.FISH);
-		myGrid.getCell(row, col).setBreedTime(fishBreedTime);
+		myGrid.getCell(location).setState(State.FISH);
+		myGrid.getCell(location).setBreedTime(fishBreedTime);
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void breedShark(int row, int col) {
+	public void breedShark(Location location) {
 		sharkCount++;
-		myGrid.getCell(row, col).setState(State.SHARK);
-		myGrid.getCell(row, col).setStarveTime(starveTime);
-		myGrid.getCell(row, col).setBreedTime(sharkBreedTime);
+		myGrid.getCell(location).setState(State.SHARK);
+		myGrid.getCell(location).setStarveTime(starveTime);
+		myGrid.getCell(location).setBreedTime(sharkBreedTime);
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void killCell(int row, int col) {
+	public void killCell(Location location) {
 		seaCount = (int) Math.pow(getGridLength(), 2) - sharkCount - fishCount;
-		myGrid.getCell(row, col).setState(State.EMPTY);
-		myGrid.getCell(row, col).setStarveTime(-1);
-		myGrid.getCell(row, col).setBreedTime(-1);
+		myGrid.getCell(location).setState(State.EMPTY);
+		myGrid.getCell(location).setStarveTime(-1);
+		myGrid.getCell(location).setBreedTime(-1);
 	}
 	
 	/**

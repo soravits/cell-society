@@ -2,16 +2,12 @@ package sugarscape;
 
 import java.awt.Point;
 
+import base.Location;
 import sugarscape.SugarScapeCell.State;
-import base.Cell;
 import base.CellShape;
 import base.Grid;
-import base.Simulation;
-import base.Grid.gridEdgeType;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 /**
  * @author Delia
@@ -37,19 +33,18 @@ public class SugarScapeGrid extends Grid {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return cell located at those coordinates
 	 */
-	public SugarScapeCell getCell(int row, int col) {
-		return (SugarScapeCell) super.getCell(row, col);
+	public SugarScapeCell getCell(Location location) {
+		return (SugarScapeCell) super.getCell(location);
 	}
 
 	@Override
 	public void initializeGrid(CellType type) {
 		this.type = type;
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -63,12 +58,12 @@ public class SugarScapeGrid extends Grid {
 				}
 				SugarScapeCell gridCell = new SugarScapeCell(getSizeOfCell(), getRootElement(), 
 						verticalShift * (j) + horizontalOffset,
-						horizontalShift * (i) + getInitialY(), getRowLength(), 
+						horizontalShift * (i) + getInitialY(), getGridLength(),
 						sim.getMaxPatchSugar(), sim.getAgentMaxCarbs(),
 						sim.getAgentMinCarbs(), sim.getMetabRate(), type);
 				gridCell.addToScene();
 				setUpListener(gridCell);   
-				setCell(i, j, gridCell);
+				setCell(new Location(i, j), gridCell);
 			}
 		}      
 	}
@@ -78,8 +73,8 @@ public class SugarScapeGrid extends Grid {
 	 * @param gridCell
 	 */
 	private void setUpListener(SugarScapeCell gridCell) {
-		gridCell.returnBlock().setOnMousePressed(event -> {
-			gridCell.setAsManuallyModified();
+		gridCell.getBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModifiedByUser();
 			if(gridCell.getState() == State.PATCH) {
 				gridCell.setState(State.AGENT);
 			}
@@ -100,28 +95,29 @@ public class SugarScapeGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void moveAgent(Point p1, Point p2) {
-		int origCarbs = getCell(p1.x, p1.y).getAgentCarbs();
+		Location p1location = new Location(p1.x, p1.y);
+		Location p2location = new Location(p2.x, p2.y);
+		int origCarbs = getCell(p1location).getAgentCarbs();
 		int distanceMoved = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
-		if(getCell(p2.x, p2.y).getState() != State.AGENT) {
+		if(getCell(p2location).getState() != State.AGENT) {
 			//set destination with all attributes of agent, except for metabolized sugar
-			getCell(p2.x, p2.y).setMovedAgent(origCarbs, getCell(p1.x, p1.y).getSugarAmount());
-			getCell(p2.x, p2.y).burnAgentCalories(distanceMoved);
+			getCell(p2location).setMovedAgent(origCarbs, getCell(p1location).getSugarAmount());
+			getCell(p2location).burnAgentCalories(distanceMoved);
 			//set agent original position as empty patch
-			getCell(p1.x, p1.y).setAgentMovedPatch();
+			getCell(p1location).setAgentMovedPatch();
 		}
 	}
 
 	/**
-	 * @param x
-	 * @param y
+	 * @param location
 	 * @param cellState
 	 */
-	public void updateCell(int x, int y, int cellState) {
+	public void updateCell(Location location, int cellState) {
 		if(cellState == 0) {
-			getCell(x, y).setState(State.PATCH);
+			getCell(location).setState(State.PATCH);
 		}
 		else {
-			getCell(x, y).setState(State.AGENT);
+			getCell(location).setState(State.AGENT);
 		}
 	}
 }

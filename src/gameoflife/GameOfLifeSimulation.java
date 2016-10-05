@@ -1,8 +1,10 @@
 package gameoflife;
-import java.util.Arrays;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 import base.Grid;
+import base.Location;
 import base.Simulation;
 import gameoflife.GameOfLifeCell.States;
 import javafx.geometry.Side;
@@ -14,7 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import waterworld.WaTorWorldCell;
+
 /**
  * @author Brian
  *
@@ -52,26 +54,16 @@ public class GameOfLifeSimulation extends Simulation {
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage)
 	 */
-	@Override
-	public Scene init(Stage s,CellType type) {
-		setStage(s);
-		makeNewRootElement();
-		int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
-		}
-		setMyScene(new Scene(getRootElement(), screenWidth,
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-		setTopMargin(getTopMargin() + marginBoxTop * 4);
+	public Scene init(Stage s, CellType type) {
+		super.init(s, type);
+		return getMyScene();
+	}
+
+	public Grid instantiateGrid(){
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
 		deadOrAlive = new boolean[getGridLength()][getGridLength()];
-		myGrid.initializeGrid(type);
-		myGrid.setUpButtons();
-		myGrid.setSimulationProfile(this);
-		setInitialEnvironment();
-		return getMyScene();
+		return myGrid;
 	}
 	
 	/**
@@ -179,79 +171,73 @@ public class GameOfLifeSimulation extends Simulation {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
 				if(deadOrAlive[i][j] == true) {
-					reviveCell(i, j);
+					reviveCell(new Location(i, j));
 				}
 				else {
-					killCell(i, j);
+					killCell(new Location(i, j));
 				}
 			}
 		}	
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void killCell(int row, int col) {
-		myGrid.getCell(row, col).killCell();
-		myGrid.updateCell(row, col);
+	private void killCell(Location location) {
+		myGrid.getCell(location).killCell();
+		myGrid.updateCell(location);
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void reviveCell(int row, int col) {
-		myGrid.getCell(row, col).reviveCell();
-		myGrid.updateCell(row, col);
+	private void reviveCell(Location location) {
+		myGrid.getCell(location).reviveCell();
+		myGrid.updateCell(location);
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private boolean isAlive(int row, int col) {
-		return (myGrid.getCell(row, col).getState() == States.ALIVE);
+	private boolean isAlive(Location location) {
+		return (myGrid.getCell(location).getState() == States.ALIVE);
 	}
 	
 	/**
-	 * @param row
-	 * @param column
+	 * @param location
 	 * @param aliveSurroundingCells
 	 */
-	public void updateCurrentCellState(int row, int column, int aliveSurroundingCells) {
-		if(isAlive(row, column)) {
+	public void updateCurrentCellState(Location location, int aliveSurroundingCells) {
+		if(isAlive(location)) {
 			if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
 				numberDead++;
 				numberAlive--;
-				deadOrAlive[row][column] = false;
+				deadOrAlive[location.getRow()][location.getColumn()] = false;
 			}
 		}
 		else {
 			if((aliveSurroundingCells == 3)) {
 				numberDead--;
 				numberAlive++;
-				deadOrAlive[row][column] = true;
+				deadOrAlive[location.getRow()][location.getColumn()] = true;
 			}
 		}
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private boolean manuallyModified(int row, int col) {
-		return (myGrid.getCell(row, col).isManuallyModified());
+	private boolean manuallyModified(Location location) {
+		return (myGrid.getCell(location).isManuallyModifiedByUser());
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void noLongerModified(int row, int col) {
-		myGrid.getCell(row, col).noLongerManuallyModified();
+	private void noLongerModified(Location location) {
+		myGrid.getCell(location).noLongerManuallyModified();
 	}
 	
 	/**
@@ -260,15 +246,16 @@ public class GameOfLifeSimulation extends Simulation {
 	public void updateStateOnClick() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				if(manuallyModified(i,j)) {
-					if(isAlive(i, j)) {
-						noLongerModified(i, j);
+                Location location = new Location(i, j);
+				if(manuallyModified(location)) {
+					if(isAlive(location)) {
+						noLongerModified(location);
 						deadOrAlive[i][j] = true;
 						numberDead--;
 						numberAlive++;
 					}
 					else {
-						noLongerModified(i, j);
+						noLongerModified(location);
 						numberDead++;
 						numberAlive--;
 					}
@@ -284,59 +271,25 @@ public class GameOfLifeSimulation extends Simulation {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
 				int aliveSurroundingCells = 0;
-				aliveSurroundingCells += checkNearbyCells(i, j);
-				updateCurrentCellState(i, j, aliveSurroundingCells);
+                Location location = new Location(i, j);
+				aliveSurroundingCells += checkNearbyCells(location);
+				updateCurrentCellState(location, aliveSurroundingCells);
 			}
 		}
 	}
 	
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private int checkNearbyCells(int row, int col) {
+	private int checkNearbyCells(Location location) {
 		int aliveNearbyCells = 0;
-		if(myGrid.getNorthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getNorthernNeighbor(row, col).getRow(),
-				myGrid.getNorthernNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getSouthernNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getSouthernNeighbor(row, col).getRow(),
-				myGrid.getSouthernNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getEasternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getEasternNeighbor(row, col).getRow(),
-				myGrid.getEasternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getWesternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getWesternNeighbor(row, col).getRow(),
-				myGrid.getWesternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getNorthwesternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getNorthwesternNeighbor(row, col).getRow(),
-				myGrid.getNorthwesternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getNortheasternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getNortheasternNeighbor(row, col).getRow(),
-				myGrid.getNortheasternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getSouthwesternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getSouthwesternNeighbor(row, col).getRow(),
-				myGrid.getSouthwesternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
-		if(myGrid.getSoutheasternNeighbor(row, col) != null 
-				&& myGrid.getCell(myGrid.getSoutheasternNeighbor(row, col).getRow(),
-				myGrid.getSoutheasternNeighbor(row, col).getColumn()).getState() == States.ALIVE) {
-			aliveNearbyCells++;
-		}
+        ArrayList<Location> neighbors = myGrid.getAllNeighbors(location);
+        for(int i = 0; i < neighbors.size(); i++){
+            if(neighbors.get(i) != null && myGrid.getCell(neighbors.get(i)).getState() == States.ALIVE){
+                aliveNearbyCells ++;
+            }
+        }
 		return aliveNearbyCells;
 	}
 }

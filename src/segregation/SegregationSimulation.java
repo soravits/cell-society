@@ -147,9 +147,9 @@ public class SegregationSimulation extends Simulation {
         for(int i = 0; i < neighbors.size(); i++) {
             Location neighbor = neighbors.get(i);
             if (neighbor != null){
-                if(myGrid.getCell(neighbor).getColor() != Color.WHITE)
+                if(!myGrid.getCell(neighbor).getColor().equals(Color.WHITE))
                     totalNeighbors++;
-                if (myGrid.getCell(neighbor).getState() == currentState)
+                if (myGrid.getCell(neighbor).getState().equals(currentState))
                     sameColor++;
             }
         }
@@ -193,7 +193,6 @@ public class SegregationSimulation extends Simulation {
 
         numberEmpty = emptySpots.size();
         numberUnsatisfied = unhappySpots.size();
-        System.out.println(numberEmpty);
         numberSatisfied = (int) Math.pow(getGridLength(), 2) - numberEmpty - numberUnsatisfied;
         myGrid.updateStats(totalSteps, numberUnsatisfied);
     }

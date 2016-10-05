@@ -60,6 +60,32 @@ public abstract class Simulation {
 		leftMargin = (int) ((SIMULATION_WINDOW_WIDTH - lengthOfGridInPixels) * LEFT_MARGIN_SIZE);
 		topMargin = (int) (SIMULATION_WINDOW_HEIGHT / TOP_MARGIN_SIZE + MARGIN_BOX_TOP * TOP_MARGIN_ADJUSTMENT);
 	};
+	
+
+	/**
+	 * @return The grid with which the simulation works
+	 */
+	public abstract Grid instantiateGrid();
+
+	/**
+	 * Sets up the initial objects/behavior of the simulation
+	 */
+	public abstract void setInitialEnvironment();
+	
+	/**
+	 * @param lineChart
+	 */
+	public abstract void createSeries(LineChart lineChart);
+
+	/**
+	 * 
+	 */
+	public abstract void createCellCounter();
+	
+	/**
+	 * 
+	 */
+	public abstract void updateGraph();
 
 	/**
 	 * Starts the animation object that keeps the simulation running
@@ -78,7 +104,12 @@ public abstract class Simulation {
 	 * Pauses the simulation
 	 */
 	public void stopSimulation () {
-		animation.stop();
+    	try {
+    		animation.stop();
+    	}
+    	catch(NullPointerException e) {
+
+    	}
 	}
 
 	/**
@@ -184,16 +215,6 @@ public abstract class Simulation {
 	}
 
 	/**
-	 * @return The grid with which the simulation works
-	 */
-	public abstract Grid instantiateGrid();
-
-	/**
-	 * Sets up the initial objects/behavior of the simulation
-	 */
-	public abstract void setInitialEnvironment();
-
-	/**
 	 * The function that is constantly called throughout the simulation
 	 */
 	public abstract void step();
@@ -203,7 +224,6 @@ public abstract class Simulation {
 	 * @param type The shape of the cell
 	 * @return The newly created scene
 	 */
-
 	public Scene init(Stage s, CellType type){
 		setStage(s);
 		setNewRootElement();
@@ -218,10 +238,6 @@ public abstract class Simulation {
 		return getMyScene();
 	}
 	
-	public abstract void createSeries(LineChart lineChart);
-
-	public abstract void createCellCounter();
-	
 	public void createGraph(){
 		//defining the axes
 		final NumberAxis xAxis = new NumberAxis();
@@ -234,9 +250,7 @@ public abstract class Simulation {
 		//creating the chart
 		final LineChart <Number, Number> lineChart = 
 				new LineChart <Number,Number> (xAxis, yAxis);
-
 		createSeries(lineChart);
-		
         lineChart.setLayoutX(25);
         lineChart.setPrefSize(500, 100);
         lineChart.setLegendVisible(true);

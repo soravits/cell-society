@@ -290,19 +290,10 @@ public class WaTorWorldSimulation extends Simulation {
 		myGrid.getCell(location).setStarveTime(-1);
 		myGrid.getCell(location).setBreedTime(-1);
 	}
+	
 
-	public void createGraph() {
-		//defining the axes
-		final NumberAxis xAxis = new NumberAxis();
-		xAxis.setTickLabelsVisible(false);
-		xAxis.setTickMarkVisible(false);
-		xAxis.setMinorTickVisible(false);
-		final NumberAxis yAxis = new NumberAxis();
-		yAxis.setMinorTickVisible(false);
-		
-		//creating the chart
-		final LineChart <Number, Number> lineChart = 
-				new LineChart <Number,Number> (xAxis, yAxis);
+	@Override
+	public void createSeries(LineChart lineChart) {
 		fishSeries = new XYChart.Series();
 		fishSeries.setName("Fish");
 		sharkSeries = new XYChart.Series();
@@ -314,24 +305,16 @@ public class WaTorWorldSimulation extends Simulation {
 		lineChart.getData().add(fishSeries);
 		lineChart.getData().add(sharkSeries);
 		lineChart.getData().add(seaSeries);
-		
-		lineChart.setLayoutX(25);
-		lineChart.setPrefSize(500, 100);
-		lineChart.setLegendVisible(true);
-		lineChart.setLegendSide(Side.RIGHT);
-		getRootElement().getChildren().add(lineChart);
-		
+	}
+
+	@Override
+	public void createCellCounter() {
 		Rectangle cellCounter = new Rectangle(
 				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
 				+ 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
 				DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
 		cellCounter.setFill(Color.WHITE);
-		cellCounter.setStyle(
-				"-fx-background-radius: 8,7,6;" + 
-						"-fx-background-insets: 0,1,2;" +
-						"-fx-text-fill: black;" +
-						"-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-				);
+		cellCounter.setStyle(getCellCounterStyle());
 		getRootElement().getChildren().add(cellCounter);
 		numSea.setFill(Color.BLUE);
 		numShark.setFill(Color.GOLD);
@@ -345,6 +328,7 @@ public class WaTorWorldSimulation extends Simulation {
 	/**
 	 * 
 	 */
+	@Override
 	public void updateGraph() {
 		fishSeries.getData().add(new XYChart.Data(stepCount, fishCount));
 		sharkSeries.getData().add(new XYChart.Data(stepCount, sharkCount));
@@ -371,15 +355,4 @@ public class WaTorWorldSimulation extends Simulation {
 		stepCount++;
 	}
 
-	@Override
-	public void createSeries(LineChart lineChart) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void createCellCounter() {
-		// TODO Auto-generated method stub
-		
-	}
 }

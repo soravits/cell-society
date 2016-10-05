@@ -106,13 +106,15 @@ public class SegregationGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void switchCells(Point p1, Point p2) {
+//		System.out.println("cells switched");
 		Location location = new Location(p1.x, p1.y);
-		State destination = getCell(location).getState();
+		Location dest = new Location(p2.x, p2.y);
+		State destination = getCell(dest).getState();
 		State origin = getCell(location).getState();
 
 		updateCell(location, destination);
 		//		System.out.println(destination);
-		updateCell(location, origin);
+		updateCell(dest, origin);
 		//		System.out.println(origin);
 	}
 	

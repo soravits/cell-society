@@ -228,7 +228,7 @@ public class SpreadingOfFireSimulation extends Simulation {
         }
     }
 
-    private void createGraph() {
+    public void createGraph() {
         //defining the axes
         final NumberAxis xAxis = new NumberAxis();
         xAxis.setTickLabelsVisible(false);
@@ -312,4 +312,16 @@ public class SpreadingOfFireSimulation extends Simulation {
         updateGraph();
         stepCount++;
     }
+
+	@Override
+	public void createSeries(LineChart lineChart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createCellCounter() {
+		// TODO Auto-generated method stub
+		
+	}
 }

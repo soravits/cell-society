@@ -82,9 +82,6 @@ public class SugarScapeSimulation extends Simulation {
 		this.preset = preset;
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Simulation#init(javafx.stage.Stage, base.Simulation.CellType)
-	 */
 	@Override
 	public Scene init(Stage s, CellType type) {
 		super.init(s, type);
@@ -92,10 +89,6 @@ public class SugarScapeSimulation extends Simulation {
         return getMyScene();
 	}
 
-
-	/* (non-Javadoc)
-	 * @see base.Simulation#instantiateGrid()
-	 */
 	@Override
 	public Grid instantiateGrid(){
         this.myGrid = new SugarScapeGrid(getGridLength(), getCellSize(), getRootElement(),
@@ -103,9 +96,6 @@ public class SugarScapeSimulation extends Simulation {
         return myGrid;
     }
 
-	/* (non-Javadoc)
-	 * @see base.Simulation#setInitialEnvironment()
-	 */
 	@Override
 	public void setInitialEnvironment() {
 		createGraph();
@@ -421,5 +411,17 @@ public class SugarScapeSimulation extends Simulation {
 	 */
 	public void updateTotalCarbs(int newCarbs) {
 		agentTotalCarbs += newCarbs;
+	}
+
+	@Override
+	public void createSeries(LineChart lineChart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createCellCounter() {
+		// TODO Auto-generated method stub
+		
 	}
 }

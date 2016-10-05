@@ -291,4 +291,14 @@ public class GameOfLifeSimulation extends Simulation {
         }
 		return aliveNearbyCells;
 	}
+	@Override
+	public void createSeries(LineChart lineChart) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void createCellCounter() {
+		// TODO Auto-generated method stub
+		
+	}
 }

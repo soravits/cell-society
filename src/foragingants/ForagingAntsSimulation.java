@@ -4,6 +4,7 @@ import base.Grid;
 import base.Location;
 import base.Simulation;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -374,4 +375,16 @@ public class ForagingAntsSimulation extends Simulation {
             ants.add(ant);
         }
     }
+
+	@Override
+	public void createSeries(LineChart lineChart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createCellCounter() {
+		// TODO Auto-generated method stub
+		
+	}
 }

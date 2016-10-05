@@ -325,4 +325,16 @@ public class SlimeMoldsSimulation extends Simulation {
 		stepCount++;
 	}
 
+	@Override
+	public void createSeries(LineChart lineChart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createCellCounter() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

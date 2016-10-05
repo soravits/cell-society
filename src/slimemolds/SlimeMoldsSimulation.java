@@ -238,10 +238,18 @@ public class SlimeMoldsSimulation extends Simulation {
         int col = location.getColumn();
 		SlimeMoldsCell cell = myGrid.getCell(location);
 		cell.pollute(stepAmt);
-		diffuseSpores(myGrid.getSouthernNeighbor(location));
-		diffuseSpores(myGrid.getNorthernNeighbor(location));
-		diffuseSpores(myGrid.getEasternNeighbor(location));
-		diffuseSpores(myGrid.getWesternNeighbor(location));
+		if(myGrid.getSouthernNeighbor(location) != null) {
+			diffuseSpores(myGrid.getSouthernNeighbor(location));
+		}
+		if(myGrid.getNorthernNeighbor(location) != null) {
+			diffuseSpores(myGrid.getNorthernNeighbor(location));
+		}
+		if(myGrid.getEasternNeighbor(location) != null) {
+			diffuseSpores(myGrid.getEasternNeighbor(location));
+		}
+		if(myGrid.getWesternNeighbor(location) != null) {
+			diffuseSpores(myGrid.getWesternNeighbor(location));
+		}
 	}
 
 	/**

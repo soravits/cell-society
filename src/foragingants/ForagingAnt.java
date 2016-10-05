@@ -7,20 +7,17 @@ import base.Location;
  */
 public class ForagingAnt {
 
-    private int row;
-    private int col;
+    private Location location;
     private int orientation = 0;
     private ForagingAntsGrid myGrid;
     private boolean hasFood;
 
     /**
-     * @param row
-     * @param col
+     * @param location
      * @param myGrid
      */
-    public ForagingAnt(int row, int col, ForagingAntsGrid myGrid) {
-        this.row = row;
-        this.col = col;
+    public ForagingAnt(Location location, ForagingAntsGrid myGrid) {
+        this.location = location;
         this.myGrid = myGrid;
     }
 
@@ -41,41 +38,16 @@ public class ForagingAnt {
     /**
      * @return
      */
-    public int getRow() {
-        return row;
-    }
 
-    /**
-     * @param row
-     */
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    /**
-     * @return
-     */
-    public int getColumn() {
-        return col;
-    }
-
-    /**
-     * @return
-     */
     public Location getLocation() {
-        return new Location(row, col);
+        return location;
     }
 
-    /**
-     * @param col
-     */
-    public void setCol(int col) {
-        this.col = col;
+    public void setLocation(Location location){
+        this.location = location;
     }
 
-    /**
-     * @return
-     */
+
     public boolean hasFood() {
         return hasFood;
     }
@@ -91,9 +63,8 @@ public class ForagingAnt {
      * @param location
      */
     public void move(Location location) {
-            myGrid.getCell(row, col).decrementAntCount();
-            setRow(location.getRow());
-            setCol(location.getColumn());
-            myGrid.getCell(location.getRow(), location.getColumn()).incrementAntCount();
+            myGrid.getCell(location).decrementAntCount();
+            setLocation(location);
+            myGrid.getCell(location).incrementAntCount();
     }
 }

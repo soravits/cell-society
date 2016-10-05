@@ -1,7 +1,7 @@
 package spreadingoffire;
-import base.Cell;
 import base.CellShape;
 import base.Grid;
+import base.Location;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,8 +29,8 @@ public class SpreadingOfFireGrid extends Grid {
 	/* (non-Javadoc)
 	 * @see base.Grid#getCell(int, int)
 	 */
-	public SpreadingOfFireCell getCell(int row, int col) {
-		return (SpreadingOfFireCell) super.getCell(row,col);
+	public SpreadingOfFireCell getCell(Location location) {
+		return (SpreadingOfFireCell) super.getCell(location);
 	}
 
 	/* (non-Javadoc)
@@ -38,8 +38,8 @@ public class SpreadingOfFireGrid extends Grid {
 	 */
 	@Override
 	public void initializeGrid(CellType type) {
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -53,9 +53,9 @@ public class SpreadingOfFireGrid extends Grid {
 				}
 				SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(),
 						verticalShift * (j) + horizontalOffset,
-						horizontalShift * (i) + getInitialY(),getRowLength(),type);
+						horizontalShift * (i) + getInitialY(), getGridLength(),type);
 				gridCell.addToScene();
-				setCell(i,j,gridCell);		
+				setCell(new Location(i, j), gridCell);
 				setUpListener(gridCell);
 			}
 		}	      
@@ -65,8 +65,8 @@ public class SpreadingOfFireGrid extends Grid {
 	 * @param gridCell
 	 */
 	private void setUpListener(SpreadingOfFireCell gridCell) {
-		gridCell.returnBlock().setOnMousePressed(event -> {
-			gridCell.setAsManuallyModified();
+		gridCell.getBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModifiedByUser();
 			if(gridCell.getState() == States.ALIVE) {
 				gridCell.burn();
 				gridCell.setColor(Color.RED);
@@ -85,19 +85,18 @@ public class SpreadingOfFireGrid extends Grid {
 	}
 
 	/**
-	 * @param x
-	 * @param y
+	 * @param location
 	 * @param state
 	 */
-	public void updateCell(int x, int y, States state) {
+	public void updateCell(Location location, States state) {
 		if(state == States.DEAD) {
-			getCell(x,y).setColor(Color.YELLOW);
+			getCell(location).setColor(Color.YELLOW);
 		}
 		else if(state == States.ALIVE || state == States.CAUGHTFIRE) {
-			getCell(x,y).setColor(Color.FORESTGREEN);
+			getCell(location).setColor(Color.FORESTGREEN);
 		}
 		else {
-			getCell(x,y).setColor(Color.BROWN);
+			getCell(location).setColor(Color.BROWN);
 		}
 	}
 }

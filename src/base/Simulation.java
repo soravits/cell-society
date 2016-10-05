@@ -28,14 +28,14 @@ public abstract class Simulation {
 	private int lengthOfGridInPixels; 
 	private int leftMargin;
 	private int topMargin;
-	private Stage stage;
+
+    private Stage stage;
 	private Scene myScene;
 	private Pane rootElement;
 	protected Timeline animation;
-	private int type;
 
 	/**
-	 * @param myGridLength
+	 * @param myGridLength The length of the sides of the grid in cells
 	 */
 	 public Simulation(int myGridLength, CellType type) {
 		 gridLength = myGridLength;
@@ -48,7 +48,7 @@ public abstract class Simulation {
 	 };
 
 	 /**
-	  * 
+	  * Starts the animation object that keeps the simulation running
 	  */
 	 public void startSimulation() {
 		 KeyFrame frame = new KeyFrame(Duration.millis(MainMenu.MILLISECOND_DELAY * 100),
@@ -61,130 +61,124 @@ public abstract class Simulation {
 
 
 	 /**
-	  * 
+	  * Pauses the simulation
 	  */
 	 public void stopSimulation () {
 		 animation.stop();
 	 }
 
 	 /**
-	  * 
+	  * Resumes the simulation
 	  */
 	 public void resumeSimulation() {
 		 animation.play();
 	 }
 
 	 /**
-	  * @return
+	  * @return The length of a side of the grid in cells
 	  */
 	 public int getGridLength () {
 		 return gridLength;
 	 }
 
 	 /**
-	  * @param gridLength
-	  */
-	 public void setGridLength (int gridLength) {
-		 this.gridLength = gridLength;
-	 }
-
-	 /**
-	  * @return
+	  * @return The margin between the left side of the green and the left side of the grid
 	  */
 	 public int getLeftMargin () {
 		 return leftMargin;
 	 }
 
 	 /**
-	  * @param leftMargin
+	  * @param leftMargin The specified margin
 	  */
 	 public void setLeftMargin (int leftMargin) {
 		 this.leftMargin = leftMargin;
 	 }
 
 	 /**
-	  * @return
+	  * @return The margin between the top side of the green and the top side of the grid
 	  */
 	 public int getTopMargin () {
 		 return topMargin;
 	 }
 
 	 /**
-	  * @param topMargin
+	  * @param topMargin The specified margin
 	  */
 	 public void setTopMargin (int topMargin) {
 		 this.topMargin = topMargin;
 	 }
 
 	 /**
-	  * @return
+	  * @return The scene of the simulation
 	  */
 	 public Scene getMyScene () {
 		 return myScene;
 	 }
 
 	 /**
-	  * @param myScene
+	  * @param myScene The JavaFX scene to be set
 	  */
 	 public void setMyScene (Scene myScene) {
 		 this.myScene = myScene;
 	 }
 
 	 /**
-	  * @return
+	  * @return The JavaFX stage
 	  */
 	 public Stage getStage () {
 		 return stage;
 	 }
 
 	 /**
-	  * @param stage
+	  * @param stage The specified JavaFX stage
 	  */
 	 public void setStage (Stage stage) {
 		 this.stage = stage;
 	 }
 
 	 /**
-	  * @return
+	  * @return The JavaFX pane
 	  */
 	 public Pane getRootElement () {
 		 return rootElement;
 	 }
 
 	 /**
-	  * 
+	  * Creates a new JavaFX pane
 	  */
-	 public void makeNewRootElement() {
+	 public void setNewRootElement() {
 		 this.rootElement = new Pane();
 	 }
 
 	 /**
-	  * @return
+	  * @return The size of a cell
 	  */
 	 public int getCellSize () {
 		 return cellSize;
 	 }
 
 	 /**
-	  * @param cellSize
+	  * @param cellSize The desired size of a cell
 	  */
 	 public void setCellSize (int cellSize) {
 		 this.cellSize = cellSize;
 	 }
 
 	 /**
-	  * @param s
-	  * @return
+	  * @param s The stage to be set
+      * @param type The shape of the cell
+	  * @return The newly created scene
 	  */
 	 public abstract Scene init(Stage s, CellType type);
 
 	 /**
-	  * 
+	  * Sets up the initial objects/behavior of the simulation
 	  */
 	 public abstract void setInitialEnvironment();
 
 	 /**
-	  * 
+	  * The function that is constantly called throughout the simulation
 	  */
 	 public abstract void step();
 }

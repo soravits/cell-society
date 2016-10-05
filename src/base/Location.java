@@ -14,8 +14,8 @@ public class Location {
 	 * @param col
 	 */
 	public Location (int row, int col) {
-		this.setRow(row);
-		this.setColumn(col);
+		this.row = row;
+		this.col = col;
 	}
 
 	/**
@@ -25,11 +25,12 @@ public class Location {
 		return row;
 	}
 
-	/**
-	 * @param row
-	 */
-	public void setRow (int row) {
+	public void setRow(int row){
 		this.row = row;
+	}
+
+	public void setCol(int col){
+		this.col = col;
 	}
 
 	/**
@@ -37,12 +38,5 @@ public class Location {
 	 */
 	public int getColumn () {
 		return col;
-	}
-
-	/**
-	 * @param col
-	 */
-	public void setColumn (int col) {
-		this.col = col;
 	}
 }

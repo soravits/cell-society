@@ -1,5 +1,6 @@
 package spreadingoffire;
 import base.Grid;
+import base.Location;
 import base.Simulation;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -56,7 +57,7 @@ public class SpreadingOfFireSimulation extends Simulation {
 	@Override
 	public Scene init (Stage s,CellType type) {
 		setStage(s);
-		makeNewRootElement();
+		setNewRootElement();
 		int screenWidth = SIMULATION_WINDOW_WIDTH;
 		if(type == CellType.HEX) {
 			screenWidth *= 1.75;
@@ -76,13 +77,12 @@ public class SpreadingOfFireSimulation extends Simulation {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	 public void spawnTree(int row, int col) {
-		 myGrid.updateCell(row,col,States.ALIVE);
+	 public void spawnTree(Location location) {
+		 myGrid.updateCell(location, States.ALIVE);
 		 numberAlive++;
-		 myGrid.getCell(row, col).spawn();
+		 myGrid.getCell(location).spawn();
 	 }
 
 	 /**
@@ -91,9 +91,10 @@ public class SpreadingOfFireSimulation extends Simulation {
 	 public void checkUpdatedStatesAfterManualMod() {
 		 for(int i = 0; i < getGridLength(); i++) {
 			 for(int j = 0; j < getGridLength(); j++) {
-				 if(manuallyModified(i, j)){
-					 States cellState = myGrid.getCell(i, j).getState();
-					 noLongerModified(i, j);
+				 Location location = new Location(i, j);
+				 if(manuallyModified(location)){
+					 States cellState = myGrid.getCell(new Location(i, j)).getState();
+					 noLongerModified(location);
 					 if(cellState == States.BURNING) {
 						 numberFire++;
 						 numberAlive--;
@@ -112,43 +113,39 @@ public class SpreadingOfFireSimulation extends Simulation {
 	 }
 
 	 /**
-	  * @param row
-	  * @param col
+	  * @param location
 	  * @return
 	  */
-	 private boolean manuallyModified(int row,int col) {
-		 return (myGrid.getCell(row, col).isManuallyModified());
+	 private boolean manuallyModified(Location location) {
+		 return (myGrid.getCell(location).isManuallyModifiedByUser());
 	 }
 
 	 /**
-	  * @param row
-	  * @param col
+	  * @param location
 	  */
-	 private void noLongerModified(int row, int col) {
-		 myGrid.getCell(row, col).noLongerManuallyModified();
+	 private void noLongerModified(Location location) {
+		 myGrid.getCell(location).noLongerManuallyModified();
 	 }
 	 /**
-	  * @param x
-	  * @param y
+	  * @param location
 	  * @param forceBurn
 	  */
-	 public void burnTree(int x, int y, boolean forceBurn) {
+	 public void burnTree(Location location, boolean forceBurn) {
 		 double rand = Math.random();
 		 if(rand < probCatch || forceBurn) {
-			 myGrid.getCell(x, y).catchfire();
-			 myGrid.updateCell(x, y, States.CAUGHTFIRE);
+			 myGrid.getCell(location).catchfire();
+			 myGrid.updateCell(location, States.CAUGHTFIRE);
 			 numberFire++;
 			 numberAlive--;
 		 }
 	 }
 
 	 /**
-	  * @param x
-	  * @param y
+	  * @param location
 	  */
-	 public void clearCell(int x, int y) {
-		 myGrid.updateCell(x, y, States.DEAD);
-		 myGrid.getCell(x, y).burnout();
+	 public void clearCell(Location location) {
+		 myGrid.updateCell(location, States.DEAD);
+		 myGrid.getCell(location).burnout();
 		 numberDead++;
 		 if(numberFire > 0){
 			 numberFire--;
@@ -165,36 +162,37 @@ public class SpreadingOfFireSimulation extends Simulation {
 		 int fireBurnedInitially = 0;
 		 for(int i = 0; i < getGridLength(); i++) {
 			 for(int j = 0; j < getGridLength(); j++) {
+				 Location location = new Location(i, j);
 				 if(type != CellType.HEX){
 					 if(i == 0 || i == getGridLength() - 1
 							 || j == 0 || j == getGridLength()-1) {
-						 clearCell(i, j);
+						 clearCell(location);
 					 }
 					 else if(i == getGridLength() / 2 
 							 && j == getGridLength() / 2) {
-						 burnTree(i, j, true);
+						 burnTree(location, true);
 						 fireBurnedInitially++;
 					 }
 					 else {
-						 spawnTree(i, j);
+						 spawnTree(location);
 					 }
 				 }
 				 else{
 					 if(((j == 0) && (i%2 == 1)) || (i == getGridLength() - 2) || i == 1 
 							 || (j == getGridLength() - 1 && i%2 == 0)  || i == 0 
 							 || i == getGridLength()-1) {
-						 clearCell(i, j);
+						 clearCell(location);
 					 }
 					 else if(i == getGridLength() / 2 
 							 && j == getGridLength() / 2) {
-						 burnTree(i, j, true);
+						 burnTree(location, true);
 						 fireBurnedInitially++;
 					 }
 					 else {
-						 spawnTree(i, j);
+						 spawnTree(location);
 					 }
 				 }
-				 myGrid.updateCell(i, j, myGrid.getCell(i,j).getState());
+				 myGrid.updateCell(location, myGrid.getCell(location).getState());
 			 }
 		 }
 
@@ -207,42 +205,40 @@ public class SpreadingOfFireSimulation extends Simulation {
 	 public void updateState() {
 		 for(int i = 0; i < getGridLength(); i++) {
 			 for(int j = 0; j < getGridLength(); j++) {
-				 if(myGrid.getCell(i,j).getState() == States.ALIVE) {
-					 if(myGrid.getNorthernNeighbor(i, j) != null 
-							 && myGrid.getCell(myGrid.getNorthernNeighbor(i,j).getRow(), 
-									 myGrid.getNorthernNeighbor(i,j).getColumn()).
+				 Location location = new Location(i, j);
+				 if(myGrid.getCell(location).getState() == States.ALIVE) {
+					 if(myGrid.getNorthernNeighbor(location) != null
+							 && myGrid.getCell(myGrid.getNorthernNeighbor(location)).
 									 getState() == States.BURNING) {
-						 burnTree(i, j, false);
+						 burnTree(location, false);
 					 }
-					 if(myGrid.getSouthernNeighbor(i, j) != null 
-							 && myGrid.getCell(myGrid.getSouthernNeighbor(i,j).getRow(), 
-									 myGrid.getSouthernNeighbor(i,j).getColumn()).
+					 if(myGrid.getSouthernNeighbor(location) != null
+							 && myGrid.getCell(myGrid.getSouthernNeighbor(location)).
 									 getState() == States.BURNING) {
-						 burnTree(i, j, false);
+						 burnTree(location, false);
 					 }
-					 if(myGrid.getEasternNeighbor(i, j) != null 
-							 && myGrid.getCell(myGrid.getEasternNeighbor(i,j).getRow(), 
-									 myGrid.getEasternNeighbor(i,j).getColumn()).
-									 getState() == States.BURNING) {
-						 burnTree(i, j, false);
+					 if(myGrid.getEasternNeighbor(location) != null
+							 && myGrid.getCell(myGrid.getEasternNeighbor(location)).
+							 getState() == States.BURNING) {
+						 burnTree(location, false);
 					 }
-					 if(myGrid.getWesternNeighbor(i, j) != null 
-							 && myGrid.getCell(myGrid.getWesternNeighbor(i,j).getRow(),
-									 myGrid.getWesternNeighbor(i,j).getColumn()).
-									 getState() == States.BURNING) {
-						 burnTree(i, j, false);
+					 if(myGrid.getSouthernNeighbor(location) != null
+							 && myGrid.getCell(myGrid.getSouthernNeighbor(location)).
+							 getState() == States.BURNING) {
+						 burnTree(location, false);
 					 }
 				 } 
 			 }
 		 }
 		 for(int i = 0; i < getGridLength(); i++) {
 			 for(int j = 0; j < getGridLength(); j++) {
-				 if(myGrid.getCell(i,j).getState() == States.BURNING) {
-					 clearCell(i, j);
+				 Location location = new Location(i, j);
+				 if(myGrid.getCell(location).getState() == States.BURNING) {
+					 clearCell(location);
 				 } 
-				 else if(myGrid.getCell(i,j).getState() == States.CAUGHTFIRE) {
-					 myGrid.getCell(i,j).burn();
-					 myGrid.updateCell(i,j,States.BURNING);
+				 else if(myGrid.getCell(location).getState() == States.CAUGHTFIRE) {
+					 myGrid.getCell(location).burn();
+					 myGrid.updateCell(location, States.BURNING);
 				 }
 			 }
 		 }

@@ -2,9 +2,8 @@ package slimemolds;
 
 import java.util.Random;
 
-import base.Grid;
+import base.Location;
 import base.Simulation;
-import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -41,7 +40,6 @@ public class SlimeMoldsSimulation extends Simulation {
 
 	/**
 	 * @param gridLength
-	 * @param probCatch
 	 */
 	public SlimeMoldsSimulation(int gridLength, double diffusionAmt, double stepAmt, double threshold, 
 			double dissipateAmt, double probMold, CellType type) {
@@ -57,7 +55,7 @@ public class SlimeMoldsSimulation extends Simulation {
 	@Override
 	public Scene init (Stage s,CellType type) {
 		setStage(s);
-		makeNewRootElement();
+		setNewRootElement();
 		int screenWidth = SIMULATION_WINDOW_WIDTH;
 		if(type == CellType.HEX){
 			screenWidth *= 1.75;
@@ -83,9 +81,10 @@ public class SlimeMoldsSimulation extends Simulation {
 	public void checkUpdatedStatesAfterManualMod() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				if(manuallyModified(i, j)){
-					MoldStatus cellState = myGrid.getCell(i, j).getState();
-					noLongerModified(i, j);
+                Location location = new Location(i, j);
+				if(manuallyModified(location)){
+					MoldStatus cellState = myGrid.getCell(new Location(i, j)).getState();
+					noLongerModified(location);
 					if(cellState == MoldStatus.MOLD) {
 						numberMold++;
 					}
@@ -95,20 +94,18 @@ public class SlimeMoldsSimulation extends Simulation {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private boolean manuallyModified(int row,int col) {
-		return (myGrid.getCell(row, col).isManuallyModified());
+	private boolean manuallyModified(Location location) {
+		return (myGrid.getCell(location).isManuallyModifiedByUser());
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void noLongerModified(int row, int col) {
-		myGrid.getCell(row, col).noLongerManuallyModified();
+	private void noLongerModified(Location location) {
+		myGrid.getCell(location).noLongerManuallyModified();
 	}
 
 
@@ -121,12 +118,13 @@ public class SlimeMoldsSimulation extends Simulation {
 		createGraph();
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
+                Location cellLocation = new Location(i, j);
 				int randomNum = random.nextInt(100);
 				if(randomNum <= (probMold*100)) {
-					myGrid.getCell(i, j).moldify();
+					myGrid.getCell(cellLocation).moldify();
 					numberMold++;
 				}
-				myGrid.updateCell(i, j, myGrid.getCell(i, j).getState(), threshold);
+				myGrid.updateCell(cellLocation, myGrid.getCell(cellLocation).getState(), threshold);
 			}
 		}
 		updateGraph();
@@ -138,65 +136,66 @@ public class SlimeMoldsSimulation extends Simulation {
 	public void updateState() {
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				myGrid.getCell(i, j).dissipate(dissipateAmt);
+                Location location = new Location(i, j);
+				myGrid.getCell(location).dissipate(dissipateAmt);
 
-				if(myGrid.getCell(i, j).getState() == MoldStatus.MOLD) {
-					boolean nearbyCellPolluted = moveMoldCellToPollution(i, j);
+				if(myGrid.getCell(location).getState() == MoldStatus.MOLD) {
+					boolean nearbyCellPolluted = moveMoldCellToPollution(location);
 					if(!nearbyCellPolluted) {
 						int direction = random.nextInt(4);
-						moveMoldCellRandomly(i, j, direction);
+						moveMoldCellRandomly(location, direction);
 					}
-					polluteCell(i, j);	
+					polluteCell(location);
 				}
 			}
 		}
 
 		for(int i = 0; i < getGridLength(); i++) {
 			for(int j = 0; j < getGridLength(); j++) {
-				SlimeMoldsCell cell = myGrid.getCell(i, j);
-				myGrid.updateCell(i, j, cell.getState(), threshold);	
+                Location location = new Location(i, j);
+				SlimeMoldsCell cell = myGrid.getCell(location);
+				myGrid.updateCell(location, cell.getState(), threshold);
 			}
 		}
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return
 	 */
-	private boolean moveMoldCellToPollution(int row, int col) {
-		SlimeMoldsCell oldCell = myGrid.getCell(row, col);
+	private boolean moveMoldCellToPollution(Location location) {
+		SlimeMoldsCell oldCell = myGrid.getCell(location);
 		SlimeMoldsCell newCell;
 		//Can't do && Here, we get Array Index Out of Bounds
-		if((col - 1 > 0)) {
-			newCell = myGrid.getCell(row, col - 1);
+		if((location.getColumn() - 1 > 0)) {
+			newCell = myGrid.getCell(myGrid.getWesternNeighbor(location));
 			if(newCell.isAttracting(threshold) 
 					&& (newCell.getState() != MoldStatus.MOLD)) {
-				moveMoldCellTo(row, col - 1, oldCell);	
+				moveMoldCellTo(myGrid.getWesternNeighbor(location), oldCell);
 				return true;
 			}
 		}
-		else if((row - 1 > 0)) { 
-			newCell = myGrid.getCell(row - 1, col);
+		else if((location.getRow() - 1 > 0)) {
+			newCell = myGrid.getCell(myGrid.getNorthernNeighbor(location));
 			if(newCell.isAttracting(threshold) 
 					&& (newCell.getState() != MoldStatus.MOLD)) {
-				moveMoldCellTo(row - 1, col, oldCell);	
+				moveMoldCellTo(myGrid.getNorthernNeighbor(location), oldCell);
 				return true;
 			}
 		}
-		else if((col + 1 > getGridLength() - 1)) {
-			newCell = myGrid.getCell(row, col + 1);
+		else if((location.getColumn() + 1 > getGridLength() - 1)) {
+			newCell = myGrid.getCell(myGrid.getEasternNeighbor(location));
 			if(newCell.isAttracting(threshold) 
 					&& (newCell.getState() != MoldStatus.MOLD)) {
-				moveMoldCellTo(row, col + 1, oldCell);	
+				moveMoldCellTo(myGrid.getEasternNeighbor(location), oldCell);
 				return true;
 			}
 		}
-		else if((row + 1 > getGridLength() - 1)) {
-			newCell = myGrid.getCell(row+1, col);
+		else if((location.getRow() + 1 > getGridLength() - 1)) {
+			newCell = myGrid.getCell(myGrid.getSouthernNeighbor(location));
 			if(newCell.isAttracting(threshold) 
 					&& (newCell.getState() != MoldStatus.MOLD)) {
-				moveMoldCellTo(row + 1, col, oldCell);	
+				moveMoldCellTo(myGrid.getSouthernNeighbor(location), oldCell);
 				return true;
 			}
 		}
@@ -205,23 +204,23 @@ public class SlimeMoldsSimulation extends Simulation {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @param oldCell
 	 */
-	private void moveMoldCellTo(int row, int col, SlimeMoldsCell oldCell) {
+	private void moveMoldCellTo(Location location, SlimeMoldsCell oldCell) {
 		oldCell.killMold();
-		myGrid.getCell(row, col).moldify();	
-		polluteCell(row, col);
+		myGrid.getCell(location).moldify();
+		polluteCell(location);
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @param direction
 	 */
-	private void moveMoldCellRandomly(int row, int col, int direction) {
-		SlimeMoldsCell cell = myGrid.getCell(row, col);   	
+	private void moveMoldCellRandomly(Location location, int direction) {
+		SlimeMoldsCell cell = myGrid.getCell(location);
+        int row = location.getRow();
+        int col = location.getColumn();
 		switch (direction) {
 		case 0:  col -= 1;
 		break;
@@ -234,35 +233,37 @@ public class SlimeMoldsSimulation extends Simulation {
 		}  	 
 
 		if((row < 0) || (col < 0) || (row > getGridLength() - 1) || (col > getGridLength() - 1) 
-				|| (myGrid.getCell(row, col).getState() == MoldStatus.MOLD)) {
+				|| (myGrid.getCell(location).getState() == MoldStatus.MOLD)) {
 			return;
 		}
 
-		moveMoldCellTo(row, col, cell);
+		moveMoldCellTo(new Location(row, col), cell);
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void polluteCell(int row, int col) {
-		SlimeMoldsCell cell = myGrid.getCell(row, col);  
+	private void polluteCell(Location location) {
+        int row = location.getRow();
+        int col = location.getColumn();
+		SlimeMoldsCell cell = myGrid.getCell(location);
 		cell.pollute(stepAmt);
-		diffuseSpores(row + 1, col);
-		diffuseSpores(row - 1, col);
-		diffuseSpores(row, col + 1);
-		diffuseSpores(row, col - 1);
+		diffuseSpores(myGrid.getSouthernNeighbor(location));
+		diffuseSpores(myGrid.getNorthernNeighbor(location));
+		diffuseSpores(myGrid.getEasternNeighbor(location));
+		diffuseSpores(myGrid.getWesternNeighbor(location));
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	private void diffuseSpores(int row, int col) {
+	private void diffuseSpores(Location location) {
+        int row = location.getRow();
+        int col = location.getColumn();
 		if((row<0) || (col<0) || (row > getGridLength()-1) || (col > getGridLength()-1)) {
 			return;
 		}
-		myGrid.getCell(row, col).diffuse(diffusionAmt);
+		myGrid.getCell(location).diffuse(diffusionAmt);
 	}
 
 	/**

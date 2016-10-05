@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import base.Location;
 import sugarscape.SugarScapeCell.State;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -16,7 +17,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import base.Grid;
 import base.Simulation;
-import base.Simulation.CellType;
 
 /**
  * @author Delia
@@ -84,7 +84,7 @@ public class SugarScapeSimulation extends Simulation {
 	@Override
 	public Scene init(Stage s, CellType type) {
         setStage(s);
-        makeNewRootElement();
+        setNewRootElement();
 
 		int screenWidth = SIMULATION_WINDOW_WIDTH;
 		if(type == CellType.HEX){
@@ -122,7 +122,7 @@ public class SugarScapeSimulation extends Simulation {
                 else { //if the cell is a patch
                     cellType = 0;
                 }
-                myGrid.updateCell(i, j, cellType);
+                myGrid.updateCell(new Location(i, j), cellType);
             }
         }
         updateText();
@@ -147,7 +147,7 @@ public class SugarScapeSimulation extends Simulation {
                 else { //if the cell is a patch
                     cellType = 0;
                 }
-                myGrid.updateCell(i, j, cellType);
+                myGrid.updateCell(new Location(i, j), cellType);
             }
         }
 	}
@@ -190,9 +190,9 @@ public class SugarScapeSimulation extends Simulation {
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myNorth;
     	for(int i = 0; i < agentVision; i++){
-    		if(row - i >= 0 && myGrid.getNorthernNeighbor(row - i, col) != null) {
-            	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(row - i, col).getRow(), 
-            			myGrid.getNorthernNeighbor(row - i, col).getColumn());
+			Location location = new Location(row - i, col);
+    		if(row - i >= 0 && myGrid.getNorthernNeighbor(location) != null) {
+            	myNorth = myGrid.getCell(myGrid.getNorthernNeighbor(location));
             //myNorth.getColor().equals(Color.BLACK)
             	if(myNorth.getState() != State.AGENT && myNorth.getSugarAmount() >= maxNeighborSugar) {
                 	destination = new Point(row - i, col);
@@ -216,9 +216,9 @@ public class SugarScapeSimulation extends Simulation {
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell mySouth;
     	for(int i = 0; i < agentVision; i++){
-    		if(row + i < getGridLength() && myGrid.getSouthernNeighbor(row + i, col) != null) {
-            	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(row + i, col).getRow(), 
-            			myGrid.getSouthernNeighbor(row + i, col).getColumn());
+			Location location = new Location(row + i, col);
+    		if(row + i < getGridLength() && myGrid.getSouthernNeighbor(location) != null) {
+            	mySouth = myGrid.getCell(myGrid.getSouthernNeighbor(location));
             
             	if(mySouth.getState() != State.AGENT 
             			&& mySouth.getSugarAmount() >= maxNeighborSugar) {
@@ -243,10 +243,9 @@ public class SugarScapeSimulation extends Simulation {
     		Point destination, ArrayList<Point> destChoices) {
     	SugarScapeCell myEast;
     	for(int i = 0; i < agentVision; i++) {
-    		if(col + i < getGridLength() && myGrid.getEasternNeighbor(row, col + i) != null) {
-            	myEast = myGrid.getCell(myGrid.getEasternNeighbor(row, col + i).getRow(), 
-            			myGrid.getEasternNeighbor(row, col + i).getColumn());
-            
+			Location location = new Location(row, col + i);
+    		if(col + i < getGridLength() && myGrid.getEasternNeighbor(location) != null) {
+            	myEast = myGrid.getCell(myGrid.getEasternNeighbor(location));
             	if(myEast.getState() != State.AGENT && myEast.getSugarAmount() >= maxNeighborSugar) {
                 	destination = new Point(row, col + i);
                 	maxNeighborSugar = myEast.getSugarAmount();
@@ -269,9 +268,9 @@ public class SugarScapeSimulation extends Simulation {
     		Point destination, ArrayList<Point> destChoices){
     	SugarScapeCell myWest;
     	for(int i = 0; i < agentVision; i++){
-    		if(col - i >= 0 && myGrid.getWesternNeighbor(row, col - i) != null) {
-            	myWest = myGrid.getCell(myGrid.getWesternNeighbor(row, col - i).getRow(), 
-            			myGrid.getWesternNeighbor(row, col - i).getColumn());
+			Location location = new Location(row, col - i);
+    		if(col - i >= 0 && myGrid.getWesternNeighbor(location) != null) {
+            	myWest = myGrid.getCell(myGrid.getWesternNeighbor(location));
             
             	if(myWest.getState() != State.AGENT && myWest.getSugarAmount() >= maxNeighborSugar){
                 	destination = new Point(row, col - i);
@@ -293,12 +292,13 @@ public class SugarScapeSimulation extends Simulation {
 		int updateAgentPop = 0;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-            	if(myGrid.getCell(i, j).getState() == State.PATCH){
-            		myGrid.getCell(i, j).growSugarBack();
-            		updateSugarAmt += myGrid.getCell(i, j).getSugarAmount();
+				Location location = new Location(i, j);
+            	if(myGrid.getCell(location).getState() == State.PATCH){
+            		myGrid.getCell(location).growSugarBack();
+            		updateSugarAmt += myGrid.getCell(location).getSugarAmount();
             	}
             	else {
-            		updateCarbAmt += myGrid.getCell(i, j).getAgentCarbs();
+            		updateCarbAmt += myGrid.getCell(location).getAgentCarbs();
             		updateAgentPop++;
             		findAgentDestination(i, j);
             	}

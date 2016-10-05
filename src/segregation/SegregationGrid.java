@@ -1,5 +1,7 @@
 package segregation;
 import java.awt.Point;
+
+import base.Location;
 import segregation.SegregationCell.State;
 import base.CellShape;
 import base.Grid;
@@ -36,12 +38,11 @@ public class SegregationGrid extends Grid {
 	}
 
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 * @return cell located at those coordinates
 	 */
-	public SegregationCell getCell(int row, int col) {
-		return (SegregationCell) super.getCell(row, col);
+	public SegregationCell getCell(Location location) {
+		return (SegregationCell) super.getCell(location);
 	}
 
 	/* (non-Javadoc)
@@ -52,8 +53,8 @@ public class SegregationGrid extends Grid {
 	@Override
 	public void initializeGrid(CellType type) {
 		this.type = type;
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getRowLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -67,9 +68,9 @@ public class SegregationGrid extends Grid {
 				}
 				SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 
 						verticalShift * (i) + horizontalOffset, 
-						horizontalShift * (j) + getInitialY(),getRowLength(),type);
+						horizontalShift * (j) + getInitialY(), getGridLength(), type);
 				gridCell.addToScene();
-				setCell(i,j,gridCell);		
+				setCell(new Location(i, j), gridCell);
 				setUpListener(gridCell);                    
 			}
 		}      
@@ -80,8 +81,8 @@ public class SegregationGrid extends Grid {
 	 * @param gridCell
 	 */
 	private void setUpListener(SegregationCell gridCell) {
-		gridCell.returnBlock().setOnMousePressed(event -> {
-			gridCell.setAsManuallyModified();
+		gridCell.getBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModifiedByUser();
 			if(gridCell.getState() == State.EMPTY) {
 				gridCell.setState(State.COLORA);
 			}
@@ -105,12 +106,13 @@ public class SegregationGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void switchCells(Point p1, Point p2) {
-		State destination = getCell(p2.x, p2.y).getState();
-		State origin = getCell(p1.x, p1.y).getState();
+		Location location = new Location(p1.x, p1.y);
+		State destination = getCell(location).getState();
+		State origin = getCell(location).getState();
 
-		updateCell(p1.x, p1.y, destination);
+		updateCell(location, destination);
 		//		System.out.println(destination);
-		updateCell(p2.x, p2.y, origin);
+		updateCell(location, origin);
 		//		System.out.println(origin);
 	}
 	
@@ -135,37 +137,35 @@ public class SegregationGrid extends Grid {
 	}
 	
 	/**
-	 * @param x
-	 * @param y
+	 * @param location
 	 * @param cellState
 	 */
-	public void updateCell(int x, int y, State cellState) {		
+	public void updateCell(Location location, State cellState) {
 		if(cellState.equals(State.EMPTY)) {
-			getCell(x, y).setColor(Color.WHITE);
-			getCell(x, y).setState(State.EMPTY);
+			getCell(location).setColor(Color.WHITE);
+			getCell(location).setState(State.EMPTY);
 		}
 		else if(cellState.equals(State.COLORA)) {
-			getCell(x, y).setColor(Color.DARKBLUE);
-			getCell(x, y).setState(State.COLORA);
+			getCell(location).setColor(Color.DARKBLUE);
+			getCell(location).setState(State.COLORA);
 		}
 		else {
-			getCell(x, y).setColor(Color.LIMEGREEN);
-			getCell(x, y).setState(State.COLORB);
+			getCell(location).setColor(Color.LIMEGREEN);
+			getCell(location).setState(State.COLORB);
 		}
 	}
 	
 	/**
 	 * Sets the color of cell at those coordinates based on its int state
-	 * @param x
-	 * @param y
+	 * @param location
 	 * @param cellState
 	 */
-	public void updateCell(int x, int y, int cellState) {
+	public void updateCell(Location location, int cellState) {
 		if(cellState == 0) 
-			updateCell(x, y, State.EMPTY);
+			updateCell(location, State.EMPTY);
 		else if(cellState == 1) 
-			updateCell(x, y, State.COLORA);
+			updateCell(location, State.COLORA);
 		else 
-			updateCell(x, y, State.COLORB);
+			updateCell(location, State.COLORB);
 	}
 }

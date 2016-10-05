@@ -1,7 +1,7 @@
 package gameoflife;
-import base.Cell;
 import base.CellShape;
 import base.Grid;
+import base.Location;
 import base.Simulation.CellType;
 import gameoflife.GameOfLifeCell.States;
 import javafx.scene.layout.Pane;
@@ -30,22 +30,21 @@ public class GameOfLifeGrid extends Grid{
 	/* (non-Javadoc)
 	 * @see base.Grid#getCell(int, int)
 	 */
-	public GameOfLifeCell getCell(int row, int col) {
-		return (GameOfLifeCell) super.getCell(row,col);
+	public GameOfLifeCell getCell(Location location) {
+		return (GameOfLifeCell) super.getCell(location);
 	}
 	/**
-	 * @param row
-	 * @param col
+	 * @param location
 	 */
-	public void updateCell(int row, int col) {
-		GameOfLifeCell myCell = getCell(row, col);
+	public void updateCell(Location location) {
+		GameOfLifeCell myCell = getCell(location);
 		if(myCell.getState() == States.ALIVE) {
-			getCell(row,col).setColor(Color.WHITE);
+			getCell(location).setColor(Color.WHITE);
 		}
 		else {
-			getCell(row,col).setColor(Color.BLACK);
+			getCell(location).setColor(Color.BLACK);
 		}
-		getCell(row,col).setBorder(Color.WHITE);
+		getCell(location).setBorder(Color.WHITE);
 	}
 
 	/* (non-Javadoc)
@@ -53,8 +52,8 @@ public class GameOfLifeGrid extends Grid{
 	 */
 	@Override
 	public void initializeGrid(CellType type) {
-		for(int i = 0; i < getColumnLength(); i++) {
-			for(int j = 0; j < getColumnLength(); j++) {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
 				int horizontalOffset = getInitialX();
 				double horizontalShift = getSizeOfCell();
 				double verticalShift = getSizeOfCell();
@@ -68,9 +67,10 @@ public class GameOfLifeGrid extends Grid{
 				}
 				GameOfLifeCell gridCell = new GameOfLifeCell(getSizeOfCell(), getRootElement(), 
 						verticalShift * (j) + horizontalOffset,
-						horizontalShift * (i) + getInitialY(),getRowLength(),type);
+						horizontalShift * (i) + getInitialY(), getGridLength(),type);
 				gridCell.addToScene();
-				setCell(i,j,gridCell);		
+                Location cellLocation = new Location(i, j);
+				setCell(cellLocation, gridCell);
 				setUpListener(gridCell);
 			}
 		}	
@@ -80,8 +80,8 @@ public class GameOfLifeGrid extends Grid{
 	 * @param gridCell
 	 */
 	private void setUpListener(GameOfLifeCell gridCell) {
-		gridCell.returnBlock().setOnMousePressed(event -> {
-			gridCell.setAsManuallyModified();
+		gridCell.getBlock().setOnMousePressed(event -> {
+			gridCell.setAsManuallyModifiedByUser();
 			if(gridCell.getState() == States.ALIVE) {
 				gridCell.killCell();
 				gridCell.setColor(Color.BLACK);

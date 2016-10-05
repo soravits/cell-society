@@ -325,12 +325,6 @@ public abstract class Grid {
 		rootElement.getChildren().add(backgroundImageMainScreen);
 	}
 
-	/**
-	 * @param text The text in the button
-	 * @param x The x position of the button
-	 * @param y The y position of the button
-	 * @return The created button
-	 */
 	private Button createSimButton(String text, int x, int y) {
 		Button startSim = new Button(text);
 		startSim.setStyle(buttonFill);
@@ -342,16 +336,10 @@ public abstract class Grid {
 		return startSim;
 	}
 
-	/**
-	 * @param button The button to be styled
-	 */
 	private void mouseIn(Button button) {
 		button.setStyle(overButton);
 	}
 
-	/**
-	 * @param button The button to be styled
-	 */
 	private void mouseOut(Button button) {
 		button.setStyle(buttonFill);
 	}

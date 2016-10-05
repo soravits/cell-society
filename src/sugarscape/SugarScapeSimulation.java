@@ -38,11 +38,11 @@ public class SugarScapeSimulation extends Simulation {
     private XYChart.Series patchLine;
     
     private static final Text amtSugarText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, sugar);
+    		SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+    		0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, sugar);
     private static final Text amtCarbsText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, carbs);
+    		SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+    		0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, carbs);
     
     private SugarScapeGrid myGrid;
     private int maxPatchSugar, growBackRate, numAgents, agentMaxCarbs, agentMinCarbs, 
@@ -333,9 +333,9 @@ public class SugarScapeSimulation extends Simulation {
         
         
         Rectangle cellCounter = new Rectangle(
-        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) 
-        		+ 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5), 
-        		dimensionsOfCellCounterBox * 3 / 2, dimensionsOfCellCounterBox);
+        		SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
+        		+ 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
+        		DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
 			    "-fx-background-radius: 8,7,6;" + 

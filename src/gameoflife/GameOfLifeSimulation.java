@@ -1,5 +1,4 @@
 package gameoflife;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,11 +34,11 @@ public class GameOfLifeSimulation extends Simulation {
 	private int stepCount = 0;
 	private double percentageAlive;
 	private static final Text numDeadText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
-			0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)+ MARGIN_BOX_TOP * 3,
+			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, dead);
 	private static final Text numAliveText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)+ marginBoxTop * 3, 
-			0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
+			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)+ MARGIN_BOX_TOP * 3,
+			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - MARGIN_BOX_TOP, alive);
 	private GameOfLifeGrid myGrid;
 	private boolean[][] deadOrAlive;
 	
@@ -94,9 +93,9 @@ public class GameOfLifeSimulation extends Simulation {
 		lineChart.setLegendSide(Side.RIGHT);
 		getRootElement().getChildren().add(lineChart);
 		Rectangle cellCounter = new Rectangle(
-				SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
-				(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3/2,
-				dimensionsOfCellCounterBox);
+				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
+				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3/2,
+				DIMENSIONS_OF_CELL_COUNTER);
 		cellCounter.setFill(Color.WHITE);
 		cellCounter.setStyle(
 				"-fx-background-radius: 8,7,6;" + 

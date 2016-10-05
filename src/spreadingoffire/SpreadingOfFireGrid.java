@@ -13,29 +13,34 @@ import spreadingoffire.SpreadingOfFireCell.States;
 public class SpreadingOfFireGrid extends Grid {
 	private SpreadingOfFireSimulation sim;
 
-	/**
-	 * @param rowLength
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param initialX
-	 * @param initialY
-	 */
-	public SpreadingOfFireGrid(int rowLength, int sizeOfCell, Pane rootElement,int initialX, 
+    /**
+     * @param gridLength The length of a side of the grid
+     * @param sizeOfCell The size of each cell
+     * @param rootElement The JavaFX pane
+     * @param initialX The initial x position of the grid
+     * @param initialY The initial y position of the grid
+     * @param edgeType The grid edge type of the grid
+     * @param sim The simulation that uses the grid
+     */
+	public SpreadingOfFireGrid(int gridLength, int sizeOfCell, Pane rootElement,int initialX,
 			int initialY, gridEdgeType edgeType, SpreadingOfFireSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
+		super(gridLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Grid#getCell(int, int)
-	 */
+    /**
+     *
+     * @param location The location of the desired cell
+     * @return A SpreadingOfFire cell at the spcified location
+     */
 	public SpreadingOfFireCell getCell(Location location) {
 		return (SpreadingOfFireCell) super.getCell(location);
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Grid#initializeGrid()
-	 */
+    /**
+     * Sets up the initial grid
+     * @param type The shape of the cells in the grid
+     */
 	@Override
 	public void initializeGrid(CellType type) {
 		for(int i = 0; i < getGridLength(); i++) {
@@ -60,10 +65,7 @@ public class SpreadingOfFireGrid extends Grid {
 			}
 		}	      
 	}
-	
-	/**
-	 * @param gridCell
-	 */
+
 	private void setUpListener(SpreadingOfFireCell gridCell) {
 		gridCell.getBlock().setOnMousePressed(event -> {
 			gridCell.setAsManuallyModifiedByUser();
@@ -85,8 +87,8 @@ public class SpreadingOfFireGrid extends Grid {
 	}
 
 	/**
-	 * @param location
-	 * @param state
+	 * @param location The location of the cell
+	 * @param state The state the cell should be updated to
 	 */
 	public void updateCell(Location location, States state) {
 		if(state == States.DEAD) {

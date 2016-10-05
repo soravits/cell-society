@@ -45,14 +45,14 @@ public class SegregationSimulation extends Simulation {
     private XYChart.Series unsatisfiedLine;
 
     private static final Text numEmptyText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3,
-            0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, empty);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, empty);
     private static final Text numSatisfiedText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3,
-            0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, satisfied);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, satisfied);
     private static final Text numUnsatisfiedText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3,
-            0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, unsatisfied);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - MARGIN_BOX_TOP, unsatisfied);
 
     private SegregationGrid myGrid;
     private int[][] cellSatisfied;
@@ -233,9 +233,9 @@ public class SegregationSimulation extends Simulation {
 
 
         Rectangle cellCounter = new Rectangle(
-                SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox)
-                        + 2 * marginBoxTop, (dimensionsOfCellCounterBox / 5),
-                dimensionsOfCellCounterBox * 3 / 2, dimensionsOfCellCounterBox);
+                SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
+                        + 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
+                DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
         cellCounter.setStyle(
                 "-fx-background-radius: 8,7,6;" +

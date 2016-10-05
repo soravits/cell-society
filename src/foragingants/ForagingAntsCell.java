@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
 public class ForagingAntsCell extends Cell {
 
@@ -17,12 +17,12 @@ public class ForagingAntsCell extends Cell {
 	private int antCount;
 
 	/**
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param xCoord
-	 * @param yCoord
-	 * @param gridLength
-	 * @param type
+	 * @param sizeOfCell The size of the cell
+	 * @param rootElement The JavaFX pane
+	 * @param xCoord The x location of the cell
+	 * @param yCoord The y location of the cell
+	 * @param gridLength The length of the sides of the entire grid
+	 * @param type The shape of the cell
 	 */
 	public ForagingAntsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
 			int gridLength, Simulation.CellType type) {
@@ -30,65 +30,52 @@ public class ForagingAntsCell extends Cell {
 	}
 
 	/**
-	 * @return
+	 * @return The amount of food pheromones in the current cell
 	 */
 	public double getFoodPheromoneCount() {
 		return foodPheromoneCount;
 	}
 
 	/**
-	 * @return
+	 * @return The amount of home pheromones in the current cell
 	 */
 	public double getHomePheromoneCount() {
 		return homePheromoneCount;
 	}
 
 	/**
-	 * @return
+	 * @return The number of ants in the cell
 	 */
 	public double getAntCount() {
 		return antCount;
 	}
 
 	/**
-	 * 
+	 * Increments the current number of ants
 	 */
 	public void incrementAntCount() {
 		antCount++;
 	}
 
 	/**
-	 * 
+	 * Decrements the current number of ants
 	 */
 	public void decrementAntCount() {
 		antCount--;
 	}
 
 	/**
-	 * @param homePheromoneCount
+	 * @param homePheromoneCount The desired home pheromone count
 	 */
 	public void setHomePheromoneCount(double homePheromoneCount) {
 		this.homePheromoneCount = homePheromoneCount;
 	}
 
 	/**
-	 * @param foodPheromoneCount
+	 * @param foodPheromoneCount The desired food pheromone count
 	 */
 	public void setFoodPheromoneCount(double foodPheromoneCount) {
 		this.foodPheromoneCount = foodPheromoneCount;
 	}
 
-	/**
-	 * @param evapRate
-	 */
-	public void evaporateHomePheromones(double evapRate) {
-		setFoodPheromoneCount(homePheromoneCount * evapRate);
-	}
-
-	/**
-	 * @param evapRate
-	 */
-	public void evaporateFoodPheromones(double evapRate) {
-		setFoodPheromoneCount(foodPheromoneCount * evapRate);
-	}
 }

@@ -3,7 +3,7 @@ package foragingants;
 import base.Location;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
 public class ForagingAnt {
 
@@ -11,60 +11,85 @@ public class ForagingAnt {
     private int orientation = 0;
     private ForagingAntsGrid myGrid;
     private boolean hasFood;
+    private int life;
 
     /**
      * @param location
      * @param myGrid
      */
-    public ForagingAnt(Location location, ForagingAntsGrid myGrid) {
+    public ForagingAnt(Location location, int life, ForagingAntsGrid myGrid) {
         this.location = location;
+        this.life = life;
         this.myGrid = myGrid;
     }
 
     /**
-     * @return
+     *
+     * @return The current life of the ant
+     */
+    public int getLife(){
+        return life;
+    }
+
+    /**
+     * Decrements the life on the ant
+     */
+    public void decrementLife(){
+        life --;
+    }
+
+    /**
+     * @return The direction that the the ant is facing (0 to 7)
      */
     public int getOrientation() {
         return orientation;
     }
 
     /**
-     * @param orientation
+     * @param orientation The desired orientation of the ant
      */
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
 
     /**
-     * @return
+     * @return The location of the ant
      */
 
     public Location getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @param location The desired location of the ant
+     */
     public void setLocation(Location location){
         this.location = location;
     }
 
-
+    /**
+     *
+     * @return Whether or not the ant is carrying food
+     */
     public boolean hasFood() {
         return hasFood;
     }
 
     /**
-     * @param hasFood
+     * @param hasFood The desired state of whether the ant is carrying food
      */
     public void setHasFood(boolean hasFood) {
         this.hasFood = hasFood;
     }
 
     /**
-     * @param location
+     * @param location the desired destination
+     * Moves the ant from the current location to the specified location and adjusts ant counts for these cells
      */
     public void move(Location location) {
-            myGrid.getCell(location).decrementAntCount();
-            setLocation(location);
-            myGrid.getCell(location).incrementAntCount();
+        myGrid.getCell(this.location).decrementAntCount();
+        setLocation(location);
+        myGrid.getCell(location).incrementAntCount();
     }
 }

@@ -15,13 +15,14 @@ public class WaTorWorldCell extends Cell {
     public enum State{EMPTY, FISH, SHARK};
     
     private State currState;
-	/**
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param xCoord
-	 * @param yCoord
-	 * @param currState
-	 */
+    /**
+     * @param sizeOfCell The size of the cell
+     * @param rootElement The JavaFX pane
+     * @param xCoord The x position
+     * @param yCoord The y position
+     * @param currState The state of the cell
+     * @param type The shape of a cell
+     */
 	public WaTorWorldCell(int sizeOfCell, Pane rootElement, double xCoord,
 			double yCoord, State currState, int gridLength, CellType type) {
 		super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
@@ -29,14 +30,14 @@ public class WaTorWorldCell extends Cell {
 	}
 	 
     /**
-     * @return
+     * @return The state of the cell
      */
     public State getState () {
         return currState;
     }
     
     /**
-     * @param currState
+     * @param currState The desired state of a cell
      */
     public void setState (State currState) {
         this.currState = currState;
@@ -44,7 +45,7 @@ public class WaTorWorldCell extends Cell {
     }
     
     /**
-     * @return
+     * @return The time it takes to breed
      */
     public int getBreedTime () {
         return breedTime;

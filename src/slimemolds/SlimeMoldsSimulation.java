@@ -14,15 +14,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import segregation.SegregationGrid;
 import slimemolds.SlimeMoldsCell.MoldStatus;
 
 public class SlimeMoldsSimulation extends Simulation {
 
 	private static final String mold = "Mold: ";
 	private static final Text numMoldText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-			0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, mold);
+			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, mold);
 
 	private Random random = new Random();
 
@@ -286,9 +285,9 @@ public class SlimeMoldsSimulation extends Simulation {
 
 
 		Rectangle cellCounter = new Rectangle(
-				SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
-				(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
-				dimensionsOfCellCounterBox);
+				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
+				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
+				DIMENSIONS_OF_CELL_COUNTER);
 		cellCounter.setFill(Color.WHITE);
 		cellCounter.setStyle(
 				"-fx-background-radius: 8,7,6;" + 

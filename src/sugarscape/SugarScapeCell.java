@@ -155,7 +155,6 @@ public class SugarScapeCell extends Cell {
 	 * 
 	 */
 	private void killAgent() {
-//		System.out.println("agent killed");
 		setSugarAmount(0);
 		setState(State.PATCH);
 	}

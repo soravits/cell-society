@@ -149,7 +149,7 @@ public abstract class UserInput {
 	 */
 	public void manualInput() {
 		myScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-
+		grid.setStyle("-fx-background-color: #02f7c6;");
 		grid.setHgap(50);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10));
@@ -174,6 +174,9 @@ public abstract class UserInput {
 	 */
 	public Button beginHexButton(String sim) {
 		Button beginSim = new Button("Start " + sim + " Hex Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
 		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.HEX));
 		return beginSim;
 	}
@@ -184,6 +187,9 @@ public abstract class UserInput {
 	 */
 	public Button beginTriangleButton(String sim) {
 		Button beginSim = new Button("Start " + sim + " Triangle Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
 		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.TRIANGLE));
 		return beginSim;
 	}
@@ -194,10 +200,13 @@ public abstract class UserInput {
 	 */
 	public Button beginSquareButton(String sim) {
 		Button beginSim = new Button("Start " + sim + " Square Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
 		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.SQUARE));
 		return beginSim;
 	}
-
+	
 	/**
 	 * 
 	 */

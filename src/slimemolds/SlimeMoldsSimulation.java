@@ -2,6 +2,7 @@ package slimemolds;
 
 import java.util.Random;
 
+import base.Grid;
 import base.Location;
 import base.Simulation;
 import javafx.geometry.Side;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import segregation.SegregationGrid;
 import slimemolds.SlimeMoldsCell.MoldStatus;
 
 public class SlimeMoldsSimulation extends Simulation {
@@ -52,26 +54,15 @@ public class SlimeMoldsSimulation extends Simulation {
 		this.probMold = probMold;
 	}
 
-	@Override
 	public Scene init (Stage s,CellType type) {
-		setStage(s);
-		setNewRootElement();
-		int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
-		}
-
-		setMyScene(new Scene(getRootElement(), screenWidth, 
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
-		setTopMargin(getTopMargin() + marginBoxTop * 4);
-		this.myGrid = new SlimeMoldsGrid(getGridLength(), getCellSize(), getRootElement(), 
-				getLeftMargin(), getTopMargin(), this);
-		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-		myGrid.initializeGrid(type);
-		myGrid.setUpButtons();
-		myGrid.setSimulationProfile(this);
-		setInitialEnvironment();
+		super.init(s, type);
 		return getMyScene();
+	}
+
+	public Grid instantiateGrid(){
+		this.myGrid = new SlimeMoldsGrid(getGridLength(), getCellSize(), getRootElement(),
+				getLeftMargin(), getTopMargin(), this);
+		return myGrid;
 	}
 
 

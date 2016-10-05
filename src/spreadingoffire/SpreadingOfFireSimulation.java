@@ -53,27 +53,16 @@ public class SpreadingOfFireSimulation extends Simulation {
 		this.probCatch = probCatch;
 		this.type = type;
 	}
+	public Scene init (Stage s,CellType type) {
+		super.init(s, type);
+		return getMyScene();
+	}
 
 	@Override
-	public Scene init (Stage s,CellType type) {
-		setStage(s);
-		setNewRootElement();
-		int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX) {
-			screenWidth *= 1.75;
-		}
-
-		setMyScene(new Scene(getRootElement(), screenWidth,
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-		setTopMargin(getTopMargin() + marginBoxTop * 4);
+	public Grid instantiateGrid(){
 		this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-		myGrid.initializeGrid(type);
-		myGrid.setUpButtons();
-		myGrid.setSimulationProfile(this);
-		setInitialEnvironment();
-		return getMyScene();
+		return myGrid;
 	}
 
 	/**

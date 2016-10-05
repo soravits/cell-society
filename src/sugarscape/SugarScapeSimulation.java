@@ -81,36 +81,24 @@ public class SugarScapeSimulation extends Simulation {
 	/* (non-Javadoc)
 	 * @see base.Simulation#init(javafx.stage.Stage, base.Simulation.CellType)
 	 */
-	@Override
 	public Scene init(Stage s, CellType type) {
-        setStage(s);
-        setNewRootElement();
-
-		int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
-		}
-		
-		setMyScene(new Scene(getRootElement(), screenWidth, 
-				SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
-        setTopMargin(getTopMargin() + marginBoxTop * 4);
-        this.myGrid = new SugarScapeGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid(type);
-        myGrid.setUpButtons();
-        myGrid.setSimulationProfile(this);
-        createGraph();
-        setInitialEnvironment();
         if(preset == 2) setClusterEnvironment();
+		super.init(s, type);
         return getMyScene();
 	}
+
+	public Grid instantiateGrid(){
+        this.myGrid = new SugarScapeGrid(getGridLength(), getCellSize(), getRootElement(),
+                getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
+        return myGrid;
+    }
 
 	/* (non-Javadoc)
 	 * @see base.Simulation#setInitialEnvironment()
 	 */
 	@Override
 	public void setInitialEnvironment() {
+		createGraph();
         int cellType;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {

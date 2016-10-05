@@ -1,11 +1,11 @@
 package base;
 
-import base.Simulation.CellType;
 import controller.MainMenu;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -170,7 +170,25 @@ public abstract class Simulation {
       * @param type The shape of the cell
 	  * @return The newly created scene
 	  */
-	 public abstract Scene init(Stage s, CellType type);
+	 public Scene init(Stage s, CellType type){
+		 setStage(s);
+		 setNewRootElement();
+		 int screenWidth = SIMULATION_WINDOW_WIDTH;
+		 if(type == CellType.HEX){
+			 screenWidth *= 1.75;
+		 }
+		 setMyScene(new Scene(getRootElement(), screenWidth, SIMULATION_WINDOW_HEIGHT, Color.WHITE));
+		 setTopMargin(getTopMargin() + marginBoxTop * 4);
+		 Grid myGrid = instantiateGrid();
+         myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
+         myGrid.initializeGrid(type);
+         myGrid.setUpButtons();
+         myGrid.setSimulationProfile(this);
+		 setInitialEnvironment();
+		 return getMyScene();
+	 }
+
+	 public abstract Grid instantiateGrid();
 
 	 /**
 	  * Sets up the initial objects/behavior of the simulation

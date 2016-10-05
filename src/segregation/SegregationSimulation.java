@@ -75,27 +75,16 @@ public class SegregationSimulation extends Simulation {
         this.percEmpty = percentEmpty;
     }
 
-    @Override
     public Scene init(Stage s,CellType type) {
-        setStage(s);
-        setNewRootElement();
-        int screenWidth = SIMULATION_WINDOW_WIDTH;
-        if(type == CellType.HEX){
-            screenWidth *= 1.75;
-        }
+        cellSatisfied = new int[getGridLength()][getGridLength()];
+        super.init(s, type);
+        return getMyScene();
+    }
 
-        setMyScene(new Scene(getRootElement(), screenWidth,
-                SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-        setTopMargin(getTopMargin() + marginBoxTop*4);
+    public Grid instantiateGrid(){
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(),
                 getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid(type);
-        myGrid.setUpButtons();
-        myGrid.setSimulationProfile(this);
-        cellSatisfied = new int[getGridLength()][getGridLength()];
-        setInitialEnvironment();
-        return getMyScene();
+        return myGrid;
     }
 
     /* (non-Javadoc)

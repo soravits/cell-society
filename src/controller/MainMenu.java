@@ -32,6 +32,7 @@ import base.Simulation.CellType;
 import base.UserInput;
 
 /**
+ * This is both the graphical main menu and the controller that facilitates the current simulation.
  * @author Brian, Delia, Soravit
  */
 public class MainMenu {

@@ -6,7 +6,8 @@ import controller.MainMenu;
 import javafx.application.Application;
 
 /**
- * @author Soravit, Delia, Brian
+ *	Starts the program and sets the stage
+ *  @author Soravit, Delia, Brian
  *
  */
 public class Main extends Application {

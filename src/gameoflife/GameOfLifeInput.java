@@ -9,6 +9,7 @@ import base.Simulation.CellType;
 import base.UserInput;
 
 /**
+ * Defines input parameters for Game of Life
  * @author Delia
  *
  */

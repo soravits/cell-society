@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 
 /**
+ * This represents the ground on which the ant stands in the simulation.
  * @author Soravit
  */
 public class ForagingAntsCell extends Cell {

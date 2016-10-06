@@ -16,6 +16,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slimemolds.SlimeMoldsCell.MoldStatus;
 
+/**
+ * Defines behavior for Slime Molds
+ * @author Brian
+ */
+
 public class SlimeMoldsSimulation extends Simulation {
 
 	private static final String mold = "Mold: ";

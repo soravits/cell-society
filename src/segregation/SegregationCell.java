@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 /**
+ * Represents a cell in the Segregation simulation
  * @author Delia
  *
  */

@@ -3,6 +3,7 @@ package foragingants;
 import base.Location;
 
 /**
+ * This represents an ant in the simulation.
  * @author Soravit
  */
 public class ForagingAnt {

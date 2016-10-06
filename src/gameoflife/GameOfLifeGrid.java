@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 /**
+ * The graphical representation of the Game of Life simulation
  * @author Brian
  *
  */

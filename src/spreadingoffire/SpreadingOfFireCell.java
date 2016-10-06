@@ -4,6 +4,7 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 /**
+ * Represents a cell in the Spreading of Fire grid
  * @author Soravit
  *
  */

@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import spreadingoffire.SpreadingOfFireCell.States;
 /**
+ * Defines behavior for the Spreading of Fire simulation
  * @author Soravit
  *
  */

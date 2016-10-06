@@ -6,6 +6,7 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import waterworld.WaTorWorldCell.State;
 /**
+ * The graphical representation of the Predator Prey Simulation
  * @author Soravit
  *
  */

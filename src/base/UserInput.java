@@ -18,8 +18,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
+ * This is the UserInput superclass. It defines buttons and spinners that are universal to every simulation.
+ * Extend this class to define the user input for your specific simulation.
  * @author Delia
- *
  */
 public abstract class UserInput {
 

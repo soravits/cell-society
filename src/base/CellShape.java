@@ -3,8 +3,9 @@ package base;
 import javafx.scene.shape.Polygon;
 
 /**
+ * This class implements the square, triangle, and hexagon cell shapes, and returns Polygon object to be used
+ * in the Cell class.
  * @author Brian
- *
  */
 public class CellShape {
 

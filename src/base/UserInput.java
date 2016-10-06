@@ -22,6 +22,7 @@ import javafx.stage.Stage;
  *
  */
 public abstract class UserInput {
+
 	public static final int INPUT_MENU_WIDTH = 700;
 	public static final int INPUT_MENU_HEIGHT = 600;	
 	private static final int HORIZONTAL_GAP = 50;
@@ -76,7 +77,7 @@ public abstract class UserInput {
 		stage.setScene(myScene);
 		stage.show();
 	}
-	
+
 	/**
 	 * @return Grid for simulation
 	 */
@@ -230,7 +231,6 @@ public abstract class UserInput {
 	}
 	
 }
-
 
 
 

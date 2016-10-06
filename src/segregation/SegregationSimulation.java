@@ -1,3 +1,18 @@
+// This entire file is part of my masterpiece.
+// Delia Li
+
+    /**
+     * This class represent a lot of what I learned so far in class. 
+     * 1. Using private variables. Protected variables were something I did a lot of 
+     * in my game, but here I only have private variables. This protects the data stored 
+     * within this class.
+     * 2. Using descriptive method names. Now that other people are reading my code, the
+     * naming conventions I follow are even more crucial to be consistent with those of
+     * my teammates. 
+     * 3. This was extensively refactored. I now know a lot more refactoring tecniques than 
+     * I did during the game project.
+     */
+
 package segregation;
 import java.awt.Point;
 import java.util.ArrayList;

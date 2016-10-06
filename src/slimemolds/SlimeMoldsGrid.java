@@ -80,6 +80,8 @@ public class SlimeMoldsGrid extends Grid {
 	
 	/**
 	 * @param location
+	 * @param state
+	 * @param threshold
 	 */
 	public void updateCell(Location location, MoldStatus state, double threshold) {
 		SlimeMoldsCell cell = getCell(location);

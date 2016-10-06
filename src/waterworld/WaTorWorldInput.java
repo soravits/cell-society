@@ -32,7 +32,7 @@ public class WaTorWorldInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates a spinner that determines the fraction of the grid that are fish
 	 */
 	public void selectFracFish() {
 		fracFishSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
@@ -43,7 +43,7 @@ public class WaTorWorldInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates a spinner that determines the fraction of the grid that are sharks
 	 */
 	public void selectFracShark() {
 		fracSharkSpinner = new Spinner<>(0.05, 0.95, 0.25, 0.05);
@@ -54,7 +54,7 @@ public class WaTorWorldInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates a spinner to select the time it takes for a fish to breed
 	 */
 	public void selectFishBreedTime() {
 		fishBreedSpinner = new Spinner<>(1, 20, 3, 1);
@@ -65,7 +65,7 @@ public class WaTorWorldInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates a spinner to select he time it takes for a shark to breed
 	 */
 	public void selectSharkBreedTime() {
 		sharkBreedSpinner = new Spinner<>(1, 20, 15, 1);
@@ -76,7 +76,7 @@ public class WaTorWorldInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates a spinner to select the time it takes for a shark to starve
 	 */
 	public void selectStarveTime() {
 		starveSpinner = new Spinner<>(1, 20, 3, 1);
@@ -84,8 +84,11 @@ public class WaTorWorldInput extends UserInput {
 		getGrid().add(new Label("Starvation Time"), 0, 5);
 		getGrid().add(starveSpinner, 1, 5);
 
-	}	
+	}
 
+	/**
+	 * Starts the simulation with XML input
+	 */
 	@Override
 	public void startXMLSimulation() {
 		waterScene = waterSim.init(stage,CellType.SQUARE);
@@ -94,6 +97,10 @@ public class WaTorWorldInput extends UserInput {
 
 	}
 
+    /**
+     * Starts the simulation with manual input
+     * @param type The shape of the cell
+     */
 	@Override
 	public void startManualSimulation(CellType type) {
 		waterSim = new WaTorWorldSimulation(getGridSize(), 
@@ -105,6 +112,9 @@ public class WaTorWorldInput extends UserInput {
 		stage.show();
 	}
 
+    /**
+     * Generates the spinners and buttons
+     */
 	@Override
 	public void generateNodes() {
 		selectFracFish();

@@ -37,7 +37,7 @@ public class ForagingAntsInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner to choose the duration of the sim
 	 */
 	 public void selectSimDuration() {
 		 simDurationSpinner = new Spinner<>(100, 8000, 5000, 100);
@@ -46,9 +46,10 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(simDurationSpinner, 1, 1);
 	 }
 
-	 /**
-	  * 
-	  */
+	/**
+	 * Creates spinner to choose the row of the nest location in the grid
+     * @param gridSize
+	 */
 	 public void selectNestLocationRow(int gridSize) {
 		 nestLocationRowSpinner = new Spinner<>(0, gridSize, 15, 1);
 		 nestLocationRowSpinner.setEditable(true);
@@ -58,7 +59,8 @@ public class ForagingAntsInput extends UserInput {
 	 }
 
 	 /**
-	  * 
+	  * Creates a spinner to choose the column of the nest location in the grid
+      * @param gridSize
 	  */
 	 public void selectNestLocationCol(int gridSize) {
 		 nestLocationColSpinner = new Spinner<>(0, gridSize, 0, 1);
@@ -66,8 +68,12 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(new Label("Column of nest"), 0, 3);
 		 getGrid().add(nestLocationColSpinner, 1, 3);
 
-	 }	
+	 }
 
+	/**
+	 * Creates spinner to choose the row of the food source in the grid
+     * @param gridSize
+	 */
 	 public void selectFoodSourceRow(int gridSize) {
 		 foodSourceRowSpinner = new Spinner<>(0, gridSize, 0, 1);
 		 foodSourceRowSpinner.setEditable(true);
@@ -76,6 +82,10 @@ public class ForagingAntsInput extends UserInput {
 	 }
 
 
+    /**
+     * Creates spinner to choose percentage alive
+     * @param gridSize
+     */
 	 public void selectFoodSourceCol(int gridSize) {
 		 foodSourceColSpinner = new Spinner<>(0, gridSize, 0, 1);
 		 foodSourceColSpinner.setEditable(true);
@@ -83,6 +93,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(foodSourceColSpinner, 1, 5);
 	 }
 
+    /**
+     * Creates spinner to choose the max number of ants per sim
+     */
 	 public void selectMaxAnts() {
 		 maxAntsSpinner = new Spinner<>(100, 2000, 1000, 100);
 		 maxAntsSpinner.setEditable(true);
@@ -90,7 +103,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(maxAntsSpinner, 1, 6);
 	 }
 
-
+    /**
+     * Creates spinner to choose the max number of ants per cell
+     */
 	 public void selectMaxAntsPerLocation() {
 		 maxAntsPerLocationSpinner = new Spinner<>(1, 20, 10, 1); //what's the upper limit for this
 		 maxAntsPerLocationSpinner.setEditable(true);
@@ -99,7 +114,7 @@ public class ForagingAntsInput extends UserInput {
 	 }
 
 	 /**
-	  * 
+	  * Creates a spinner to choose the lifteime of an ant
 	  */
 	 public void selectAntLifetime() {
 		 antLifetimeSpinner = new Spinner<>(10, 1000, 500, 10);
@@ -110,7 +125,7 @@ public class ForagingAntsInput extends UserInput {
 	 }
 
 	 /**
-	  * 
+	  * Creates a spinner to choose the initial ant population
 	  */
 	 public void selectInitialPopulation() {
 		 initialPopulationSpinner = new Spinner<>(1, 20, 2, 1);
@@ -118,9 +133,11 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(new Label("Initial ant population"), 0, 9);
 		 getGrid().add(initialPopulationSpinner, 1, 9);
 
-	 }	
+	 }
 
-
+    /**
+     * Creates spinner to choose the number of ants born at each step
+     */
 	 public void selectAntsBornPerStep() {
 		 antsBornPerStepSpinner = new Spinner<>(1, 20, 2, 1);
 		 antsBornPerStepSpinner.setEditable(true);
@@ -128,6 +145,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(antsBornPerStepSpinner, 1, 10);
 	 }
 
+    /**
+     * Creates spinner to choose the minimum pheromone per cell
+     */
 	 public void selectMinPheromone() {
 		 minPheromoneSpinner = new Spinner<>(0.00, 10.0, 0.0, 0.5); 
 		 minPheromoneSpinner.setEditable(true);
@@ -135,6 +155,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(minPheromoneSpinner, 1, 11);
 	 }
 
+    /**
+     * Creates spinner to choose the maximum pheromone per cell
+     */
 	 public void selectMaxPheromone() {
 		 //lowest, highest, default value, increment size
 		 maxPheromoneSpinner = new Spinner<>(10.0, 2000.0, 1000.0, 10.0);
@@ -143,6 +166,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(maxPheromoneSpinner, 1, 12);
 	 }
 
+    /**
+     * Creates a spinner to select the evaporation ratio of pheromones
+     */
 	 public void selectEvapRatio() {
 		 evapRatioSpinner = new Spinner<>(0.000, 0.030, 0.001, 0.001);
 		 evapRatioSpinner.setEditable(true);
@@ -150,6 +176,9 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(evapRatioSpinner, 1, 13);
 	 }
 
+    /**
+     * Creates spinner to choose the difusion ratio of pheromones
+     */
 	 public void selectDiffusionRatio() {
 		 diffusionRatioSpinner = new Spinner<>(0.5, 20.0, 10.0, 0.5);
 		 diffusionRatioSpinner.setEditable(true);
@@ -157,20 +186,22 @@ public class ForagingAntsInput extends UserInput {
 		 getGrid().add(diffusionRatioSpinner, 1, 14);
 	 }
 
-
-
+    /**
+     * Start the simulation with XML input
+     */
 	 @Override
 	 public void startXMLSimulation() {
 		 foragingAntsScene = foragingAnts.init(stage, Simulation.CellType.SQUARE);
 		 stage.setScene(foragingAntsScene);
 		 stage.show();
-
 	 }
 
+    /**
+     * Starts the simulation with manual input
+     */
 	 @Override
 	 public void manualInput() { 
 		 foragingAntsScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT + 200);
-
 		 getGrid().setHgap(50);
 		 getGrid().setVgap(10);
 		 getGrid().setPadding(new Insets(10));

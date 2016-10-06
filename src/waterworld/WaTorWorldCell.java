@@ -74,21 +74,21 @@ public class WaTorWorldCell extends Cell {
     }
     
     /**
-     * 
+     * Decrements the breed time
      */
     public void decrementBreedTime() {
         breedTime --;
     }
     
     /**
-     * 
+     * Decrements the starve time
      */
     public void decrementStarveTime() {
         starveTime --;
     }
     
     /**
-     * 
+     * Updates the color based on current state
      */
     public void updateColor() {
         if(currState == State.EMPTY) {

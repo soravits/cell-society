@@ -32,7 +32,7 @@ public class SpreadingOfFireInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Creates a spinner that decides probability of a tree catching fire
 	 */
 	public void selectProbCatch() {
 		probCatchSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);

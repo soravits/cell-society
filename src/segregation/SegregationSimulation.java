@@ -198,7 +198,6 @@ public class SegregationSimulation extends Simulation {
         lineChart.getData().add(emptyLine);
         lineChart.getData().add(satisfiedLine);
         lineChart.getData().add(unsatisfiedLine);
-
     }
     
     /**
@@ -221,7 +220,8 @@ public class SegregationSimulation extends Simulation {
     }
 
     /**
-     * Creates cell counter at top right that keeps track of number of cells
+     * Creates cell counter at top right that keeps track of number of cells 
+     * that satisfy each condition
      */
     @Override
     public void createCellCounter() {

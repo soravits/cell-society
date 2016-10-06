@@ -19,11 +19,8 @@ import slimemolds.SlimeMoldsCell.MoldStatus;
 public class SlimeMoldsSimulation extends Simulation {
 
 	private static final String mold = "Mold: ";
-	private static final Text numMoldText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
-			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, mold);
-
-	private Random random = new Random();
+	private static final Text numMoldText = new Text(textPositionHorizontal,textPositionVertical + MARGIN_BOX_TOP, mold);
+	private static final Random random = new Random();
 
 	//UI Stuff
 	private int numberMold; 
@@ -53,11 +50,17 @@ public class SlimeMoldsSimulation extends Simulation {
 		this.probMold = probMold;
 	}
 
+	/**
+	 * Initialize Slime Molds
+	 */
 	public Scene init (Stage s,CellType type) {
 		super.init(s, type);
 		return getMyScene();
 	}
 
+	/**
+	 * Initialize grid for Slime Molds
+	 */
 	public Grid instantiateGrid(){
 		this.myGrid = new SlimeMoldsGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), this);
@@ -66,7 +69,7 @@ public class SlimeMoldsSimulation extends Simulation {
 
 
 	/**
-	 * 
+	 * Update states of all of the cells after a manual modification onclick of a cell
 	 */
 	public void checkUpdatedStatesAfterManualMod() {
 		for(int i = 0; i < getGridLength(); i++) {
@@ -83,24 +86,9 @@ public class SlimeMoldsSimulation extends Simulation {
 		}
 	}
 
-	/**
-	 * @param location
-	 * @return
-	 */
-	private boolean manuallyModified(Location location) {
-		return (myGrid.getCell(location).isManuallyModifiedByUser());
-	}
-
-	/**
-	 * @param location
-	 */
-	private void noLongerModified(Location location) {
-		myGrid.getCell(location).noLongerManuallyModified();
-	}
-
-
 	/* (non-Javadoc)
 	 * @see base.Simulation#setInitialEnvironment()
+	 * Set up initial state of the simulation, first step
 	 */
 	public void setInitialEnvironment() {
 		numberMold = 0;
@@ -121,7 +109,7 @@ public class SlimeMoldsSimulation extends Simulation {
 	}
 
 	/**
-	 * 
+	 * Updates state depending on what happened in previous state, and will move mold cells accordingly
 	 */
 	public void updateState() {
 		for(int i = 0; i < getGridLength(); i++) {
@@ -149,9 +137,58 @@ public class SlimeMoldsSimulation extends Simulation {
 		}
 	}
 
+	@Override
+	public void createSeries(LineChart lineChart) {
+		moldLine = new XYChart.Series();
+		lineChart.getData().add(moldLine);
+	}
+	/**
+	 * Sets up counter at the top right that lets you keep track of the number of mold cells present
+	 */
+	@Override
+	public void createCellCounter() {
+		Rectangle cellCounter = new Rectangle(
+				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
+				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
+				DIMENSIONS_OF_CELL_COUNTER);
+		cellCounter.setFill(Color.WHITE);
+		cellCounter.setStyle(getCellCounterStyle());
+		getRootElement().getChildren().add(cellCounter);
+		numMoldText.setFill(Color.RED);
+
+		updateText();
+		getRootElement().getChildren().add(numMoldText);
+	}
+	
+
+	/**
+	 * Updates graph with new data
+	 */
+	public void updateGraph() {
+		moldLine.getData().add(new XYChart.Data(stepCount, numberMold));
+		updateText();
+	}
+	
+	@Override
+	public void step () {
+		updateState();
+		updateGraph();
+		stepCount++;
+	}
+
+	/**
+	 * 
+	 */
+	private void updateText() {
+		numMoldText.setText(mold + numberMold);
+	}
+	
+
 	/**
 	 * @param location
-	 * @return
+	 * @return Whether or not mold cell moved towards threshold pollution spot
+	 * Move cell to area with hig amount of spores to aggregate
+	 * 
 	 */
 	private boolean moveMoldCellToPollution(Location location) {
 		SlimeMoldsCell oldCell = myGrid.getCell(location);
@@ -196,6 +233,7 @@ public class SlimeMoldsSimulation extends Simulation {
 	/**
 	 * @param location
 	 * @param oldCell
+	 * Move mold cell to specific location
 	 */
 	private void moveMoldCellTo(Location location, SlimeMoldsCell oldCell) {
 		oldCell.killMold();
@@ -206,6 +244,7 @@ public class SlimeMoldsSimulation extends Simulation {
 	/**
 	 * @param location
 	 * @param direction
+	 * Moves mold cell to random location adjacent to it
 	 */
 	private void moveMoldCellRandomly(Location location, int direction) {
 		SlimeMoldsCell cell = myGrid.getCell(location);
@@ -222,16 +261,22 @@ public class SlimeMoldsSimulation extends Simulation {
 		break; 
 		}  	 
 
-		if((row < 0) || (col < 0) || (row > getGridLength() - 1) || (col > getGridLength() - 1) 
-				|| (myGrid.getCell(location).getState() == MoldStatus.MOLD)) {
+		if((row < 0) || (col < 0) || (row > getGridLength() - 1) || (col > getGridLength() - 1)) {
+			return;
+		}
+		location.setRow(row);
+		location.setCol(col);
+		//Can't use OR here to combine if statements, otherwise we open up ArrayIndexOB Exceptions
+		if (myGrid.getCell(location).getState() == MoldStatus.MOLD){
 			return;
 		}
 
-		moveMoldCellTo(new Location(row, col), cell);
+		moveMoldCellTo(location, cell);
 	}
 
 	/**
 	 * @param location
+	 * Increases spores on that cell and diffuses spores outwards from the cell
 	 */
 	private void polluteCell(Location location) {
         int row = location.getRow();
@@ -254,6 +299,7 @@ public class SlimeMoldsSimulation extends Simulation {
 
 	/**
 	 * @param location
+	 * Diffuses spores from the current location, adding spores to adjacent areas
 	 */
 	private void diffuseSpores(Location location) {
         int row = location.getRow();
@@ -263,48 +309,22 @@ public class SlimeMoldsSimulation extends Simulation {
 		}
 		myGrid.getCell(location).diffuse(diffusionAmt);
 	}
-
-	@Override
-	public void createSeries(LineChart lineChart) {
-		moldLine = new XYChart.Series();
-		lineChart.getData().add(moldLine);
-	}
-
-	@Override
-	public void createCellCounter() {
-		Rectangle cellCounter = new Rectangle(
-				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
-				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
-				DIMENSIONS_OF_CELL_COUNTER);
-		cellCounter.setFill(Color.WHITE);
-		cellCounter.setStyle(getCellCounterStyle());
-		getRootElement().getChildren().add(cellCounter);
-		numMoldText.setFill(Color.RED);
-
-		updateText();
-		getRootElement().getChildren().add(numMoldText);
-	}
-
-	/**
-	 * 
-	 */
-	private void updateText() {
-		numMoldText.setText(mold + numberMold);
-	}
-
-	/**
-	 * 
-	 */
-	public void updateGraph() {
-		moldLine.getData().add(new XYChart.Data(stepCount, numberMold));
-		updateText();
-	}
 	
-	@Override
-	public void step () {
-		updateState();
-		updateGraph();
-		stepCount++;
+	/**
+	 * @param location
+	 * @return Whether or not cell has been manually modified
+	 */
+	private boolean manuallyModified(Location location) {
+		return (myGrid.getCell(location).isManuallyModifiedByUser());
 	}
+
+	/**
+	 * @param location
+	 * Set cell as no longer manually modified
+	 */
+	private void noLongerModified(Location location) {
+		myGrid.getCell(location).noLongerManuallyModified();
+	}
+
 
 }

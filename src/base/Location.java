@@ -19,22 +19,29 @@ public class Location {
 	}
 
 	/**
-	 * @return
+	 * @return Row value for this location
 	 */
 	public int getRow () {
 		return row;
 	}
 
+	/**
+	 * Sets row value for this location
+	 */
 	public void setRow(int row){
 		this.row = row;
 	}
 
+
+	/**
+	 * Sets row value for this location
+	 */
 	public void setCol(int col){
 		this.col = col;
 	}
 
 	/**
-	 * @return
+	 * @return Column value for this location
 	 */
 	public int getColumn () {
 		return col;

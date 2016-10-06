@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
  */
 public class GameOfLifeGrid extends Grid{
 	private GameOfLifeSimulation sim; 
-	//make instance of itself instead of using a getter all the time?
 	/**
 	 * @param rowLength
 	 * @param sizeOfCell
@@ -27,14 +26,17 @@ public class GameOfLifeGrid extends Grid{
 		this.sim = sim;
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Grid#getCell(int, int)
+	/**
+	 * @param location
+	 * Gets cell at specified coordinates/location
 	 */
 	public GameOfLifeCell getCell(Location location) {
 		return (GameOfLifeCell) super.getCell(location);
 	}
+	
 	/**
 	 * @param location
+	 * Changes cell State and color at specific location
 	 */
 	public void updateCell(Location location) {
 		GameOfLifeCell myCell = getCell(location);
@@ -47,8 +49,9 @@ public class GameOfLifeGrid extends Grid{
 		getCell(location).setBorder(Color.WHITE);
 	}
 
-	/* (non-Javadoc)
-	 * @see base.Grid#initializeGrid()
+	/** 
+	 * @param type 
+	 * Initializes Grid with shape depending on configuration
 	 */
 	@Override
 	public void initializeGrid(CellType type) {

@@ -25,12 +25,12 @@ public abstract class UserInput {
 
 	public static final int INPUT_MENU_WIDTH = 700;
 	public static final int INPUT_MENU_HEIGHT = 600;	
+	private static final int HORIZONTAL_GAP = 50;
 
-	public static Stage stage;
+	public Stage stage;
 	public Pane segWindow;
 	private Scene myScene;
 	private Spinner<Integer> gridSizeSpinner;
-
 	private GridPane grid = new GridPane();
 	private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
 			"-fx-background-radius: 20;" + 
@@ -47,9 +47,149 @@ public abstract class UserInput {
 		stage.setScene(new Scene(setUpWindow()));
 		stage.show();
 	}
+	
+	/**
+	 * Starts the simulation with specific configurations in XML
+	 */
+	public abstract void startXMLSimulation();
 
 	/**
-	 * @return
+	 * @param cellType
+	 * Starts the simulation with specific configurations
+	 */
+	public abstract void startManualSimulation(CellType cellType);
+
+	/**
+	 *  Creates the nodes/options that allow you to manually specify configurations
+	 */
+	public abstract void generateNodes();
+	
+	/**
+	 *  Takes user input for an option
+	 */
+	public void manualInput() {
+		myScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
+		grid.setStyle("-fx-background-color: #02f7c6;");
+		grid.setHgap(HORIZONTAL_GAP);
+		grid.setVgap(HORIZONTAL_GAP/5);
+		grid.setPadding(new Insets(HORIZONTAL_GAP/5));
+		generateNodes();
+		stage.setScene(myScene);
+		stage.show();
+	}
+
+	/**
+	 * @return Grid for simulation
+	 */
+	public GridPane getGrid() {
+		return grid;
+	}
+
+	/**
+	 * @return gridSize as determined in spinner
+	 */
+	public int getGridSize() {
+		return gridSizeSpinner.getValue();
+	}
+
+	/**
+	 * @return Background image that will be set for simulation
+	 */
+	public ImageView setBackground() {
+		Image background = new Image(getClass().getClassLoader()
+				.getResourceAsStream("BackgroundCellSoc.jpg")); 
+		ImageView backgroundImage = new ImageView(background);
+		backgroundImage.setFitWidth(INPUT_MENU_WIDTH + 50);
+		backgroundImage.setFitHeight(INPUT_MENU_HEIGHT);
+		return backgroundImage;
+	}
+	
+	/**
+	 * @param buttonText
+	 * @param yTranslate
+	 * @return New generic button with hover and location
+	 */
+	public Button createButton(String buttonText, int yTranslate){
+		Button newButton = new Button(buttonText);
+		newButton.setStyle(buttonFill);
+		newButton.setOnMouseEntered(e -> mouseIn(newButton));
+		newButton.setOnMouseExited(e -> mouseOut(newButton));
+		newButton.setTranslateX(40);
+		newButton.setTranslateY(yTranslate);
+		
+		return newButton;
+
+	}
+
+	/**
+	 *  Creates the XML option button
+	 */
+	public void xmlButton() {
+		Button readXML = createButton("Run with XML",80);
+		readXML.setOnMouseClicked(e -> startXMLSimulation());
+		segWindow.getChildren().add(readXML);
+	}
+
+	/**
+	 *  Creates a manual input button
+	 */
+	public void manualButton() {
+		Button inputManual = createButton("Input values here",160);
+		inputManual.setOnMouseClicked(e -> manualInput());
+		segWindow.getChildren().add(inputManual);
+	}
+
+	/**
+	 *  Takes user input for specific grid size
+	 */
+	public void selectGridSize() {
+		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
+		gridSizeSpinner.setEditable(true);
+		grid.add(new Label("Size of Square Grid"), 0, 0);
+		grid.add(gridSizeSpinner, 1, 0);
+	}
+
+	/**
+	 * @param sim
+	 * @return Simulation to begin with Hex configuration
+	 */
+	public Button beginHexButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Hex Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.HEX));
+		return beginSim;
+	}
+
+	/**
+	 * @param sim
+	 * @return Simulation to begin with triangle configuration
+	 */
+	public Button beginTriangleButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Triangle Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.TRIANGLE));
+		return beginSim;
+	}
+
+	/**
+	 * @param sim
+	 * @return Simulation to begin with square configuration
+	 */
+	public Button beginSquareButton(String sim) {
+		Button beginSim = new Button("Start " + sim + " Square Simulation");
+		beginSim.setStyle(buttonFill);
+		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
+		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
+		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.SQUARE));
+		return beginSim;
+	}
+
+	/**
+	 * @return Window in which you select initial configurations
 	 */
 	private Parent setUpWindow() {
 		segWindow = new Pane();
@@ -70,64 +210,10 @@ public abstract class UserInput {
 	 * @param message
 	 */
 	private void promptText(int yPos, String message) {
-		Text prompt = new Text(50, yPos, message);
-		prompt.setFont(Font.font ("Verdana", FontWeight.BOLD, 25));
+		Text prompt = new Text(HORIZONTAL_GAP, yPos, message);
+		prompt.setFont(Font.font ("Verdana", FontWeight.BOLD, HORIZONTAL_GAP/2));
 		prompt.setFill(Color.WHITE);
 		segWindow.getChildren().add(prompt);
-	}
-
-	/**
-	 * @return
-	 */
-	public GridPane getGrid() {
-		return grid;
-	}
-
-	/**
-	 * @return
-	 */
-	public int getGridSize() {
-		return gridSizeSpinner.getValue();
-	}
-
-	/**
-	 * @return
-	 */
-	public ImageView setBackground() {
-		Image background = new Image(getClass().getClassLoader()
-				.getResourceAsStream("BackgroundCellSoc.jpg")); 
-		ImageView backgroundImage = new ImageView(background);
-		backgroundImage.setFitWidth(INPUT_MENU_WIDTH + 50);
-		backgroundImage.setFitHeight(INPUT_MENU_HEIGHT);
-		return backgroundImage;
-	}
-
-	/**
-	 * 
-	 */
-	public void xmlButton() {
-		Button readXML = new Button("Run with XML");
-		readXML.setStyle(buttonFill);
-		readXML.setOnMouseEntered(e -> mouseIn(readXML));
-		readXML.setOnMouseExited(e -> mouseOut(readXML));
-		readXML.setOnMouseClicked(e -> startXMLSimulation());
-		readXML.setTranslateX(40);
-		readXML.setTranslateY(80);
-		segWindow.getChildren().add(readXML);
-	}
-
-	/**
-	 * 
-	 */
-	public void manualButton() {
-		Button inputManual = new Button("Input values here");
-		inputManual.setStyle(buttonFill);
-		inputManual.setOnMouseEntered(e -> mouseIn(inputManual));
-		inputManual.setOnMouseExited(e -> mouseOut(inputManual));
-		inputManual.setOnMouseClicked(e -> manualInput());
-		inputManual.setTranslateX(40);
-		inputManual.setTranslateY(160);
-		segWindow.getChildren().add(inputManual);
 	}
 
 	/**
@@ -143,86 +229,8 @@ public abstract class UserInput {
 	private void mouseOut(Button b) {
 		b.setStyle(buttonFill);
 	}
-
-	/**
-	 * 
-	 */
-	public void manualInput() {
-		myScene = new Scene(getGrid(), INPUT_MENU_WIDTH, INPUT_MENU_HEIGHT);
-		grid.setStyle("-fx-background-color: #02f7c6;");
-		grid.setHgap(50);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(10));
-		generateNodes();
-		stage.setScene(myScene);
-		stage.show();
-	}
-
-	/**
-	 * 
-	 */
-	public void selectGridSize() {
-		gridSizeSpinner = new Spinner<>(10, 100, 50, 5);
-		gridSizeSpinner.setEditable(true);
-		grid.add(new Label("Size of Square Grid"), 0, 0);
-		grid.add(gridSizeSpinner, 1, 0);
-	}
-
-	/**
-	 * @param sim
-	 * @return
-	 */
-	public Button beginHexButton(String sim) {
-		Button beginSim = new Button("Start " + sim + " Hex Simulation");
-		beginSim.setStyle(buttonFill);
-		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
-		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
-		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.HEX));
-		return beginSim;
-	}
-
-	/**
-	 * @param sim
-	 * @return
-	 */
-	public Button beginTriangleButton(String sim) {
-		Button beginSim = new Button("Start " + sim + " Triangle Simulation");
-		beginSim.setStyle(buttonFill);
-		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
-		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
-		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.TRIANGLE));
-		return beginSim;
-	}
-
-	/**
-	 * @param sim
-	 * @return
-	 */
-	public Button beginSquareButton(String sim) {
-		Button beginSim = new Button("Start " + sim + " Square Simulation");
-		beginSim.setStyle(buttonFill);
-		beginSim.setOnMouseEntered(e -> mouseIn(beginSim));
-		beginSim.setOnMouseExited(e -> mouseOut(beginSim));
-		beginSim.setOnMouseClicked(e -> startManualSimulation(CellType.SQUARE));
-		return beginSim;
-	}
 	
-	/**
-	 * 
-	 */
-	public abstract void startXMLSimulation();
-
-	/**
-	 * @param cellType
-	 */
-	public abstract void startManualSimulation(CellType cellType);
-
-	/**
-	 * 
-	 */
-	public abstract void generateNodes();
 }
-
 
 
 

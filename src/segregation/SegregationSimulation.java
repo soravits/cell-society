@@ -44,15 +44,9 @@ public class SegregationSimulation extends Simulation {
     private XYChart.Series satisfiedLine;
     private XYChart.Series unsatisfiedLine;
 
-    private static final Text numEmptyText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
-            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, empty);
-    private static final Text numSatisfiedText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
-            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, satisfied);
-    private static final Text numUnsatisfiedText = new Text(
-            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
-            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - MARGIN_BOX_TOP, unsatisfied);
+    private static final Text numEmptyText = new Text(textPositionHorizontal,textPositionVertical - MARGIN_BOX_TOP, empty);
+    private static final Text numSatisfiedText = new Text(textPositionHorizontal,textPositionVertical, satisfied);
+    private static final Text numUnsatisfiedText = new Text(textPositionHorizontal,textPositionVertical + MARGIN_BOX_TOP, unsatisfied);
 
     private SegregationGrid myGrid;
     private int[][] cellSatisfied;
@@ -82,6 +76,10 @@ public class SegregationSimulation extends Simulation {
         return getMyScene();
     }
 
+
+    /**
+	Creates grid and positions it properly in scene
+     */
 	@Override
     public Grid instantiateGrid(){
         this.myGrid = new SegregationGrid(getGridLength(), getCellSize(), getRootElement(),
@@ -90,6 +88,9 @@ public class SegregationSimulation extends Simulation {
     }
 
 
+    /**
+     * Sets up Initial Environment for simulation/first step
+     */
 	@Override
     public void setInitialEnvironment() {
         createGraph();
@@ -129,8 +130,7 @@ public class SegregationSimulation extends Simulation {
     }
 
     /**
-     * MUST CHANGE THIS
-     * WORST METHOD EVER BUT IT WORKS
+     * Changes state of cells depending on neighbor conditions/satisfaction
      * @param location
      * @return int value indicating cell's state
      */
@@ -212,10 +212,30 @@ public class SegregationSimulation extends Simulation {
         lineChart.getData().add(unsatisfiedLine);
 
     }
+    
+
+    /**
+     * Updates graph with new data
+     */
+    public void updateGraph() {
+        emptyLine.getData().add(new XYChart.Data(totalSteps, numberEmpty));
+        satisfiedLine.getData().add(new XYChart.Data(totalSteps, numberSatisfied));
+        unsatisfiedLine.getData().add(new XYChart.Data(totalSteps, numberUnsatisfied));
+        updateText();
+    }
+
+    @Override
+    public void step() {
+        totalSteps++;
+        setSatisfiedGrid();
+        updateState();
+        updateGraph();
+        if(numberUnsatisfied == 0) stopSimulation();
+    }
 
 
     /**
-     *
+     * Creates cell counter at top right that keeps track of number of cells
      */
     @Override
     public void createCellCounter() {
@@ -236,9 +256,8 @@ public class SegregationSimulation extends Simulation {
         getRootElement().getChildren().add(numEmptyText);
         getRootElement().getChildren().add(numSatisfiedText);
         getRootElement().getChildren().add(numUnsatisfiedText);
-
-
     }
+
 
     /**
      *
@@ -248,24 +267,4 @@ public class SegregationSimulation extends Simulation {
         numSatisfiedText.setText(satisfied + numberSatisfied);
         numUnsatisfiedText.setText(unsatisfied + numberUnsatisfied);
     }
-
-    /**
-     *
-     */
-    public void updateGraph() {
-        emptyLine.getData().add(new XYChart.Data(totalSteps, numberEmpty));
-        satisfiedLine.getData().add(new XYChart.Data(totalSteps, numberSatisfied));
-        unsatisfiedLine.getData().add(new XYChart.Data(totalSteps, numberUnsatisfied));
-        updateText();
-    }
-
-    @Override
-    public void step() {
-        totalSteps++;
-        setSatisfiedGrid();
-        updateState();
-        updateGraph();
-        if(numberUnsatisfied == 0) stopSimulation();
-    }
-
 }

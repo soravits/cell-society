@@ -16,7 +16,6 @@ import javafx.util.Duration;
  * @author Brian, Soravit, Delia
  */
 public abstract class Simulation {
-
 	public static final int SIMULATION_WINDOW_WIDTH = 700;
 	public static final int SIMULATION_WINDOW_HEIGHT = 700;
 	public static final int GRID_DIMENSION = 500;
@@ -29,6 +28,10 @@ public abstract class Simulation {
 	public static final double TOP_MARGIN_SIZE = 10;
 	public static final double TOP_MARGIN_ADJUSTMENT = 4;
 	public static final double HEX_SCREEN_WIDTH_ADJUSTMENT = 1.75;
+	
+	public static final double textPositionHorizontal = SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)+ MARGIN_BOX_TOP * 3;
+	public static final double textPositionVertical = 0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP;
+
 
 	public enum CellType {HEX, TRIANGLE, SQUARE};
 	private CellType cellType;
@@ -73,17 +76,22 @@ public abstract class Simulation {
 	public abstract void setInitialEnvironment();
 	
 	/**
+	 * The function that is constantly called throughout the simulation
+	 */
+	public abstract void step();
+
+	/**
 	 * @param lineChart
 	 */
 	public abstract void createSeries(LineChart lineChart);
 
 	/**
-	 * 
+	 *  Sets up new line in plot
 	 */
 	public abstract void createCellCounter();
 	
 	/**
-	 * 
+	 * Updates graph with new data
 	 */
 	public abstract void updateGraph();
 
@@ -98,7 +106,6 @@ public abstract class Simulation {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	};
-
 
 	/**
 	 * Pauses the simulation
@@ -119,6 +126,52 @@ public abstract class Simulation {
 		animation.play();
 	}
 
+	/**
+	 * @param s The stage to be set
+	 * @param type The shape of the cell
+	 * @return The newly created scene
+	 * 
+	 * Initializes the scene with basic configurations depending on input
+	 */
+	public Scene init(Stage s, CellType type){
+		setStage(s);
+		setNewRootElement();
+		int screenWidth = (int) ((type == CellType.HEX) ? (SIMULATION_WINDOW_WIDTH * HEX_SCREEN_WIDTH_ADJUSTMENT) : SIMULATION_WINDOW_WIDTH);
+		setMyScene(new Scene(getRootElement(), screenWidth, SIMULATION_WINDOW_HEIGHT, Color.WHITE));
+		Grid myGrid = instantiateGrid();
+		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
+		myGrid.initializeGrid(type);
+		myGrid.setUpButtons();
+		myGrid.setSimulationProfile(this);
+		setInitialEnvironment();
+		return getMyScene();
+	}
+	
+	/**
+	 * Creates graph and puts it on scene
+	 */
+	public void createGraph(){
+		//defining the axes
+		final NumberAxis xAxis = new NumberAxis();
+		xAxis.setTickLabelsVisible(false);
+		xAxis.setTickMarkVisible(false);
+		xAxis.setMinorTickVisible(false);
+		final NumberAxis yAxis = new NumberAxis();
+		yAxis.setMinorTickVisible(false);
+
+		//creating the chart
+		final LineChart <Number, Number> lineChart = 
+				new LineChart <Number,Number> (xAxis, yAxis);
+		createSeries(lineChart);
+        lineChart.setLayoutX(25);
+        lineChart.setPrefSize(500, 100);
+        lineChart.setLegendVisible(true);
+        lineChart.setLegendSide(Side.RIGHT);
+        getRootElement().getChildren().add(lineChart);
+
+        createCellCounter();
+	}
+	
 	/**
 	 * @return The length of a side of the grid in cells
 	 */
@@ -212,51 +265,5 @@ public abstract class Simulation {
 	 */
 	public void setCellSize (int cellSize) {
 		this.cellSize = cellSize;
-	}
-
-	/**
-	 * The function that is constantly called throughout the simulation
-	 */
-	public abstract void step();
-
-	/**
-	 * @param s The stage to be set
-	 * @param type The shape of the cell
-	 * @return The newly created scene
-	 */
-	public Scene init(Stage s, CellType type){
-		setStage(s);
-		setNewRootElement();
-		int screenWidth = (int) ((type == CellType.HEX) ? (SIMULATION_WINDOW_WIDTH * HEX_SCREEN_WIDTH_ADJUSTMENT) : SIMULATION_WINDOW_WIDTH);
-		setMyScene(new Scene(getRootElement(), screenWidth, SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-		Grid myGrid = instantiateGrid();
-		myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-		myGrid.initializeGrid(type);
-		myGrid.setUpButtons();
-		myGrid.setSimulationProfile(this);
-		setInitialEnvironment();
-		return getMyScene();
-	}
-	
-	public void createGraph(){
-		//defining the axes
-		final NumberAxis xAxis = new NumberAxis();
-		xAxis.setTickLabelsVisible(false);
-		xAxis.setTickMarkVisible(false);
-		xAxis.setMinorTickVisible(false);
-		final NumberAxis yAxis = new NumberAxis();
-		yAxis.setMinorTickVisible(false);
-
-		//creating the chart
-		final LineChart <Number, Number> lineChart = 
-				new LineChart <Number,Number> (xAxis, yAxis);
-		createSeries(lineChart);
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
-
-        createCellCounter();
 	}
 }

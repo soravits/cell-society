@@ -29,8 +29,8 @@ public class GameOfLifeInput extends UserInput {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#startXMLSimulation()
+	/**
+	 * Starts simulation with parameters from XML
 	 */
 	@Override
 	public void startXMLSimulation() {
@@ -41,7 +41,7 @@ public class GameOfLifeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner to choose percentage alive
 	 */
 	public void selectPercAlive() {
 		percentAliveSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
@@ -50,8 +50,8 @@ public class GameOfLifeInput extends UserInput {
 		getGrid().add(percentAliveSpinner, 1, 2);
 	}
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#startManualSimulation(base.Simulation.CellType)
+	/**
+	 * Starts simulation with manual configurations
 	 */
 	@Override
 	public void startManualSimulation(CellType type) {
@@ -62,8 +62,8 @@ public class GameOfLifeInput extends UserInput {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#generateNodes()
+	/** 
+	 * Generates options and nodes for configuration
 	 */
 	@Override
 	public void generateNodes() {

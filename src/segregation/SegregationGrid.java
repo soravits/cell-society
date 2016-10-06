@@ -45,10 +45,8 @@ public class SegregationGrid extends Grid {
 		return (SegregationCell) super.getCell(location);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see base.Grid#initializeGrid()
-	 * maybe we should put this in the superclass and have separate methods 
-	 * in each of our grids that call this. 
 	 */
 	@Override
 	public void initializeGrid(CellType type) {

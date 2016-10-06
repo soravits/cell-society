@@ -18,15 +18,13 @@ import javafx.scene.layout.Pane;
 public abstract class Grid {
 
     public static final String BACKGROUND_IMAGE = "BackgroundCellSoc.jpg";
-
     public enum gridEdgeType{finite, toroidal};
+    
     private gridEdgeType edgeType;
-
     private int gridLength;
 	private int initialX;
 	private int initialY;
 	private int sizeOfCell;
-
     private Pane rootElement;
 	private String buttonFill = "-fx-background-color: linear-gradient(#0079b3, #00110e);" + 
 			"-fx-background-radius: 20;" + 
@@ -114,9 +112,6 @@ public abstract class Grid {
 	public void setCell(Location location, Cell cell) {
 		grid[location.getRow()][location.getColumn()] = cell;
 	}
-
-	//REFACTORING: Should we have a get general neighbor method in which
-	//the parameter specifies the direction (nsew, or diagonal ones)
 
 	/**
 	 * @param location A specified location in the grid
@@ -324,25 +319,7 @@ public abstract class Grid {
 		backgroundImageMainScreen.setFitHeight(height);
 		rootElement.getChildren().add(backgroundImageMainScreen);
 	}
-
-	private Button createSimButton(String text, int x, int y) {
-		Button startSim = new Button(text);
-		startSim.setStyle(buttonFill);
-		startSim.setOnMouseEntered(e -> mouseIn(startSim));
-		startSim.setOnMouseExited(e -> mouseOut(startSim));
-		startSim.setTranslateX(x);
-		startSim.setTranslateY(y);
-
-		return startSim;
-	}
-
-	private void mouseIn(Button button) {
-		button.setStyle(overButton);
-	}
-
-	private void mouseOut(Button button) {
-		button.setStyle(buttonFill);
-	}
+	
 
 	/**
 	 * Sets up the buttons in every simulation
@@ -356,7 +333,6 @@ public abstract class Grid {
 				sim.startSimulation();
 			}
 		});
-		rootElement.getChildren().add(startSim);
 
 		// STEP SIMULATION BUTTON BELOW
 		Button stepSim = createSimButton("Step", 20, 250);
@@ -366,7 +342,6 @@ public abstract class Grid {
 				sim.step();
 			}
 		});
-		rootElement.getChildren().add(stepSim);
 
 		// PAUSE SIMULATION BUTTON BELOW
 		Button pauseSim = createSimButton("Pause", 20, 300);
@@ -376,7 +351,6 @@ public abstract class Grid {
 				sim.stopSimulation();
 			}
 		});
-		rootElement.getChildren().add(pauseSim);
 
 		// RESUME SIMULATION BUTTON BELOW
 		Button resumeSim = createSimButton("Resume", 20, 350);
@@ -386,8 +360,8 @@ public abstract class Grid {
 				sim.resumeSimulation();
 			}
 		});
-		rootElement.getChildren().add(resumeSim);
-
+		
+		//MAKE EDGES FINITE -> DEFAULT
 		Button makeEdgesFinite = createSimButton("Make edges \nfinite", 20, 400);
 		makeEdgesFinite.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -395,8 +369,8 @@ public abstract class Grid {
 				setEdgeType(gridEdgeType.finite);
 			}
 		});
-		rootElement.getChildren().add(makeEdgesFinite);
-
+		
+		//MAKES EDGES TOROIDAL SO THEY WRAP
 		Button makeEdgesToroidal = createSimButton("Make edges \ntoroidal", 20, 470);
 		makeEdgesToroidal.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -404,6 +378,26 @@ public abstract class Grid {
 				setEdgeType(gridEdgeType.toroidal);
 			}
 		});
-		rootElement.getChildren().add(makeEdgesToroidal);
 	}
+
+	private Button createSimButton(String text, int x, int y) {
+		Button newButton = new Button(text);
+		newButton.setStyle(buttonFill);
+		newButton.setOnMouseEntered(e -> mouseIn(newButton));
+		newButton.setOnMouseExited(e -> mouseOut(newButton));
+		newButton.setTranslateX(x);
+		newButton.setTranslateY(y);
+		
+		rootElement.getChildren().add(newButton);
+		return newButton;
+	}
+
+	private void mouseIn(Button button) {
+		button.setStyle(overButton);
+	}
+
+	private void mouseOut(Button button) {
+		button.setStyle(buttonFill);
+	}
+
 }

@@ -10,12 +10,9 @@ import javafx.scene.shape.Polygon;
  *
  */
 public class Cell {
-
     public static final double STROKE_WIDTH = 1;
-
-    private int gridLength;
+    
     private boolean manuallyModifiedByUser = false;
-
     private Pane rootElement;
     private Polygon block;
 

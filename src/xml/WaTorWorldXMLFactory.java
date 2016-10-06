@@ -21,7 +21,7 @@ public class WaTorWorldXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return percentage of grid that will be fish
      */
     public double getFracFish() {
     	double fracFish = 0.4;
@@ -48,7 +48,7 @@ public class WaTorWorldXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return percentage of grid that will be sharks
      */
     public double getFracShark() {
 
@@ -75,7 +75,7 @@ public class WaTorWorldXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return How many step cycles until a fish breeds
      */
     public int getFishBreedTime() {
     	int fishBreed = 3;
@@ -96,7 +96,7 @@ public class WaTorWorldXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return How many step cycles until a shark breeds
      */
     public int getSharkBreedTime() {
     	int sharkBreed = 20;
@@ -117,7 +117,7 @@ public class WaTorWorldXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return  How many step cycles until a shark starves
      */
     public int getStarveTime() {
     	int starveTime = 3;

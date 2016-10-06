@@ -29,7 +29,7 @@ public class SlimeMoldsInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 *  Spinner that lets you choose the amount of diffusion on each step cycle from main spore point
 	 */
 	public void selectDiffusionSpore() {
 		diffSpinner = new Spinner<>(0.3, 1.5, 0.7, 0.1); 
@@ -40,7 +40,7 @@ public class SlimeMoldsInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Set amount of pollution that gets dropped when a mold cell walks directly on cell
 	 */
 	public void selectTouchSpore() {
 		//lowest, highest, default value, increment size
@@ -51,7 +51,7 @@ public class SlimeMoldsInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Set threshold mold value at which the cell will attract others
 	 */
 	public void setThreshold() {
 		threshSpinner = new Spinner<>(1.0,3.0,1.5,0.2);
@@ -62,7 +62,7 @@ public class SlimeMoldsInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Set amount of spores that disappear per step cycle
 	 */
 	public void setDissipateAmount() {
 		dissipateSpinner = new Spinner<>(0.1, 0.95, 0.5, 0.05);
@@ -72,18 +72,19 @@ public class SlimeMoldsInput extends UserInput{
 	}
 	
 	/**
-	 * 
+	 * Sets the percentage of the grid that will be mold initially
 	 */
 	public void probMold() {
 		probMoldSpinner = new Spinner<>(0.01, 0.99, 0.03, 0.01);
 		probMoldSpinner.setEditable(true);
 		getGrid().add(new Label("Probability Cell is Mold"), 0, 5);
-		getGrid().add(probMoldSpinner, 1, 4);
+		getGrid().add(probMoldSpinner, 1, 5);
 	}
 
 
 	/* (non-Javadoc)
 	 * @see base.UserInput#generateNodes()
+	 * Set up all of the spinner nodes
 	 */
 	public void generateNodes(){
 		selectGridSize();
@@ -100,6 +101,7 @@ public class SlimeMoldsInput extends UserInput{
 
 	/* (non-Javadoc)
 	 * @see base.UserInput#startManualSimulation(base.Simulation.CellType)
+	 * Start simulation with manual configurations
 	 */
 	public void startManualSimulation(CellType type) {
 		SlimeMoldsSimulation = new SlimeMoldsSimulation(getGridSize(), diffSpinner.getValue(),
@@ -113,6 +115,7 @@ public class SlimeMoldsInput extends UserInput{
 
 	/* (non-Javadoc)
 	 * @see base.UserInput#startXMLSimulation()
+	 * Start simulation with configurations set in XML
 	 */
 	@Override
 	public void startXMLSimulation() {

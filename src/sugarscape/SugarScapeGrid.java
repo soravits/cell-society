@@ -93,16 +93,16 @@ public class SugarScapeGrid extends Grid {
 	 * @param p2	coordinates of patch that is destination
 	 */
 	public void moveAgent(Point p1, Point p2) {
-		Location p1location = new Location(p1.x, p1.y);
-		Location p2location = new Location(p2.x, p2.y);
+		Location origlocation = new Location(p1.x, p1.y);
+		Location destlocation = new Location(p2.x, p2.y);
 		
-		int origCarbs = getCell(p1location).getAgentCarbs();
+		int origCarbs = getCell(origlocation).getAgentCarbs();
 		int distanceMoved = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
 		
-		if(getCell(p2location).getState() != State.AGENT) {
-			getCell(p2location).setMovedAgent(origCarbs, getCell(p1location).getSugarAmount());
-			getCell(p2location).burnAgentCalories(distanceMoved);
-			getCell(p1location).setAgentMovedPatch();
+		if(getCell(destlocation).getState() != State.AGENT) {
+			getCell(destlocation).setMovedAgent(origCarbs, getCell(origlocation).getSugarAmount());
+			getCell(destlocation).burnAgentCalories(distanceMoved);
+			getCell(origlocation).setAgentMovedPatch();
 		}
 	}
 

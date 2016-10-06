@@ -53,7 +53,7 @@ public class SegregationInput extends UserInput{
 	 * Select percentage of grid to be color B
 	 */
 	private void selectPercB() {
-		percBSpinner = new Spinner<>(0.05, 1 - percASpinner.getValue(), 0.5, 0.05);
+		percBSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		percBSpinner.setEditable(true);
 		getGrid().add(new Label("% Color B"), 0, 3);
 		getGrid().add(percBSpinner, 1, 3);

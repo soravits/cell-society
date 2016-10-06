@@ -24,11 +24,11 @@ public class SegregationGrid extends Grid {
 	private CellType type;
 
 	/**
-	 * @param rowLength
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param initialX
-	 * @param initialY
+	 * @param rowLength		int, length of a row
+	 * @param sizeOfCell	int, length of edge of one cell
+	 * @param rootElement	Pane, where nodes are added
+	 * @param initialX		int, starting x coordinate of grid
+	 * @param initialY		int, starting y ''
 	 */
 	public SegregationGrid(int rowLength, int sizeOfCell, Pane rootElement,
 			int initialX, int initialY, gridEdgeType edgeType, 
@@ -58,7 +58,6 @@ public class SegregationGrid extends Grid {
 					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
 					if(j % 2 == 0){
 						horizontalOffset= getInitialX() + getSizeOfCell();
-
 					}
 				}
 				SegregationCell gridCell = new SegregationCell(getSizeOfCell(), getRootElement(), 

@@ -2,7 +2,6 @@ package segregation;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
-
 import base.Grid;
 import base.Location;
 import base.Simulation;
@@ -25,7 +24,6 @@ import segregation.SegregationCell.State;
  *
  * This models segregation within communities that are composed of different types. 
  * @author Delia
- *
  */
 public class SegregationSimulation extends Simulation {
     private static final int EMPTY = 0;
@@ -36,13 +34,8 @@ public class SegregationSimulation extends Simulation {
     private static final String satisfied = "Satisfied: ";
     private static final String unsatisfied = "Unsatisfied: ";
 
-    private int numberEmpty = 0;
-    private int numberSatisfied = 0;
-    private int numberUnsatisfied = 0;
-
-    private XYChart.Series emptyLine;
-    private XYChart.Series satisfiedLine;
-    private XYChart.Series unsatisfiedLine;
+    private int numberEmpty, numberSatisfied, numberUnsatisfied = 0;
+    private XYChart.Series emptyLine, satisfiedLine, unsatisfiedLine;
 
     private static final Text numEmptyText = new Text(textPositionHorizontal, 
     		textPositionVertical - MARGIN_BOX_TOP, empty);

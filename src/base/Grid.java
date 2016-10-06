@@ -285,6 +285,17 @@ public abstract class Grid {
 		return neighbors;
 	}
 
+	public ArrayList<Location> getAllCardinalNeighbors(Location location) {
+		ArrayList<Location> neighbors = new ArrayList<Location>();
+
+		neighbors.add(getNorthernNeighbor(location));
+		neighbors.add(getEasternNeighbor(location));
+		neighbors.add(getSouthernNeighbor(location));
+		neighbors.add(getWesternNeighbor(location));
+
+		return neighbors;
+	}
+
 	/**
 	 * @return The initial x position of the grid
 	 */

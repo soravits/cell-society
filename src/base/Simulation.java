@@ -88,12 +88,12 @@ public abstract class Simulation {
 	/**
 	 *  Sets up new line in plot
 	 */
-	public abstract void createCellCounter();
+	public void createCellCounter(){};
 	
 	/**
 	 * Updates graph with new data
 	 */
-	public abstract void updateGraph();
+	public void updateGraph(){};
 
 	/**
 	 * Starts the animation object that keeps the simulation running

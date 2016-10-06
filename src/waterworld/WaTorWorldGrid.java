@@ -69,7 +69,7 @@ public class WaTorWorldGrid extends Grid {
 				gridCell.setState(State.EMPTY);
 			}
 			gridCell.updateColor();
-			sim.manuallyModifyStateOfGrid();
+			//sim.manuallyModifyStateOfGrid();
 			sim.updateGraph();
 		});
 	}

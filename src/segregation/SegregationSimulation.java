@@ -44,9 +44,12 @@ public class SegregationSimulation extends Simulation {
     private XYChart.Series satisfiedLine;
     private XYChart.Series unsatisfiedLine;
 
-    private static final Text numEmptyText = new Text(textPositionHorizontal,textPositionVertical - MARGIN_BOX_TOP, empty);
-    private static final Text numSatisfiedText = new Text(textPositionHorizontal,textPositionVertical, satisfied);
-    private static final Text numUnsatisfiedText = new Text(textPositionHorizontal,textPositionVertical + MARGIN_BOX_TOP, unsatisfied);
+    private static final Text numEmptyText = new Text(textPositionHorizontal, 
+    		textPositionVertical - MARGIN_BOX_TOP, empty);
+    private static final Text numSatisfiedText = new Text(textPositionHorizontal, 
+    		textPositionVertical, satisfied);
+    private static final Text numUnsatisfiedText = new Text(textPositionHorizontal, 
+    		textPositionVertical + MARGIN_BOX_TOP, unsatisfied);
 
     private SegregationGrid myGrid;
     private int[][] cellSatisfied;
@@ -56,10 +59,10 @@ public class SegregationSimulation extends Simulation {
 
     /**
      * @param gridLength
-     * @param threshold
-     * @param percentA
-     * @param percentB
-     * @param percentEmpty
+     * @param threshold		double, number of same-colored neighbors for a cell to be satisfied
+     * @param percentA		double, percentage of color A cells
+     * @param percentB		double, percentage of color B cells
+     * @param percentEmpty	double, percentage of empty cells
      */
     public SegregationSimulation(int gridLength, double threshold, double percentA,
                                  double percentB, double percentEmpty,CellType type) {
@@ -76,7 +79,6 @@ public class SegregationSimulation extends Simulation {
         return getMyScene();
     }
 
-
     /**
 	Creates grid and positions it properly in scene
      */
@@ -86,7 +88,6 @@ public class SegregationSimulation extends Simulation {
                 getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
         return myGrid;
     }
-
 
     /**
      * Sets up Initial Environment for simulation/first step
@@ -115,13 +116,7 @@ public class SegregationSimulation extends Simulation {
         updateText();
     }
 
-    /**
-     * Loop that sets 2D array with 0, 1, or 2 for each possible state
-     * 0 = empty
-     * 1 = satisfied
-     * 2 = unsatisfied
-     */
-    public void setSatisfiedGrid() {
+    private void setSatisfiedGrid() {
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
                 cellSatisfied[i][j] = setSatisfiedState(new Location(i, j));
@@ -134,7 +129,7 @@ public class SegregationSimulation extends Simulation {
      * @param location
      * @return int value indicating cell's state
      */
-    public int setSatisfiedState(Location location) {
+    private int setSatisfiedState(Location location) {
         SegregationCell current = myGrid.getCell(location);
         State currentState = current.getState();
         int sameColor = 0;
@@ -168,7 +163,7 @@ public class SegregationSimulation extends Simulation {
      * Adds all unsatisfied cells to their own arraylist.
      * Loops through unsatisfied arraylist and calls switch method on each one.
      */
-    public void updateState() {
+    private void updateState() {
         //make a list of empty spots
         ArrayList<Point> emptySpots = new ArrayList<>();
         ArrayList<Point> unhappySpots = new ArrayList<>();
@@ -198,7 +193,7 @@ public class SegregationSimulation extends Simulation {
     }
     
     @Override
-    public void createSeries(LineChart lineChart){
+    public void createSeries(LineChart lineChart) {
     	emptyLine = new XYChart.Series();
         emptyLine.setName("Empty");
         satisfiedLine = new XYChart.Series();
@@ -213,7 +208,6 @@ public class SegregationSimulation extends Simulation {
 
     }
     
-
     /**
      * Updates graph with new data
      */
@@ -233,14 +227,11 @@ public class SegregationSimulation extends Simulation {
         if(numberUnsatisfied == 0) stopSimulation();
     }
 
-
     /**
      * Creates cell counter at top right that keeps track of number of cells
      */
     @Override
     public void createCellCounter() {
-
-        //createCellCounter();
         Rectangle cellCounter = new Rectangle(
                 SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
                         + 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
@@ -258,10 +249,6 @@ public class SegregationSimulation extends Simulation {
         getRootElement().getChildren().add(numUnsatisfiedText);
     }
 
-
-    /**
-     *
-     */
     private void updateText() {
         numEmptyText.setText(empty + numberEmpty);
         numSatisfiedText.setText(satisfied + numberSatisfied);

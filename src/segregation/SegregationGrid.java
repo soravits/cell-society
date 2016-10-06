@@ -45,9 +45,6 @@ public class SegregationGrid extends Grid {
 		return (SegregationCell) super.getCell(location);
 	}
 
-	/**
-	 * @see base.Grid#initializeGrid()
-	 */
 	@Override
 	public void initializeGrid(CellType type) {
 		this.type = type;
@@ -59,7 +56,7 @@ public class SegregationGrid extends Grid {
 				if(type == CellType.HEX){  
 					horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
 					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-					if(j%2 == 0){
+					if(j % 2 == 0){
 						horizontalOffset= getInitialX() + getSizeOfCell();
 
 					}
@@ -104,17 +101,13 @@ public class SegregationGrid extends Grid {
 	 * @param p2	coordinates of point that is destination
 	 */
 	public void switchCells(Point p1, Point p2) {
-//		State destination = getCell(dest).getState();
-//		State origin = getCell(location).getState();
 		Location source = new Location(p1.x, p1.y);
 		Location dest = new Location(p2.x, p2.y);
 		State destination = getCell(dest).getState();
 		State origin = getCell(source).getState();
 
 		updateCell(source, destination);
-		//		System.out.println(destination);
 		updateCell(dest, origin);
-		//		System.out.println(origin);
 	}
 	
 	/**

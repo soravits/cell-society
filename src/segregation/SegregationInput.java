@@ -31,7 +31,7 @@ public class SegregationInput extends UserInput{
 	/**
 	 * Select percentage of grid to be empty
 	 */
-	public void selectPercEmpty() {
+	private void selectPercEmpty() {
 		percEmptySpinner = new Spinner<>(0.05, 0.95, 0.3, 0.05); 
 		percEmptySpinner.setEditable(true);
 		getGrid().add(new Label("% Empty"), 0, 1);
@@ -41,7 +41,7 @@ public class SegregationInput extends UserInput{
 	/**
 	 * Select percentage of grid to be color B
 	 */
-	public void selectPercA() {
+	private void selectPercA() {
 		//lowest, highest, default value, increment size
 		percASpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		percASpinner.setEditable(true);
@@ -52,7 +52,7 @@ public class SegregationInput extends UserInput{
 	/**
 	 * Select percentage of grid to be color B
 	 */
-	public void selectPercB() {
+	private void selectPercB() {
 		percBSpinner = new Spinner<>(0.05, 1 - percASpinner.getValue(), 0.5, 0.05);
 		percBSpinner.setEditable(true);
 		getGrid().add(new Label("% Color B"), 0, 3);
@@ -62,17 +62,14 @@ public class SegregationInput extends UserInput{
 	/**
 	 * Sets Percent for a cell to be satisfied
 	 */
-	public void selectSatisfyThresh() {
+	private void selectSatisfyThresh() {
 		threshSpinner = new Spinner<>(0.1, 0.95, 0.4, 0.05);
 		threshSpinner.setEditable(true);
 		getGrid().add(new Label("% for Satisfaction"), 0, 4);
 		getGrid().add(threshSpinner, 1, 4);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see base.UserInput#generateNodes()
-	 */
+	@Override
 	public void generateNodes(){
 		selectGridSize();
 		selectPercEmpty();
@@ -84,9 +81,7 @@ public class SegregationInput extends UserInput{
 		getGrid().add(beginSquareButton(segName), 0, 7);
 	}
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#startManualSimulation(base.Simulation.CellType)
-	 */
+	@Override
 	public void startManualSimulation(CellType type) {
 		segregation = new SegregationSimulation(getGridSize(), threshSpinner.getValue(),
 				percASpinner.getValue(), percBSpinner.getValue(), percEmptySpinner.getValue(),type);
@@ -95,9 +90,6 @@ public class SegregationInput extends UserInput{
 		stage.show();
 	}
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#startXMLSimulation()
-	 */
 	@Override
 	public void startXMLSimulation() {
 		segScene = segregation.init(stage, CellType.SQUARE);

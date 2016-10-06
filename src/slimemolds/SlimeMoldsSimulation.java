@@ -142,6 +142,7 @@ public class SlimeMoldsSimulation extends Simulation {
 		moldLine = new XYChart.Series();
 		lineChart.getData().add(moldLine);
 	}
+	
 	/**
 	 * Sets up counter at the top right that lets you keep track of the number of mold cells present
 	 */
@@ -160,7 +161,6 @@ public class SlimeMoldsSimulation extends Simulation {
 		getRootElement().getChildren().add(numMoldText);
 	}
 	
-
 	/**
 	 * Updates graph with new data
 	 */
@@ -176,13 +176,9 @@ public class SlimeMoldsSimulation extends Simulation {
 		stepCount++;
 	}
 
-	/**
-	 * 
-	 */
 	private void updateText() {
 		numMoldText.setText(mold + numberMold);
 	}
-	
 
 	/**
 	 * @param location
@@ -304,7 +300,7 @@ public class SlimeMoldsSimulation extends Simulation {
 	private void diffuseSpores(Location location) {
         int row = location.getRow();
         int col = location.getColumn();
-		if((row<0) || (col<0) || (row > getGridLength()-1) || (col > getGridLength()-1)) {
+		if((row < 0) || (col < 0) || (row > getGridLength()-1) || (col > getGridLength()-1)) {
 			return;
 		}
 		myGrid.getCell(location).diffuse(diffusionAmt);
@@ -325,6 +321,4 @@ public class SlimeMoldsSimulation extends Simulation {
 	private void noLongerModified(Location location) {
 		myGrid.getCell(location).noLongerManuallyModified();
 	}
-
-
 }

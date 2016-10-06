@@ -11,7 +11,7 @@ Date Finished: Technically October 3rd, some additions afterwards<br/>
 Total Hours Spent: ~25 hours each, so ~75 hours total
 
 #### Roles:
-Everyone was full stack engineers, worked on all components of the projects. <br/>
+Everyone was a full stack engineer, worked on all components of the projects. <br/>
 In terms of big picture: <br/>
 1. Delia did most of Segregation and SugarScape, as well as user most of the input materials & configuration extensions
 2. Soravit did most of Predator&Prey, ForestFire, and Foraging Ants, as well grid wrap-around behavior, some input materials/configuration extensions, and initial graphs/visualization materials

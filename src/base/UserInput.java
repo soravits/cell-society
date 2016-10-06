@@ -228,9 +228,5 @@ public abstract class UserInput {
 	 */
 	private void mouseOut(Button b) {
 		b.setStyle(buttonFill);
-	}
-	
+	}	
 }
-
-
-

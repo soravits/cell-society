@@ -2,7 +2,7 @@
 // Delia Li
 
     /**
-     * This class represent a lot of what I learned so far in class. 
+     * This class represents a lot of what I learned so far in class. 
      * 1. Using private variables. Protected variables were something I did a lot of 
      * in my game, but here I only have private variables. This protects the data stored 
      * within this class.

@@ -6,43 +6,44 @@ package base;
  */
 public class Location {
 
-    private int row;
-    private int col;
-    
-    /**
-     * @param row
-     * @param col
-     */
-    public Location (int row, int col) {
-      this.setRow(row);
-      this.setColumn(col);
-    }
+	private int row;
+	private int col;
 
-    /**
-     * @return
-     */
-    public int getRow () {
-        return row;
-    }
+	/**
+	 * @param row
+	 * @param col
+	 */
+	public Location (int row, int col) {
+		this.row = row;
+		this.col = col;
+	}
 
-    /**
-     * @param row
-     */
-    public void setRow (int row) {
-        this.row = row;
-    }
+	/**
+	 * @return Row value for this location
+	 */
+	public int getRow () {
+		return row;
+	}
 
-    /**
-     * @return
-     */
-    public int getColumn () {
-        return col;
-    }
+	/**
+	 * Sets row value for this location
+	 */
+	public void setRow(int row){
+		this.row = row;
+	}
 
-    /**
-     * @param col
-     */
-    public void setColumn (int col) {
-        this.col = col;
-    }
+
+	/**
+	 * Sets row value for this location
+	 */
+	public void setCol(int col){
+		this.col = col;
+	}
+
+	/**
+	 * @return Column value for this location
+	 */
+	public int getColumn () {
+		return col;
+	}
 }

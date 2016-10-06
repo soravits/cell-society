@@ -1,4 +1,3 @@
-
 package controller;
 
 import foragingants.ForagingAntsInput;
@@ -27,26 +26,22 @@ import waterworld.*;
 import segregation.*;
 import slimemolds.SlimeMoldsInput;
 import slimemolds.SlimeMoldsSimulation;
-import foragingants.*;
 import gameoflife.*;
 import xml.*;
-import base.Simulation;
 import base.Simulation.CellType;
-import controller.MainMenu.MenuItem;
 import base.UserInput;
 
 /**
  * @author Brian, Delia, Soravit
- *fix lambdas, action event methods
  */
 public class MainMenu {
-	public static final int MAIN_MENU_WIDTH = 700;
-	public static final int MAIN_MENU_HEIGHT = 600;	
-	public static final int FRAMES_PER_SECOND = 60;
-	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-	public static final String xmlFileRoot = "data/xml/rules.xml";
-	public static final String badxmlFileRoot = "data/xml/brokenRules.xml";
-	public static LinearGradient gradient = new LinearGradient(0d, 1d, 1d, 0d, true, 
+	private static final int MAIN_MENU_WIDTH = 700;
+	private static final int MAIN_MENU_HEIGHT = 600;	
+	private static final int FRAMES_PER_SECOND = 60;
+	private static final int HORIZONTAL_LINE_WIDTH = 300;
+	private static final int OPTION_CONTAINER_LOCATION = 200;
+	private static final String xmlFileRoot = "data/xml/rules.xml";
+	private static final LinearGradient textAndBoxGradient = new LinearGradient(0d, 1d, 1d, 0d, true, 
 			CycleMethod.NO_CYCLE, 
 			new Stop[]{
 			new Stop(0, Color.WHITE),
@@ -58,11 +53,13 @@ public class MainMenu {
 			new Stop(0.9, Color.WHITE),
 			new Stop(1, Color.WHITE)
 	});
+	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
-	public static int DimensionsOfGrid = 10;
-	public static Stage stage, stageNew;
+
+	public Stage stage, stageNew;
 
 	/**
+	 * @author Brian
 	 * @param s
 	 */
 	public MainMenu(Stage s) {
@@ -70,6 +67,7 @@ public class MainMenu {
 	}
 
 	/**
+	 * @author Brian
 	 * Sets scene to the new main menu scene
 	 */
 	public void display() {
@@ -79,11 +77,10 @@ public class MainMenu {
 
 	/**
 	 * @author Brian
-	 *
 	 */
 	public class MenuItem extends StackPane {
-		private Scene scene = null;
 		/**
+		 * @author Brian
 		 * @param Name
 		 */
 		public MenuItem(String Name) {
@@ -99,7 +96,7 @@ public class MainMenu {
 
 			//On Mouse Over	For Option/Mode Hovering
 			setOnMouseEntered(event -> {
-				bg.setFill(gradient);
+				bg.setFill(textAndBoxGradient);
 				optionText.setFill(Color.WHITE);
 			});
 
@@ -115,39 +112,33 @@ public class MainMenu {
 			});
 
 			setOnMouseReleased(event -> {
-				bg.setFill(gradient);
-				Simulation mySim = null;
+				bg.setFill(textAndBoxGradient);
 				XMLParser parser = new XMLParser();
-				UserInput input;
-				if(Name == null) {
-					System.out.println("null");
-				}
-				String stageTitle = "";
 
+				UserInput input;
+				String stageTitle = "";
+				stageNew = new Stage();
+				
+				
 				switch(Name) {
 				case "FOREST BURNING":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					FireXMLFactory factory = new FireXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					SpreadingOfFireSimulation myFire = new SpreadingOfFireSimulation(
-							factory.getGridSize(), factory.getProbCatch(),CellType.SQUARE); 
+							factory.getGridSize(), factory.getProbCatch(), CellType.SQUARE); 
 					input = new SpreadingOfFireInput(stageNew, factory, myFire);
 					break;
 				case "GAME OF LIFE":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					GameOfLifeXMLFactory GoLFactory = new GameOfLifeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					GameOfLifeSimulation myGoL = new GameOfLifeSimulation(
-							GoLFactory.getGridSize(),GoLFactory.getPercentageAlive(),CellType.SQUARE); 
+							GoLFactory.getGridSize(), GoLFactory.getPercentageAlive(), CellType.SQUARE); 
 					input = new GameOfLifeInput(stageNew, GoLFactory, myGoL);
 					break;
 				case "SEGREGATION":
-					stageTitle = Name;
-					stageNew = new Stage();
+					stageNew.setTitle(Name);
 					stageNew.setTitle(stageTitle);
 					SegregationXMLFactory segfactory = new SegregationXMLFactory(
 							parser.getRootElement(xmlFileRoot));
@@ -158,12 +149,11 @@ public class MainMenu {
 					input = new SegregationInput(stageNew, segfactory, mySeg);
 					break;
 				case "SUGARSCAPE":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					SugarScapeXMLFactory sugarfactory = new SugarScapeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
-					SugarScapeSimulation mySugar = new SugarScapeSimulation(sugarfactory.getSugarGridSize(), 
+					SugarScapeSimulation mySugar = new SugarScapeSimulation(
+							sugarfactory.getSugarGridSize(), 
 							sugarfactory.getMaxSugarPerPatch(), sugarfactory.getTotalAgents(),
 							sugarfactory.getGrowBackRate(), sugarfactory.getAgentMaxCarbs(), 
 							sugarfactory.getAgentMinCarbs(), sugarfactory.getAgentMetabRate(), 
@@ -172,26 +162,23 @@ public class MainMenu {
 					break;
 
 				case "PREDATOR PREY":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					WaTorWorldXMLFactory WWXMLFactory = new WaTorWorldXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					WaTorWorldSimulation myWater = new WaTorWorldSimulation(
 							WWXMLFactory.getGridSize(), WWXMLFactory.getFracFish(), 
 							WWXMLFactory.getFracShark(), WWXMLFactory.getFishBreedTime(), 
-							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),CellType.SQUARE);
+							WWXMLFactory.getSharkBreedTime(), WWXMLFactory.getStarveTime(),
+							CellType.SQUARE);
 					input = new WaTorWorldInput(stageNew, WWXMLFactory, myWater);
 					break;
-					
+
 				case "FORAGING ANTS":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					ForagingAntsXMLFactory FAXMLFactory = new ForagingAntsXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					ForagingAntsSimulation myForagingAntsSimulation = new ForagingAntsSimulation(
-							FAXMLFactory.getGridSize(), CellType.SQUARE,FAXMLFactory.getDuration(),
+							FAXMLFactory.getGridSize(), CellType.SQUARE, FAXMLFactory.getDuration(),
 							FAXMLFactory.getNestLocationRow(), FAXMLFactory.getNestLocationColumn(),
 							FAXMLFactory.getFoodSourceLocationRow(), FAXMLFactory.getFoodSourceLocationColumn(),
 							FAXMLFactory.getMaxAntsPerSim(), FAXMLFactory.getMaxAntsPerLocation(),
@@ -202,14 +189,13 @@ public class MainMenu {
 					input = new ForagingAntsInput(stageNew, FAXMLFactory, myForagingAntsSimulation);
 					break;
 				case "SLIME MOLD":
-					stageTitle = Name;
-					stageNew = new Stage();
-					stageNew.setTitle(stageTitle);
+					stageNew.setTitle(Name);
 					SlimeXMLFactory slimeFactory = new SlimeXMLFactory(
 							parser.getRootElement(xmlFileRoot));
 					SlimeMoldsSimulation sim = new SlimeMoldsSimulation(slimeFactory.getGridSize(), 
 							slimeFactory.getDiffusionAmt(), slimeFactory.getStepAmt(), 
-							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),slimeFactory.getProbMold(),CellType.SQUARE);
+							slimeFactory.getThreshold(), slimeFactory.getDissipateAmt(),
+							slimeFactory.getProbMold(), CellType.SQUARE);
 
 					input = new SlimeMoldsInput(stageNew, slimeFactory, sim);
 					break;
@@ -219,55 +205,6 @@ public class MainMenu {
 		}//Closes MenuItem Object
 	}//Closes MenuItem Declaration
 
-	/**
-	 * Sets up background, big text, as well as all of the option boxes and 
-	 * Instructions window
-	 */
-	public Parent setUpWindow() {
-		Pane gameWindow = new Pane();
-		gameWindow.setPrefSize(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
-		Image background = new Image(getClass().getClassLoader()
-				.getResourceAsStream("BackgroundCellSoc.jpg")); 
-		ImageView backgroundImageMainScreen = new ImageView(background);
-		backgroundImageMainScreen.setFitWidth(MAIN_MENU_WIDTH + 50);
-		backgroundImageMainScreen.setFitHeight(MAIN_MENU_HEIGHT);
-		gameWindow.getChildren().add(backgroundImageMainScreen); 
-
-		BigGameNameText titleText = new BigGameNameText("CELL SOCIETY");
-		titleText.setTranslateX(125);
-		titleText.setTranslateY(120);
-		gameWindow.getChildren().add(titleText);
-
-		OptionContainer optionList = new OptionContainer(
-				new MenuItem("FOREST BURNING"),
-				new MenuItem("PREDATOR PREY"),
-				new MenuItem("SEGREGATION"),
-				new MenuItem("GAME OF LIFE"),
-				new MenuItem("FORAGING ANTS"),
-				new MenuItem("SUGARSCAPE"),
-				new MenuItem("SLIME MOLD"));
-		optionList.setTranslateX(200);
-		optionList.setTranslateY(200);
-		gameWindow.getChildren().add(optionList);
-
-		return gameWindow;
-	}
-
-	/**
-	 * @author Brian
-	 *
-	 */
-	private static class BigGameNameText extends StackPane {
-		/**
-		 * @param Name
-		 */
-		public BigGameNameText(String Name) {
-			Text titleText = new Text(Name);
-			titleText.setFont(Font.font("Rockwell", FontWeight.BOLD, 60));
-			titleText.setFill(gradient);
-			getChildren().add(titleText);
-		}
-	}
 
 	/**
 	 * @author Brian
@@ -289,11 +226,61 @@ public class MainMenu {
 		 * @return
 		 */
 		private Line createline() {
-			Line sep = new Line();
-			sep.setEndX(300);
-			sep.setStroke(Color.DARKGREY);
-			return sep;
+			Line horizontalLine = new Line();
+			horizontalLine.setEndX(HORIZONTAL_LINE_WIDTH);
+			horizontalLine.setStroke(Color.BLACK);
+			return horizontalLine;
 		}
 	}
+	
+	/**
+	 * @author Brian
+	 * Sets up background, big text, as well as all of the option boxes and 
+	 * Instructions window
+	 */
+	public Parent setUpWindow() {
+		Pane gameWindow = new Pane();
+		gameWindow.setPrefSize(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
+		Image background = new Image(getClass().getClassLoader()
+				.getResourceAsStream("BackgroundCellSoc.jpg")); 
+		ImageView backgroundImageMainScreen = new ImageView(background);
+		backgroundImageMainScreen.setFitWidth(MAIN_MENU_WIDTH + 50);
+		backgroundImageMainScreen.setFitHeight(MAIN_MENU_HEIGHT);
+		gameWindow.getChildren().add(backgroundImageMainScreen); 
 
+		BigNameText titleText = new BigNameText("CELL SOCIETY");
+		titleText.setTranslateX(125);
+		titleText.setTranslateY(120);
+		gameWindow.getChildren().add(titleText);
+
+		OptionContainer optionList = new OptionContainer(
+				new MenuItem("FOREST BURNING"),
+				new MenuItem("PREDATOR PREY"),
+				new MenuItem("SEGREGATION"),
+				new MenuItem("GAME OF LIFE"),
+				new MenuItem("FORAGING ANTS"),
+				new MenuItem("SUGARSCAPE"),
+				new MenuItem("SLIME MOLD"));
+		optionList.setTranslateX(OPTION_CONTAINER_LOCATION);
+		optionList.setTranslateY(OPTION_CONTAINER_LOCATION);
+		gameWindow.getChildren().add(optionList);
+
+		return gameWindow;
+	}
+
+	/**
+	 * @author Brian
+	 *
+	 */
+	private static class BigNameText extends StackPane {
+		/**
+		 * @param Name
+		 */
+		public BigNameText(String Name) {
+			Text titleText = new Text(Name);
+			titleText.setFont(Font.font("Rockwell", FontWeight.BOLD, 60));
+			titleText.setFill(textAndBoxGradient);
+			getChildren().add(titleText);
+		}
+	}
 }

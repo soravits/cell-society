@@ -10,13 +10,22 @@ import javafx.stage.Stage;
 import base.UserInput;
 import base.Simulation.CellType;
 
-public class WaTorWorldInput extends UserInput{
+/**
+ * @author Delia
+ *
+ */
+public class WaTorWorldInput extends UserInput {
 	private Scene waterScene;
 	private String waterName = "Predator-Prey";
 	private WaTorWorldSimulation waterSim;
 	private Spinner<Double> fracFishSpinner, fracSharkSpinner;
 	private Spinner<Integer> fishBreedSpinner, sharkBreedSpinner, starveSpinner;
-	
+
+	/**
+	 * @param s
+	 * @param factory
+	 * @param mySim
+	 */
 	public WaTorWorldInput(Stage s, WaTorWorldXMLFactory factory, WaTorWorldSimulation mySim) {
 		super(s);
 		this.waterSim = mySim;
@@ -25,72 +34,68 @@ public class WaTorWorldInput extends UserInput{
 	/**
 	 * 
 	 */
-	public void selectFracFish(){
+	public void selectFracFish() {
 		fracFishSpinner = new Spinner<>(0.05, 0.95, 0.5, 0.05);
 		fracFishSpinner.setEditable(true);
 		getGrid().add(new Label("% Fish Population"), 0, 1);
 		getGrid().add(fracFishSpinner, 1, 1);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void selectFracShark(){
+	public void selectFracShark() {
 		fracSharkSpinner = new Spinner<>(0.05, 0.95, 0.25, 0.05);
 		fracSharkSpinner.setEditable(true);
 		getGrid().add(new Label("% Shark Population"), 0, 2);
 		getGrid().add(fracSharkSpinner, 1, 2);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void selectFishBreedTime(){
+	public void selectFishBreedTime() {
 		fishBreedSpinner = new Spinner<>(1, 20, 3, 1);
 		fishBreedSpinner.setEditable(true);
 		getGrid().add(new Label("Fish Breed Time"), 0, 3);
 		getGrid().add(fishBreedSpinner, 1, 3);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void selectSharkBreedTime(){
+	public void selectSharkBreedTime() {
 		sharkBreedSpinner = new Spinner<>(1, 20, 15, 1);
 		sharkBreedSpinner.setEditable(true);
 		getGrid().add(new Label("Shark Breed Time"), 0, 4);
 		getGrid().add(sharkBreedSpinner, 1, 4);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void selectStarveTime(){
+	public void selectStarveTime() {
 		starveSpinner = new Spinner<>(1, 20, 3, 1);
 		starveSpinner.setEditable(true);
 		getGrid().add(new Label("Starvation Time"), 0, 5);
 		getGrid().add(starveSpinner, 1, 5);
-		
+
 	}	
-	
+
 	@Override
 	public void startXMLSimulation() {
 		waterScene = waterSim.init(stage,CellType.SQUARE);
 		stage.setScene(waterScene);
 		stage.show();
-		
+
 	}
 
 	@Override
 	public void startManualSimulation(CellType type) {
-//		int inputValue = gridSizeSpinner.getValue();
-//		if((gridSizeSpinner.getValue() > 45)){
-//			inputValue = 45;
-//		}
 		waterSim = new WaTorWorldSimulation(getGridSize(), 
 				fracFishSpinner.getValue(),	fracSharkSpinner.getValue(), 
 				fishBreedSpinner.getValue(), sharkBreedSpinner.getValue(), 
@@ -98,7 +103,6 @@ public class WaTorWorldInput extends UserInput{
 		waterScene = waterSim.init(stage, type);
 		stage.setScene(waterScene);
 		stage.show();
-		
 	}
 
 	@Override
@@ -113,6 +117,6 @@ public class WaTorWorldInput extends UserInput{
 		getGrid().add(beginHexButton(waterName), 0, 6);
 		getGrid().add(beginTriangleButton(waterName), 0, 7);
 		getGrid().add(beginSquareButton(waterName), 0, 8);
-		
+
 	}
 }

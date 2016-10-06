@@ -3,8 +3,8 @@ package slimemolds;
 import java.util.Random;
 
 import base.Grid;
+import base.Location;
 import base.Simulation;
-import base.Simulation.CellType;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -15,276 +15,316 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slimemolds.SlimeMoldsCell.MoldStatus;
-import spreadingoffire.SpreadingOfFireGrid;
-import spreadingoffire.SpreadingOfFireCell.States;
 
-public class SlimeMoldsSimulation extends Simulation{
+public class SlimeMoldsSimulation extends Simulation {
+
 	private static final String mold = "Mold: ";
-    private static final Text numMoldText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, mold);
-    
-	
-	private Random random = new Random();
-	
+	private static final Text numMoldText = new Text(textPositionHorizontal,textPositionVertical + MARGIN_BOX_TOP, mold);
+	private static final Random random = new Random();
+
 	//UI Stuff
-    private int numberMold; 
-    private XYChart.Series moldLine;
-    private int stepCount = 0;
-    
+	private int numberMold; 
+	private XYChart.Series moldLine;
+	private int stepCount = 0;
+
+	private SlimeMoldsGrid myGrid;
+	private CellType type;
+
+	private double diffusionAmt;
+	private double stepAmt;
+	private double threshold;
+	private double probMold;
+	private double dissipateAmt;
+
+	/**
+	 * @param gridLength
+	 */
+	public SlimeMoldsSimulation(int gridLength, double diffusionAmt, double stepAmt, double threshold, 
+			double dissipateAmt, double probMold, CellType type) {
+		super(gridLength,type);
+		this.type = type;
+		this.diffusionAmt = diffusionAmt;
+		this.stepAmt = stepAmt;
+		this.threshold = threshold;
+		this.dissipateAmt = dissipateAmt;
+		this.probMold = probMold;
+	}
+
+	/**
+	 * Initialize Slime Molds
+	 */
+	public Scene init (Stage s,CellType type) {
+		super.init(s, type);
+		return getMyScene();
+	}
+
+	/**
+	 * Initialize grid for Slime Molds
+	 */
+	public Grid instantiateGrid(){
+		this.myGrid = new SlimeMoldsGrid(getGridLength(), getCellSize(), getRootElement(),
+				getLeftMargin(), getTopMargin(), this);
+		return myGrid;
+	}
 
 
-    private SlimeMoldsGrid myGrid;
-    private CellType type;
-    
-    private double diffusionAmt;
-    private double stepAmt;
-    private double threshold;
-    private double probMold;
-    private double dissipateAmt;
-
-    /**
-     * @param gridLength
-     * @param probCatch
-     */
-    public SlimeMoldsSimulation(int gridLength,double diffusionAmt, double stepAmt, double threshold, double dissipateAmt, double probMold, CellType type) {
-        super(gridLength,type);
-        this.type = type;
-        this.diffusionAmt = diffusionAmt;
-        this.stepAmt = stepAmt;
-        this.threshold = threshold;
-        this.dissipateAmt = dissipateAmt;
-        this.probMold = probMold;
-    }
-    @Override
-    public Scene init (Stage s,CellType type) {
-        setStage(s);
-        makeNewRootElement();
-        int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
+	/**
+	 * Update states of all of the cells after a manual modification onclick of a cell
+	 */
+	public void checkUpdatedStatesAfterManualMod() {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+                Location location = new Location(i, j);
+				if(manuallyModified(location)){
+					MoldStatus cellState = myGrid.getCell(new Location(i, j)).getState();
+					noLongerModified(location);
+					if(cellState == MoldStatus.MOLD) {
+						numberMold++;
+					}
+				}
+			}
 		}
-		
-        setMyScene(new Scene(getRootElement(), screenWidth, 
-        		SIMULATION_WINDOW_HEIGHT, Color.WHITE)); 
-        setTopMargin(getTopMargin() + marginBoxTop * 4);
-        this.myGrid = new SlimeMoldsGrid(getGridLength(), getCellSize(), getRootElement(), 
-        		getLeftMargin(), getTopMargin(), this);
-        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid(type);
-        myGrid.setUpButtons();
-        myGrid.setSimulationProfile(this);
-        setInitialEnvironment();
-        return getMyScene();
-    }
+	}
 
-    
-    public void checkUpdatedStatesAfterManualMod() {
-        for(int i = 0; i < getGridLength(); i++) {
-            for(int j = 0; j < getGridLength(); j++) {
-            	if(manuallyModified(i,j)){
-            		MoldStatus cellState = myGrid.getCell(i, j).getState();
-            		noLongerModified(i,j);
-            		if(cellState == MoldStatus.MOLD) {
-                    	numberMold++;
-                    }
-            	}
-            }
-        }
-    }
-    
-    private boolean manuallyModified(int row,int col) {
-    	return (myGrid.getCell(row, col).isManuallyModified());
-    }
-    
-    private void noLongerModified(int row, int col) {
-    	myGrid.getCell(row, col).noLongerManuallyModified();
-    }
+	/* (non-Javadoc)
+	 * @see base.Simulation#setInitialEnvironment()
+	 * Set up initial state of the simulation, first step
+	 */
+	public void setInitialEnvironment() {
+		numberMold = 0;
 
-    
-    /* (non-Javadoc)
-     * @see base.Simulation#setInitialEnvironment()
-     */
-    public void setInitialEnvironment() {
-    	numberMold = 0;
-    	
-    	createGraph();
-        for(int i = 0; i < getGridLength(); i++) {
-            for(int j = 0; j < getGridLength(); j++) {
-            	int randomNum = random.nextInt(100);
-            	if(randomNum <= (probMold*100)){
-            		myGrid.getCell(i, j).moldify();
-            		numberMold++;
-            	}
-            	myGrid.updateCell(i, j, myGrid.getCell(i, j).getState(), threshold);
-            }
-        }
-        updateGraph();
+		createGraph();
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+                Location cellLocation = new Location(i, j);
+				int randomNum = random.nextInt(100);
+				if(randomNum <= (probMold*100)) {
+					myGrid.getCell(cellLocation).moldify();
+					numberMold++;
+				}
+				myGrid.updateCell(cellLocation, myGrid.getCell(cellLocation).getState(), threshold);
+			}
+		}
+		updateGraph();
+	}
 
-    }
-    /**
-     * 
-     */
-    public void updateState() {
-        for(int i = 0; i < getGridLength(); i++) {
-            for(int j = 0; j < getGridLength(); j++) {
-            	myGrid.getCell(i, j).dissipate(dissipateAmt);
-            	
-            	if(myGrid.getCell(i, j).getState() == MoldStatus.MOLD){
-            		boolean nearbyCellPolluted = moveMoldCellToPollution(i,j);
-            		if(!nearbyCellPolluted){
-	            		int direction = random.nextInt(4);
-	            		moveMoldCellRandomly(i,j,direction);
-            		}
-            		polluteCell(i,j);	
-            	}
-            }
-        }
-        for(int i = 0; i < getGridLength(); i++) {
-            for(int j = 0; j < getGridLength(); j++) {
-            	SlimeMoldsCell cell = myGrid.getCell(i, j);
-            	myGrid.updateCell(i,j,cell.getState(),threshold);	
-            }
-        }
-    }
-    
-    private boolean moveMoldCellToPollution(int row, int col){
-    	SlimeMoldsCell oldCell = myGrid.getCell(row, col);
-    	SlimeMoldsCell newCell;
-    	//Can't do && Here, we get Array Index Out of Bounds
-    	if((col-1>0)){
-    		newCell = myGrid.getCell(row, col-1);
-    		if(newCell.isAttracting(threshold) && (newCell.getState() != MoldStatus.MOLD)){
-	    		moveMoldCellTo(row,col-1,oldCell);	
-	    		return true;
-    		}
-    	}
-    	else if((row-1>0)){
-    		newCell = myGrid.getCell(row-1, col);
-    		if(newCell.isAttracting(threshold) && (newCell.getState() != MoldStatus.MOLD)){
-	    		moveMoldCellTo(row-1,col,oldCell);	
-	    		return true;
-    		}
-    	}
-    	else if((col+1 > getGridLength()-1)){
-    		newCell = myGrid.getCell(row, col+1);
-    		if(newCell.isAttracting(threshold) && (newCell.getState() != MoldStatus.MOLD)){
-	    		moveMoldCellTo(row,col+1,oldCell);	
-	    		return true;
-    		}
-    	}
-    	else if((row+1 > getGridLength()-1)){
-    		newCell = myGrid.getCell(row+1, col);
-    		if(newCell.isAttracting(threshold) && (newCell.getState() != MoldStatus.MOLD)){
-	    		moveMoldCellTo(row+1,col,oldCell);	
-	    		return true;
-    		}
-    	}
-    	
-    	return false;
-    }
-    
-    private void moveMoldCellTo(int row, int col, SlimeMoldsCell oldCell){
-    	oldCell.killMold();
-    	myGrid.getCell(row, col).moldify();	
-    	polluteCell(row,col);
-    }
-    
-    private void moveMoldCellRandomly(int row, int col, int direction){
-    	SlimeMoldsCell cell = myGrid.getCell(row, col);   	
-    	 switch (direction) {
-	         case 0:  col -= 1;break;
-	         case 1:  col += 1;break;
-	         case 2:  row -= 1;break;
-	         case 3:  row += 1;break; 
-    	 }  	 
-    	
-    	if((row<0) || (col<0) || (row > getGridLength()-1) || (col > getGridLength()-1) || (myGrid.getCell(row,col).getState() == MoldStatus.MOLD)){
-    		return;
-    	}
-    	
-    	moveMoldCellTo(row,col,cell);
-    }
-    
-    private void polluteCell(int row, int col){
-    	SlimeMoldsCell cell = myGrid.getCell(row, col);  
-    	cell.pollute(stepAmt);
-    	diffuseSpores(row+1,col);
-    	diffuseSpores(row-1,col);
-    	diffuseSpores(row,col+1);
-    	diffuseSpores(row,col-1);
-    }
-    
-    private void diffuseSpores(int row, int col){
-    	if((row<0) || (col<0) || (row > getGridLength()-1) || (col > getGridLength()-1)){
-    		return;
-    	}
-    	myGrid.getCell(row, col).diffuse(diffusionAmt);
-    }
-    
-    /**
-     * 
-     */
-    public void createGraph() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setMinorTickVisible(false);
-        
-        //creating the chart
-        final LineChart <Number, Number> lineChart = 
-        		new LineChart <Number, Number> (xAxis, yAxis);
-        moldLine = new XYChart.Series();
+	/**
+	 * Updates state depending on what happened in previous state, and will move mold cells accordingly
+	 */
+	public void updateState() {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+                Location location = new Location(i, j);
+				myGrid.getCell(location).dissipate(dissipateAmt);
 
+				if(myGrid.getCell(location).getState() == MoldStatus.MOLD) {
+					boolean nearbyCellPolluted = moveMoldCellToPollution(location);
+					if(!nearbyCellPolluted) {
+						int direction = random.nextInt(4);
+						moveMoldCellRandomly(location, direction);
+					}
+					polluteCell(location);
+				}
+			}
+		}
 
-        lineChart.getData().add(moldLine);
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+                Location location = new Location(i, j);
+				SlimeMoldsCell cell = myGrid.getCell(location);
+				myGrid.updateCell(location, cell.getState(), threshold);
+			}
+		}
+	}
 
-        
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
-        
-        
-        Rectangle cellCounter = new Rectangle(
-        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
-        		(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
-        		dimensionsOfCellCounterBox);
-        cellCounter.setFill(Color.WHITE);
-        cellCounter.setStyle(
-			    "-fx-background-radius: 8,7,6;" + 
-			    "-fx-background-insets: 0,1,2;" +
-			    "-fx-text-fill: black;" +
-			    "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-		);
-        getRootElement().getChildren().add(cellCounter);
-        numMoldText.setFill(Color.RED);
+	@Override
+	public void createSeries(LineChart lineChart) {
+		moldLine = new XYChart.Series();
+		lineChart.getData().add(moldLine);
+	}
+	/**
+	 * Sets up counter at the top right that lets you keep track of the number of mold cells present
+	 */
+	@Override
+	public void createCellCounter() {
+		Rectangle cellCounter = new Rectangle(
+				SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
+				(DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
+				DIMENSIONS_OF_CELL_COUNTER);
+		cellCounter.setFill(Color.WHITE);
+		cellCounter.setStyle(getCellCounterStyle());
+		getRootElement().getChildren().add(cellCounter);
+		numMoldText.setFill(Color.RED);
 
-        updateText();
-        getRootElement().getChildren().add(numMoldText);
-        
-        
-    }
-    
-    private void updateText() {
-    	numMoldText.setText(mold + numberMold);
-    }
-    /**
-     * 
-     */
-    public void updateGraph() {
-    	moldLine.getData().add(new XYChart.Data(stepCount, numberMold));
-    	updateText();
-    }
-    @Override
-    public void step () {
-        updateState();
-        updateGraph();
-        stepCount++;
-    }
+		updateText();
+		getRootElement().getChildren().add(numMoldText);
+	}
+	
+
+	/**
+	 * Updates graph with new data
+	 */
+	public void updateGraph() {
+		moldLine.getData().add(new XYChart.Data(stepCount, numberMold));
+		updateText();
+	}
+	
+	@Override
+	public void step () {
+		updateState();
+		updateGraph();
+		stepCount++;
+	}
+
+	/**
+	 * 
+	 */
+	private void updateText() {
+		numMoldText.setText(mold + numberMold);
+	}
+	
+
+	/**
+	 * @param location
+	 * @return Whether or not mold cell moved towards threshold pollution spot
+	 * Move cell to area with hig amount of spores to aggregate
+	 * 
+	 */
+	private boolean moveMoldCellToPollution(Location location) {
+		SlimeMoldsCell oldCell = myGrid.getCell(location);
+		SlimeMoldsCell newCell;
+		//Can't do && Here, we get Array Index Out of Bounds
+		if((location.getColumn() - 1 > 0)) {
+			newCell = myGrid.getCell(myGrid.getWesternNeighbor(location));
+			if(newCell.isAttracting(threshold) 
+					&& (newCell.getState() != MoldStatus.MOLD)) {
+				moveMoldCellTo(myGrid.getWesternNeighbor(location), oldCell);
+				return true;
+			}
+		}
+		else if((location.getRow() - 1 > 0)) {
+			newCell = myGrid.getCell(myGrid.getNorthernNeighbor(location));
+			if(newCell.isAttracting(threshold) 
+					&& (newCell.getState() != MoldStatus.MOLD)) {
+				moveMoldCellTo(myGrid.getNorthernNeighbor(location), oldCell);
+				return true;
+			}
+		}
+		else if((location.getColumn() + 1 > getGridLength() - 1)) {
+			newCell = myGrid.getCell(myGrid.getEasternNeighbor(location));
+			if(newCell.isAttracting(threshold) 
+					&& (newCell.getState() != MoldStatus.MOLD)) {
+				moveMoldCellTo(myGrid.getEasternNeighbor(location), oldCell);
+				return true;
+			}
+		}
+		else if((location.getRow() + 1 > getGridLength() - 1)) {
+			newCell = myGrid.getCell(myGrid.getSouthernNeighbor(location));
+			if(newCell.isAttracting(threshold) 
+					&& (newCell.getState() != MoldStatus.MOLD)) {
+				moveMoldCellTo(myGrid.getSouthernNeighbor(location), oldCell);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param location
+	 * @param oldCell
+	 * Move mold cell to specific location
+	 */
+	private void moveMoldCellTo(Location location, SlimeMoldsCell oldCell) {
+		oldCell.killMold();
+		myGrid.getCell(location).moldify();
+		polluteCell(location);
+	}
+
+	/**
+	 * @param location
+	 * @param direction
+	 * Moves mold cell to random location adjacent to it
+	 */
+	private void moveMoldCellRandomly(Location location, int direction) {
+		SlimeMoldsCell cell = myGrid.getCell(location);
+        int row = location.getRow();
+        int col = location.getColumn();
+		switch (direction) {
+		case 0:  col -= 1;
+		break;
+		case 1:  col += 1;
+		break;
+		case 2:  row -= 1;
+		break;
+		case 3:  row += 1;
+		break; 
+		}  	 
+
+		if((row < 0) || (col < 0) || (row > getGridLength() - 1) || (col > getGridLength() - 1)) {
+			return;
+		}
+		location.setRow(row);
+		location.setCol(col);
+		//Can't use OR here to combine if statements, otherwise we open up ArrayIndexOB Exceptions
+		if (myGrid.getCell(location).getState() == MoldStatus.MOLD){
+			return;
+		}
+
+		moveMoldCellTo(location, cell);
+	}
+
+	/**
+	 * @param location
+	 * Increases spores on that cell and diffuses spores outwards from the cell
+	 */
+	private void polluteCell(Location location) {
+        int row = location.getRow();
+        int col = location.getColumn();
+		SlimeMoldsCell cell = myGrid.getCell(location);
+		cell.pollute(stepAmt);
+		if(myGrid.getSouthernNeighbor(location) != null) {
+			diffuseSpores(myGrid.getSouthernNeighbor(location));
+		}
+		if(myGrid.getNorthernNeighbor(location) != null) {
+			diffuseSpores(myGrid.getNorthernNeighbor(location));
+		}
+		if(myGrid.getEasternNeighbor(location) != null) {
+			diffuseSpores(myGrid.getEasternNeighbor(location));
+		}
+		if(myGrid.getWesternNeighbor(location) != null) {
+			diffuseSpores(myGrid.getWesternNeighbor(location));
+		}
+	}
+
+	/**
+	 * @param location
+	 * Diffuses spores from the current location, adding spores to adjacent areas
+	 */
+	private void diffuseSpores(Location location) {
+        int row = location.getRow();
+        int col = location.getColumn();
+		if((row<0) || (col<0) || (row > getGridLength()-1) || (col > getGridLength()-1)) {
+			return;
+		}
+		myGrid.getCell(location).diffuse(diffusionAmt);
+	}
+	
+	/**
+	 * @param location
+	 * @return Whether or not cell has been manually modified
+	 */
+	private boolean manuallyModified(Location location) {
+		return (myGrid.getCell(location).isManuallyModifiedByUser());
+	}
+
+	/**
+	 * @param location
+	 * Set cell as no longer manually modified
+	 */
+	private void noLongerModified(Location location) {
+		myGrid.getCell(location).noLongerManuallyModified();
+	}
+
 
 }

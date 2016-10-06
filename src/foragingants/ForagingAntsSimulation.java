@@ -4,7 +4,11 @@ import base.Grid;
 import base.Location;
 import base.Simulation;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -12,15 +16,13 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
-public class ForagingAntsSimulation extends Simulation{
-
+public class ForagingAntsSimulation extends Simulation {
+    //get rid of unused vars
     private int simDuration;
-    private int nestLocationRow;
-    private int nestLocationColumn;
-    private int foodSourceLocationRow;
-    private int foodSourceLocationColumn;
+    private Location nestLocation;
+    private Location foodSourceLocation;
     private int maxAntsPerSim;
     private int maxAntsPerLocation;
     private int antLifetime;
@@ -33,23 +35,45 @@ public class ForagingAntsSimulation extends Simulation{
     private double K;
     private double N;
 
+    private int antPopulation = 0;
+    private int totalSteps = 0;
+    private static final String pop = "Ant population: ";
+    private XYChart.Series populationLine;
+    private static final Text numAntsText = new Text(
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, pop);
+
     private ForagingAntsGrid myGrid;
     private ArrayList<ForagingAnt> ants = new ArrayList<ForagingAnt>();
 
     /**
-     * @param gridLength
-     * @param type
+     * @param gridLength The length of a side of the grid
+     * @param type The shape of a cell
+     * @param simDuration The duration of the simulation in steps
+     * @param nestLocationRow The row that the nest is in
+     * @param nestLocationColumn The column that the nest is in
+     * @param foodSourceLocationRow The row that the food source is in
+     * @param foodSourceLocationColumn The column that the food source is in
+     * @param maxAntsPerSim The max number of ants in the simulation
+     * @param maxAntsPerLocation The max number of ants per location
+     * @param antLifetime The lifetime of an ant in steps
+     * @param numInitialAnts The number of initial ants
+     * @param antsBornPerStep The number of ants born per step
+     * @param minPheromone The minimum amount of pheromone per cell
+     * @param maxPheromone The max amount of pheromone per cell
+     * @param evapRatio The rate at which pheromone evaporates
+     * @param diffusionRatio The rate at which pheromone diffuses
      */
-    public ForagingAntsSimulation(int gridLength, CellType type, int simDuration, int nestLocationRow, int nestLocationColumn,
-                                int foodSourceLocationRow, int foodSourceLocationColumn, int maxAntsPerSim,
+    public ForagingAntsSimulation(int gridLength, CellType type, int simDuration,
+                                  int nestLocationRow, int nestLocationColumn,
+                                  int foodSourceLocationRow, int foodSourceLocationColumn, int maxAntsPerSim,
                                   int maxAntsPerLocation, int antLifetime, int numInitialAnts, int antsBornPerStep,
                                   double minPheromone, double maxPheromone, double evapRatio, double diffusionRatio) {
+
         super(gridLength, type);
         this.simDuration = simDuration;
-        this.nestLocationRow = nestLocationRow;
-        this.nestLocationColumn = nestLocationColumn;
-        this.foodSourceLocationRow = foodSourceLocationRow;
-        this.foodSourceLocationColumn = foodSourceLocationColumn;
+        this.nestLocation = new Location(nestLocationRow, nestLocationColumn);
+        this.foodSourceLocation = new Location(foodSourceLocationRow, foodSourceLocationColumn);
         this.maxAntsPerSim = maxAntsPerSim;
         this.maxAntsPerLocation = maxAntsPerLocation;
         this.antLifetime = antLifetime;
@@ -61,78 +85,107 @@ public class ForagingAntsSimulation extends Simulation{
         this.diffusionRatio = diffusionRatio;
     }
 
+    /**
+     *
+     * @param s The stage to be set
+     * @param type The shape of the cell
+     * @return The current scene
+     */
     @Override
     public Scene init(Stage s, CellType type) {
-        setStage(s);
-        makeNewRootElement();
-
-        int screenWidth = SIMULATION_WINDOW_WIDTH;
-        if(type == CellType.HEX){
-            screenWidth *= 1.75;
-        }
-
-        setMyScene(new Scene(getRootElement(), screenWidth,
-                SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-        setTopMargin(getTopMargin() + marginBoxTop * 4);
-        this.myGrid = new ForagingAntsGrid(getGridLength(), getCellSize(), getRootElement(),
-                getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this, new Location(nestLocationRow, nestLocationColumn),
-                new Location(foodSourceLocationRow, foodSourceLocationColumn));
-        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid(type);
-        myGrid.setUpButtons();
-        myGrid.setSimulationProfile(this);
-        setInitialEnvironment();
+        super.init(s, type);
         return getMyScene();
     }
 
+    /**
+     * @return An instantiated grid of type ForagingAntsGrid
+     */
+    @Override
+    public Grid instantiateGrid(){
+        this.myGrid = new ForagingAntsGrid(getGridLength(), getCellSize(), getRootElement(),
+                getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this,
+                nestLocation, foodSourceLocation);
+        return myGrid;
+    }
+
+    /**
+     * Spawns initial ants and updates every cell
+     */
     @Override
     public void setInitialEnvironment() {
+    	createGraph();
         birthAnts(numInitialAnts);
         for(int i = 0; i < getGridLength(); i++){
-            for(int j = 0; j < getGridLength(); j++){;
-                myGrid.updateCell(i, j);
+            for(int j = 0; j < getGridLength(); j++){
+                Location location = new Location(i, j);
+                myGrid.updateCell(location);
+                updatePheromones(location);
             }
         }
     }
 
+    private void updateAnts(){
+    	antPopulation = ants.size();
+        for(int i = 0; i < ants.size(); i++){
+            ForagingAnt ant = ants.get(i);
+            if(ant.getLife() == 0){
+                ants.remove(i);
+                myGrid.getCell(ant.getLocation()).decrementAntCount();
+            }else{
+                forage(ant);
+                ant.decrementLife();
+            }
+        }
+    }
+
+    private void updateCells(){
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
+                Location cellLocation = new Location(i, j);
+                myGrid.updateCell(cellLocation);
+            }
+        }
+    }
+
+    /**
+     * Updates every ant and cell in the grid
+     */
     @Override
     public void step() {
-        if(ants.size() <= maxAntsPerSim - 2) {
-            birthAnts(2);
+    	totalSteps++;
+        if(ants.size() <= maxAntsPerSim - antsBornPerStep) {
+            birthAnts(antsBornPerStep);
         }
-        for(int i = 0; i < ants.size(); i++){
-            forage(ants.get(i));
-        }
-        for(int i = 0; i < getGridLength(); i++){
-            for(int j = 0; j < getGridLength(); j++){;
-                myGrid.updateCell(i, j);
-            }
-        }
+        updateAnts();
+        updateCells();
+        updateGraph();
     }
 
-    public void forage(ForagingAnt ant){
-        if(ant.hasFood()){
+    private void forage(ForagingAnt ant) {
+        if(ant.hasFood()) {
             returnToNest(ant);
-        }else{
+        }
+        else {
             findFoodSource(ant);
         }
     }
 
-    public Location findLocationWithMostFoodPheromones(ForagingAnt ant, int orientation) {
+    private Location findLocationWithMostFoodPheromones(ForagingAnt ant, int orientation) {
         double maxPheromones = -1;
         Location maxLocation = null;
         ArrayList<Location> neighbors = myGrid.getAllNeighbors(ant.getLocation());
         ArrayList<Location> options = new ArrayList<Location>();
-        for(int i = orientation - 1; i < orientation + 2; i++){
+        for(int i = orientation - 1; i < orientation + 2; i++) {
             int index = i;
             ForagingAntsCell neighbor;
-            if(i == -1){
+            if(i == -1) {
                 index = 7;
-            }else if(i == 8){
+            }
+            else if(i == 8) {
                 index = 0;
             }
             if(neighbors.get(index) != null) {
-                neighbor = myGrid.getCell(neighbors.get(index).getRow(), neighbors.get(index).getColumn());
+                neighbor = myGrid.getCell(neighbors.get(index));
                 if (neighbor.getFoodPheromoneCount() >= maxPheromones) {
                     maxPheromones = neighbor.getFoodPheromoneCount();
                     options.add(neighbors.get(index));
@@ -143,13 +196,14 @@ public class ForagingAntsSimulation extends Simulation{
             int rand = new Random().nextInt(options.size());
             ant.setOrientation(neighbors.indexOf(options.get(rand)));
             return options.get(new Random().nextInt(options.size()));
-        }else{
+        }
+        else {
             options.clear();
             maxPheromones = -1;
-            for(int i = 0; i < neighbors.size(); i++){
+            for(int i = 0; i < neighbors.size(); i++) {
                 ForagingAntsCell neighbor;
                 if(neighbors.get(i) != null) {
-                    neighbor = myGrid.getCell(neighbors.get(i).getRow(), neighbors.get(i).getColumn());
+                    neighbor = myGrid.getCell(neighbors.get(i));
                     if (neighbor.getFoodPheromoneCount() >= maxPheromones) {
                         maxPheromones = neighbor.getFoodPheromoneCount();
                         options.add(neighbors.get(i));
@@ -165,21 +219,22 @@ public class ForagingAntsSimulation extends Simulation{
         return maxLocation;
     }
 
-    public Location findLocationWithMostHomePheromones(ForagingAnt ant, int orientation) {
+    private Location findLocationWithMostHomePheromones(ForagingAnt ant, int orientation) {
         double maxPheromones = -1;
         Location maxLocation = null;
         ArrayList<Location> neighbors = myGrid.getAllNeighbors(ant.getLocation());
         ArrayList<Location> options = new ArrayList<Location>();
-        for(int i = orientation - 1; i < orientation + 2; i++){
+        for(int i = orientation - 1; i < orientation + 2; i++) {
             int index = i;
             ForagingAntsCell neighbor;
-            if(i == -1){
+            if(i == -1) {
                 index = 7;
-            }else if(i == 8){
+            }
+            else if(i == 8) {
                 index = 0;
             }
             if(neighbors.get(index) != null) {
-                neighbor = myGrid.getCell(neighbors.get(index).getRow(), neighbors.get(index).getColumn());
+                neighbor = myGrid.getCell(neighbors.get(index));
                 if (neighbor.getHomePheromoneCount() >= maxPheromones) {
                     maxPheromones = neighbor.getFoodPheromoneCount();
                     options.add(neighbors.get(index));
@@ -190,13 +245,14 @@ public class ForagingAntsSimulation extends Simulation{
             int rand = new Random().nextInt(options.size());
             ant.setOrientation(neighbors.indexOf(options.get(rand)));
             return options.get(new Random().nextInt(options.size()));
-        }else{
+        }
+        else {
             options.clear();
             maxPheromones = -1;
-            for(int i = 0; i < neighbors.size(); i++){
+            for(int i = 0; i < neighbors.size(); i++) {
                 ForagingAntsCell neighbor;
                 if(neighbors.get(i) != null) {
-                    neighbor = myGrid.getCell(neighbors.get(i).getRow(), neighbors.get(i).getColumn());
+                    neighbor = myGrid.getCell(neighbors.get(i));
                     if (neighbor.getHomePheromoneCount() >= maxPheromones) {
                         maxPheromones = neighbor.getFoodPheromoneCount();
                         options.add(neighbors.get(i));
@@ -212,95 +268,174 @@ public class ForagingAntsSimulation extends Simulation{
         return maxLocation;
     }
 
-    public void returnToNest(ForagingAnt ant){
-            Location location = findLocationWithMostHomePheromones(ant, ant.getOrientation());
-            if (location != null) {
-                dropFoodPheromones(ant);
-                ant.move(location);
-                if (ant.getRow() == nestLocationRow && ant.getColumn() == nestLocationColumn) {
-                    ant.setHasFood(false);
-                }
+    private void returnToNest(ForagingAnt ant) {
+        Location location = findLocationWithMostHomePheromones(ant, ant.getOrientation());
+        if (location != null) {
+            dropFoodPheromones(ant);
+            ant.move(location);
+            if (ant.getLocation() == nestLocation) {
+                ant.setHasFood(false);
             }
+        }
     }
 
-    public void findFoodSource(ForagingAnt ant){
+    private void findFoodSource(ForagingAnt ant) {
         Location location = findLocationWithMostFoodPheromones(ant, ant.getOrientation());
-            if(location != null){
-                dropHomePheromones(ant);
-                ant.move(location);
-                if(ant.getRow() == foodSourceLocationRow && ant.getColumn() == foodSourceLocationColumn){
-                    ant.setHasFood(true);
-                }
+        if(location != null) {
+            dropHomePheromones(ant);
+            ant.move(location);
+            if(ant.getLocation() == foodSourceLocation) {
+                ant.setHasFood(true);
             }
+        }
     }
 
-    public void dropHomePheromones(ForagingAnt ant){
+    private void dropHomePheromones(ForagingAnt ant) {
         Location location = ant.getLocation();
-        if (ant.getRow() == nestLocationRow && ant.getColumn() == nestLocationColumn) {
-            myGrid.getCell(nestLocationRow, nestLocationColumn).setHomePheromoneCount(maxPheromone);
-        }else{
+        if (ant.getLocation() == nestLocation) {
+            myGrid.getCell(nestLocation).setHomePheromoneCount(maxPheromone);
+        }
+        else {
             Location maxPheromones = findLocationWithMostHomePheromones(ant, ant.getOrientation());
-            if(maxPheromones != null){
-                double DES = myGrid.getCell(maxPheromones.getRow(), maxPheromones.getColumn()).getHomePheromoneCount() - 2;
-                double D = DES - myGrid.getCell(location.getRow(), location.getColumn()).getHomePheromoneCount();
-                if(D > 0){
-                    myGrid.getCell(location.getRow(), location.getColumn()).setHomePheromoneCount(D);
+            if(maxPheromones != null) {
+                double DES = myGrid.getCell(maxPheromones).getHomePheromoneCount() - 2;
+                double D = DES - myGrid.getCell(location).getHomePheromoneCount();
+                if(D > 0) {
+                    myGrid.getCell(location).setHomePheromoneCount(D);
                 }
             }
         }
     }
 
-    public void dropFoodPheromones(ForagingAnt ant){
+    private void dropFoodPheromones(ForagingAnt ant) {
         Location location = ant.getLocation();
-        if (ant.getRow() == foodSourceLocationRow && ant.getColumn() == foodSourceLocationColumn) {
-            myGrid.getCell(foodSourceLocationRow, foodSourceLocationColumn).setFoodPheromoneCount(maxPheromone);
-        }else{
+        if (ant.getLocation() == foodSourceLocation) {
+            myGrid.getCell(foodSourceLocation).setFoodPheromoneCount(maxPheromone);
+        }
+        else {
             Location maxPheromones = findLocationWithMostFoodPheromones(ant, ant.getOrientation());
-            if(maxPheromones != null){
-                double DES = myGrid.getCell(maxPheromones.getRow(), maxPheromones.getColumn()).getFoodPheromoneCount() - 2;
-                double D = DES - myGrid.getCell(location.getRow(), location.getColumn()).getFoodPheromoneCount();
-                if(D > 0){
-                    myGrid.getCell(location.getRow(), location.getColumn()).setFoodPheromoneCount(D);
+            if(maxPheromones != null) {
+                double DES = myGrid.getCell(maxPheromones).getFoodPheromoneCount() - 2;
+                double D = DES - myGrid.getCell(location).getFoodPheromoneCount();
+                if(D > 0) {
+                    myGrid.getCell(location).setFoodPheromoneCount(D);
                 }
             }
         }
     }
 
-    public void diffuseHomePheromones(Location location, double diffRate){
-        ForagingAntsCell gridCell = myGrid.getCell(location.getRow(), location.getColumn());
+    private void diffuseHomePheromones(Location location, double diffRate) {
+        ForagingAntsCell gridCell = myGrid.getCell(location);
         double initialCount = gridCell.getHomePheromoneCount() * diffRate;
         ArrayList<Location> neighbors = myGrid.getAllNeighbors(location);
         Collections.shuffle(neighbors);
-        for(int i = 0; i < neighbors.size(); i++){
-            ForagingAntsCell neighbor = myGrid.getCell(neighbors.get(i).getRow(), neighbors.get(i).getColumn());
-            if(neighbor.getHomePheromoneCount() <
-                    gridCell.getHomePheromoneCount()){
+        for(int i = 0; i < neighbors.size(); i++) {
+            if(neighbors.get(i) != null){
+            ForagingAntsCell neighbor = myGrid.getCell(neighbors.get(i));
+            if(neighbor.getHomePheromoneCount() < gridCell.getHomePheromoneCount()) {
                 gridCell.setHomePheromoneCount(initialCount);
                 neighbor.setHomePheromoneCount(neighbor.getHomePheromoneCount() + initialCount);
+                break;
+                }
             }
         }
     }
 
-    public void diffuseFoodPheromones(Location location, double diffRate){
-        ForagingAntsCell gridCell = myGrid.getCell(location.getRow(), location.getColumn());
+    private void diffuseFoodPheromones(Location location, double diffRate) {
+        ForagingAntsCell gridCell = myGrid.getCell(location);
         double initialCount = gridCell.getFoodPheromoneCount() * diffRate;
         ArrayList<Location> neighbors = myGrid.getAllNeighbors(location);
         Collections.shuffle(neighbors);
-        for(int i = 0; i < neighbors.size(); i++){
-            ForagingAntsCell neighbor = myGrid.getCell(neighbors.get(i).getRow(), neighbors.get(i).getColumn());
-            if(neighbor.getFoodPheromoneCount() <
-                    gridCell.getFoodPheromoneCount()){
-                gridCell.setFoodPheromoneCount(initialCount);
-                neighbor.setFoodPheromoneCount(neighbor.getFoodPheromoneCount() + initialCount);
+
+        for(int i = 0; i < neighbors.size(); i++) {
+            if(neighbors.get(i) != null) {
+                ForagingAntsCell neighbor = myGrid.getCell(neighbors.get(i));
+                if (neighbor.getFoodPheromoneCount() < gridCell.getFoodPheromoneCount()) {
+                    gridCell.setFoodPheromoneCount(initialCount);
+                    neighbor.setFoodPheromoneCount(neighbor.getFoodPheromoneCount() + initialCount);
+                    break;
+                }
             }
         }
     }
 
-    public void birthAnts(int count){
-        for(int i = 0; i < count; i++){
-            ForagingAnt ant = new ForagingAnt(nestLocationRow, nestLocationColumn, myGrid);
-            myGrid.getCell(nestLocationRow, nestLocationColumn).incrementAntCount();
+    private void evaporateHomePheromones(Location location, double evapRate) {
+        ForagingAntsCell gridCell = myGrid.getCell(location);
+        if(gridCell.getHomePheromoneCount() >= minPheromone) {
+            gridCell.setHomePheromoneCount(gridCell.getHomePheromoneCount() * evapRate);
+        }
+    }
+
+    /**
+     * @param location
+     * @param evapRate Reduces the food pheromone count by the evaporation rate
+     */
+    private void evaporateFoodPheromones(Location location, double evapRate) {
+        ForagingAntsCell gridCell = myGrid.getCell(location);
+        if(gridCell.getFoodPheromoneCount() >= minPheromone) {
+            gridCell.setFoodPheromoneCount(gridCell.getFoodPheromoneCount() * evapRate);
+        }
+    }
+
+    private void updatePheromones(Location location){
+        diffuseFoodPheromones(location, diffusionRatio);
+        diffuseHomePheromones(location, diffusionRatio);
+        evaporateFoodPheromones(location, evapRatio);
+        evaporateHomePheromones(location, evapRatio);
+    }
+
+    private void birthAnts(int count) {
+        for(int i = 0; i < count; i++) {
+            ForagingAnt ant = new ForagingAnt(nestLocation, antLifetime, myGrid);
+            myGrid.getCell(nestLocation).incrementAntCount();
             ants.add(ant);
         }
+    }
+
+    @Override
+    public void createSeries(LineChart lineChart){
+    	populationLine = new XYChart.Series();
+        populationLine.setName("Ants");
+
+        //populating the series with data
+        lineChart.getData().add(populationLine);
+    }
+
+
+    /**
+     *
+     */
+    @Override
+    public void createCellCounter() {
+
+        //createCellCounter();
+        Rectangle cellCounter = new Rectangle(
+                SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)
+                        + 2 * MARGIN_BOX_TOP, (DIMENSIONS_OF_CELL_COUNTER / 5),
+                DIMENSIONS_OF_CELL_COUNTER * 3 / 2, DIMENSIONS_OF_CELL_COUNTER);
+        cellCounter.setFill(Color.WHITE);
+        cellCounter.setStyle(getCellCounterStyle());
+        getRootElement().getChildren().add(cellCounter);
+        
+        numAntsText.setFill(Color.GRAY);
+        updateText();
+        getRootElement().getChildren().add(numAntsText);
+
+
+    }
+
+    /**
+     *
+     */
+    private void updateText() {
+        numAntsText.setText(pop + antPopulation);
+    }
+
+    /**
+     *
+     */
+    public void updateGraph() {
+        populationLine.getData().add(new XYChart.Data(totalSteps, antPopulation));
+        updateText();
     }
 }

@@ -1,5 +1,6 @@
 package spreadingoffire;
 import base.Grid;
+import base.Location;
 import base.Simulation;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
@@ -15,32 +16,34 @@ import spreadingoffire.SpreadingOfFireCell.States;
  * @author Soravit
  *
  */
-public class SpreadingOfFireSimulation extends Simulation{
-	private static final String fire = "Fire: ";
-	private static final String dead = "Dead: ";
-	private static final String alive = "Alive: ";
-	
+public class SpreadingOfFireSimulation extends Simulation {
+
+    private static final String fire = "Fire: ";
+    private static final String dead = "Dead: ";
+    private static final String alive = "Alive: ";
+
     private int numberAlive;
     private int numberDead;
     private int numberFire;
-    
+
     private XYChart.Series fireLine;
     private XYChart.Series yellowLine;
     private XYChart.Series aliveLine;
     private int stepCount = 0;
-    
+
     private static final Text numFireText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 3 * marginBoxTop, fire);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 3 * MARGIN_BOX_TOP, fire);
     private static final Text numDeadText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - 2 * marginBoxTop, dead);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, dead);
     private static final Text numAliveText = new Text(
-    		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + marginBoxTop * 3, 
-    		0 + (7 / 5 * dimensionsOfCellCounterBox) - marginBoxTop, alive);
+            SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + MARGIN_BOX_TOP * 3,
+            0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - MARGIN_BOX_TOP, alive);
     private double probCatch;
     private SpreadingOfFireGrid myGrid;
     private CellType type;
+
     /**
      * @param gridLength
      * @param probCatch
@@ -50,222 +53,206 @@ public class SpreadingOfFireSimulation extends Simulation{
         this.probCatch = probCatch;
         this.type = type;
     }
-    @Override
-    public Scene init (Stage s,CellType type) {
-        setStage(s);
-        makeNewRootElement();
-        int screenWidth = SIMULATION_WINDOW_WIDTH;
-		if(type == CellType.HEX){
-			screenWidth *= 1.75;
-		}
 
-        setMyScene(new Scene(getRootElement(), screenWidth,
-        		SIMULATION_WINDOW_HEIGHT, Color.WHITE));
-        setTopMargin(getTopMargin() + marginBoxTop * 4);
-        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(),
-        		getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
-        myGrid.setBackground(screenWidth, SIMULATION_WINDOW_HEIGHT);
-        myGrid.initializeGrid(type);
-        myGrid.setUpButtons();
-        myGrid.setSimulationProfile(this);
-        setInitialEnvironment();
+    /**
+     *
+     * @param s The stage to be set
+     * @param type The shape of the cell
+     * @return
+     */
+    public Scene init (Stage s,CellType type) {
+        super.init(s, type);
         return getMyScene();
     }
+
     /**
-     * @param row
-     * @param col
+     *
+     * @return The instantiated SpreadingOfFire grid
      */
-    public void spawnTree(int row, int col) {
-        myGrid.updateCell(row,col,States.ALIVE);
-        numberAlive++;
-        myGrid.getCell(row, col).spawn();
+    @Override
+    public Grid instantiateGrid(){
+        this.myGrid = new SpreadingOfFireGrid(getGridLength(), getCellSize(), getRootElement(),
+                getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
+        return myGrid;
     }
-    
+
+    /**
+     * @param location
+     */
+    public void spawnTree(Location location) {
+        myGrid.updateCell(location, States.ALIVE);
+        numberAlive++;
+        myGrid.getCell(location).spawn();
+    }
+
+    /**
+     * Updates cell after it's clicked
+     */
     public void checkUpdatedStatesAfterManualMod() {
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-            	if(manuallyModified(i,j)){
-            		States cellState = myGrid.getCell(i, j).getState();
-            		noLongerModified(i,j);
-            		if(cellState == States.BURNING) {
-                    	numberFire++;
-                    	numberAlive--;
+                Location location = new Location(i, j);
+                if(manuallyModified(location)){
+                    States cellState = myGrid.getCell(new Location(i, j)).getState();
+                    noLongerModified(location);
+                    if(cellState == States.BURNING) {
+                        numberFire++;
+                        numberAlive--;
                     }
                     else if (cellState == States.DEAD) {
-                    	numberDead++;
-                    	numberFire--;
+                        numberDead++;
+                        numberFire--;
                     }
                     else if(cellState == States.ALIVE){
-                    	numberAlive++;
-                    	numberDead--;
+                        numberAlive++;
+                        numberDead--;
                     }
-            	}
+                }
             }
         }
     }
-    
-    private boolean manuallyModified(int row,int col) {
-    	return (myGrid.getCell(row, col).isManuallyModified());
+
+    private boolean manuallyModified(Location location) {
+        return (myGrid.getCell(location).isManuallyModifiedByUser());
     }
-    
-    private void noLongerModified(int row, int col) {
-    	myGrid.getCell(row, col).noLongerManuallyModified();
+
+    private void noLongerModified(Location location) {
+        myGrid.getCell(location).noLongerManuallyModified();
     }
-    /**
-     * @param x
-     * @param y
-     * @param forceBurn
-     */
-    public void burnTree(int x, int y, boolean forceBurn) {
+
+    private void burnTree(Location location, boolean forceBurn) {
         double rand = Math.random();
-        if(rand < probCatch || forceBurn){
-        	myGrid.getCell(x, y).catchfire();
-            myGrid.updateCell(x, y, States.CAUGHTFIRE);
+        if(rand < probCatch || forceBurn) {
+            myGrid.getCell(location).catchFire();
+            myGrid.updateCell(location, States.CAUGHTFIRE);
             numberFire++;
             numberAlive--;
         }
     }
-    /**
-     * @param x
-     * @param y
-     */
-    public void clearCell(int x, int y) {
-        myGrid.updateCell(x, y, States.DEAD);
-        myGrid.getCell(x, y).burnout();
+
+    private void clearCell(Location location) {
+        myGrid.updateCell(location, States.DEAD);
+        myGrid.getCell(location).burnout();
         numberDead++;
         if(numberFire > 0){
-        	numberFire--;
+            numberFire--;
         }
     }
-    /* (non-Javadoc)
-     * @see base.Simulation#setInitialEnvironment()
+
+    /**
+     * Sets up the initial map of trees
      */
     public void setInitialEnvironment() {
-    	numberAlive = 0;
-    	numberDead = 0;
-    	createGraph();
-    	int fireBurnedInitially = 0;
+        numberAlive = 0;
+        numberDead = 0;
+        createGraph();
+        int fireBurnedInitially = 0;
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-            	if(type != CellType.HEX){
-	                if(i == 0 || i == getGridLength() - 1
-	                		|| j == 0 || j == getGridLength()-1) {
-	                    clearCell(i, j);
-	                }
-	                else if(i == getGridLength() / 2 
-	                		&& j == getGridLength() / 2) {
-	                    burnTree(i, j, true);
-	                    fireBurnedInitially++;
-	                }
-	                else {
-	                    spawnTree(i, j);
-	                }
-            	}
-            	else{
-            		if(((j == 0) && (i%2 == 1)) || (i == getGridLength() - 2) || i == 1 || (j == getGridLength() - 1 && i%2 == 0)  || i == 0 || i == getGridLength()-1) {
-	                    clearCell(i, j);
-	                }
-	                else if(i == getGridLength() / 2 
-	                		&& j == getGridLength() / 2) {
-	                    burnTree(i, j, true);
-	                    fireBurnedInitially++;
-	                }
-	                else {
-	                    spawnTree(i, j);
-	                }
-            	}
-                myGrid.updateCell(i, j, myGrid.getCell(i,j).getState());
+                Location location = new Location(i, j);
+                if(type != CellType.HEX){
+                    if(i == 0 || i == getGridLength() - 1
+                            || j == 0 || j == getGridLength()-1) {
+                        clearCell(location);
+                    }
+                    else if(i == getGridLength() / 2
+                            && j == getGridLength() / 2) {
+                        burnTree(location, true);
+                        fireBurnedInitially++;
+                    }
+                    else {
+                        spawnTree(location);
+                    }
+                }
+                else{
+                    if(((j == 0) && (i%2 == 1)) || (i == getGridLength() - 2) || i == 1
+                            || (j == getGridLength() - 1 && i%2 == 0)  || i == 0
+                            || i == getGridLength()-1) {
+                        clearCell(location);
+                    }
+                    else if(i == getGridLength() / 2
+                            && j == getGridLength() / 2) {
+                        burnTree(location, true);
+                        fireBurnedInitially++;
+                    }
+                    else {
+                        spawnTree(location);
+                    }
+                }
+                myGrid.updateCell(location, myGrid.getCell(location).getState());
             }
         }
-        
+
         numberFire = fireBurnedInitially;
     }
-    /**
-     * 
-     */
-    public void updateState() {
+
+    private void updateState() {
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-                if(myGrid.getCell(i,j).getState() == States.ALIVE) {
-                    if(myGrid.getNorthernNeighbor(i, j) != null && myGrid.getCell(myGrid.getNorthernNeighbor(i,j).getRow(), myGrid.getNorthernNeighbor(i,j).getColumn()).
+                Location location = new Location(i, j);
+                if(myGrid.getCell(location).getState() == States.ALIVE) {
+                    if(myGrid.getNorthernNeighbor(location) != null
+                            && myGrid.getCell(myGrid.getNorthernNeighbor(location)).
                             getState() == States.BURNING) {
-                        burnTree(i, j, false);
+                        burnTree(location, false);
                     }
-                    if(myGrid.getSouthernNeighbor(i, j) != null && myGrid.getCell(myGrid.getSouthernNeighbor(i,j).getRow(), myGrid.getSouthernNeighbor(i,j).getColumn()).
+                    if(myGrid.getSouthernNeighbor(location) != null
+                            && myGrid.getCell(myGrid.getSouthernNeighbor(location)).
                             getState() == States.BURNING) {
-                        burnTree(i, j, false);
+                        burnTree(location, false);
                     }
-                    if(myGrid.getEasternNeighbor(i, j) != null && myGrid.getCell(myGrid.getEasternNeighbor(i,j).getRow(), myGrid.getEasternNeighbor(i,j).getColumn()).
+                    if(myGrid.getEasternNeighbor(location) != null
+                            && myGrid.getCell(myGrid.getEasternNeighbor(location)).
                             getState() == States.BURNING) {
-                        burnTree(i, j, false);
+                        burnTree(location, false);
                     }
-                    if(myGrid.getWesternNeighbor(i, j) != null && myGrid.getCell(myGrid.getWesternNeighbor(i,j).getRow(), myGrid.getWesternNeighbor(i,j).getColumn()).
+                    if(myGrid.getSouthernNeighbor(location) != null
+                            && myGrid.getCell(myGrid.getSouthernNeighbor(location)).
                             getState() == States.BURNING) {
-                        burnTree(i, j, false);
+                        burnTree(location, false);
                     }
-                } 
+                }
             }
         }
         for(int i = 0; i < getGridLength(); i++) {
             for(int j = 0; j < getGridLength(); j++) {
-                if(myGrid.getCell(i,j).getState() == States.BURNING) {
-                    clearCell(i, j);
-                } 
-                else if(myGrid.getCell(i,j).getState() == States.CAUGHTFIRE) {
-                    myGrid.getCell(i,j).burn();
-                    myGrid.updateCell(i,j,States.BURNING);
+                Location location = new Location(i, j);
+                if(myGrid.getCell(location).getState() == States.BURNING) {
+                    clearCell(location);
+                }
+                else if(myGrid.getCell(location).getState() == States.CAUGHTFIRE) {
+                    myGrid.getCell(location).burn();
+                    myGrid.updateCell(location, States.BURNING);
                 }
             }
         }
     }
     
-    /**
-     * 
-     */
-    public void createGraph() {
-        //defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setMinorTickVisible(false);
-        
-        //creating the chart
-        final LineChart <Number, Number> lineChart = 
-        		new LineChart <Number, Number> (xAxis, yAxis);
+	@Override
+	public void createSeries(LineChart lineChart) {
         fireLine = new XYChart.Series();
         fireLine.setName("Fire");
         yellowLine = new XYChart.Series();
         yellowLine.setName("Dead");
         aliveLine = new XYChart.Series();
         aliveLine.setName("Alive");
-        
-        
+
+
         //populating the series with data
         //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(fireLine);
         lineChart.getData().add(yellowLine);
         lineChart.getData().add(aliveLine);
-        
-        lineChart.setLayoutX(25);
-        lineChart.setPrefSize(500, 100);
-        lineChart.setLegendVisible(true);
-        lineChart.setLegendSide(Side.RIGHT);
-        getRootElement().getChildren().add(lineChart);
-        
-        
+	}
+
+	@Override
+	public void createCellCounter() {
         Rectangle cellCounter = new Rectangle(
-        		SIMULATION_WINDOW_WIDTH - (2 * dimensionsOfCellCounterBox) + 2 * marginBoxTop, 
-        		(dimensionsOfCellCounterBox / 5), dimensionsOfCellCounterBox * 3 / 2,
-        		dimensionsOfCellCounterBox);
+                SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER) + 2 * MARGIN_BOX_TOP,
+                (DIMENSIONS_OF_CELL_COUNTER / 5), DIMENSIONS_OF_CELL_COUNTER * 3 / 2,
+                DIMENSIONS_OF_CELL_COUNTER);
         cellCounter.setFill(Color.WHITE);
-        cellCounter.setStyle(
-			    "-fx-background-radius: 8,7,6;" + 
-			    "-fx-background-insets: 0,1,2;" +
-			    "-fx-text-fill: black;" +
-			    "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-		);
+        cellCounter.setStyle(getCellCounterStyle());
         getRootElement().getChildren().add(cellCounter);
         numFireText.setFill(Color.RED);
         numDeadText.setFill(Color.ORANGE);
@@ -274,24 +261,31 @@ public class SpreadingOfFireSimulation extends Simulation{
         getRootElement().getChildren().add(numFireText);
         getRootElement().getChildren().add(numDeadText);
         getRootElement().getChildren().add(numAliveText);
-        
-        
-    }
-    
-    private void updateText() {
-    	numFireText.setText(fire + numberFire);
-    	numDeadText.setText(dead + numberDead);
-    	numAliveText.setText(alive + numberAlive);
-    }
+
+	}
+
     /**
-     * 
+     *
+     */
+    private void updateText() {
+        numFireText.setText(fire + numberFire);
+        numDeadText.setText(dead + numberDead);
+        numAliveText.setText(alive + numberAlive);
+    }
+
+    /**
+     * Updates the graph
      */
     public void updateGraph() {
-    	fireLine.getData().add(new XYChart.Data(stepCount, numberFire));
-    	yellowLine.getData().add(new XYChart.Data(stepCount, numberDead));
-    	aliveLine.getData().add(new XYChart.Data(stepCount, numberAlive));
-    	updateText();
+        fireLine.getData().add(new XYChart.Data(stepCount, numberFire));
+        yellowLine.getData().add(new XYChart.Data(stepCount, numberDead));
+        aliveLine.getData().add(new XYChart.Data(stepCount, numberAlive));
+        updateText();
     }
+
+    /**
+     * Updates the grid on each stepf
+     */
     @Override
     public void step () {
         updateState();

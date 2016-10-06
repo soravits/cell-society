@@ -10,62 +10,88 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
-public class ForagingAntsGrid extends Grid{
+public class ForagingAntsGrid extends Grid {
 
     private ForagingAntsSimulation sim;
     private Location nest;
     private Location foodSource;
 
-    public ForagingAntsGrid(int rowLength, int sizeOfCell, Pane rootElement,
-                          int initialX, int initialY, gridEdgeType edgeType, ForagingAntsSimulation sim,
+    /**
+     * @param gridLength The length of a side of the grid
+     * @param sizeOfCell The size of each cell
+     * @param rootElement The JavaFX pane
+     * @param initialX The initial x position of the grid
+     * @param initialY The initial y position of the grid
+     * @param edgeType The grid edge type of the grid
+     * @param sim The simulation that uses the grid
+     * @param nest The location of the nest in the grid
+     * @param foodSource The location of the food source in the grid
+     */
+    public ForagingAntsGrid(int gridLength, int sizeOfCell, Pane rootElement, int initialX, int initialY,
+                            gridEdgeType edgeType, ForagingAntsSimulation sim,
                             Location nest, Location foodSource) {
-        super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
+        super(gridLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
         this.sim = sim;
         this.nest = nest;
         this.foodSource = foodSource;
     }
 
-    public ForagingAntsCell getCell(int row, int col){
-        return (ForagingAntsCell) super.getCell(row,col);
+    /**
+     *
+     * @param location The location of the desired cell
+     * @return The desired cell
+     */
+    public ForagingAntsCell getCell(Location location) {
+        return (ForagingAntsCell) super.getCell(location);
     }
 
+    /**
+     *
+     * @param type The shape of the cells in the grid
+     * Creates the grid by initializing the cells
+     */
     @Override
     public void initializeGrid(Simulation.CellType type) {
-        for(int i = 0; i < getColumnLength(); i++) {
-            for(int j = 0; j < getRowLength(); j++) {
+        for(int i = 0; i < getGridLength(); i++) {
+            for(int j = 0; j < getGridLength(); j++) {
                 int horizontalOffset = getInitialX();
                 double horizontalShift = getSizeOfCell();
                 double verticalShift = getSizeOfCell();
-                if(type == Simulation.CellType.HEX){
-                    horizontalShift = getSizeOfCell()* CellShape.horizontalOffsetHexagon;
+                if(type == Simulation.CellType.HEX) {
+                    horizontalShift = getSizeOfCell() * CellShape.horizontalOffsetHexagon;
                     verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
-                    if(i%2 == 0){
+                    if(i % 2 == 0){
                         horizontalOffset= getInitialX() + getSizeOfCell();
-
                     }
                 }
                 ForagingAntsCell gridCell = new ForagingAntsCell(getSizeOfCell(), getRootElement(),
                         verticalShift * (j) + horizontalOffset,
-                        horizontalShift * (i) + getInitialY(), getRowLength(), type);
-
+                        horizontalShift * (i) + getInitialY(), getGridLength(), type);
+                Location cellLocation = new Location(i,j);
                 gridCell.addToScene();
-                setCell(i,j,gridCell);
+                setCell(cellLocation, gridCell);
             }
         }
-        getCell(nest.getRow(), nest.getColumn()).setColor(Color.BROWN);
-        getCell(foodSource.getRow(), foodSource.getColumn()).setColor(Color.YELLOW);
+        getCell(nest).setColor(Color.BROWN);
+        getCell(foodSource).setColor(Color.YELLOW);
     }
 
-    public void updateCell(int row, int col) {
-        ForagingAntsCell gridCell = getCell(row, col);
-        if (gridCell != getCell(nest.getRow(), nest.getColumn()) && gridCell != getCell(foodSource.getRow(), foodSource.getColumn())) {
+    /**
+     * @param location The location in the grid to be updated
+     * Sets the colors of the cells based on the state of th cell
+     */
+    public void updateCell(Location location) {
+        ForagingAntsCell gridCell = getCell(location);
+        if (gridCell != getCell(nest) && gridCell != getCell(foodSource)) {
             if (gridCell.getAntCount() > 0) {
                 gridCell.setColor(Color.RED);
-            } else if(gridCell.getFoodPheromoneCount() > 0 || gridCell.getHomePheromoneCount() > 0) {
+            }
+            else if(gridCell.getFoodPheromoneCount() > 0 || gridCell.getHomePheromoneCount() > 0) {
                 gridCell.setColor(Color.GREY);
-            }else{
+            }
+            else {
                 gridCell.setColor(Color.FORESTGREEN);
             }
         }

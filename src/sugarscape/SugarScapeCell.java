@@ -6,6 +6,10 @@ import base.Cell;
 import base.Simulation.CellType;
 import java.util.Random;
 
+/**
+ * @author Delia
+ *
+ */
 public class SugarScapeCell extends Cell {
 	public enum State {PATCH, AGENT};
 	
@@ -24,8 +28,21 @@ public class SugarScapeCell extends Cell {
 	private State currState;
     private Random random = new Random();
 
+	/**
+	 * @param sizeOfCell
+	 * @param rootElement
+	 * @param xCoord
+	 * @param yCoord
+	 * @param gridLength
+	 * @param maxSugar
+	 * @param maxCarbs
+	 * @param minCarbs
+	 * @param metabRate
+	 * @param type
+	 */
 	public SugarScapeCell(int sizeOfCell, Pane rootElement, double xCoord,
-			double yCoord, int gridLength, int maxSugar, int maxCarbs, int minCarbs, int metabRate, CellType type) {
+			double yCoord, int gridLength, int maxSugar, int maxCarbs, int minCarbs, 
+			int metabRate, CellType type) {
 		super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
 		this.maxSugar = maxSugar;
 		this.agentMaxCarbs = maxCarbs;
@@ -45,67 +62,99 @@ public class SugarScapeCell extends Cell {
 	 */
 	public void setState (State currState) {
 		this.currState = currState;
-		if(currState == State.PATCH){
+		if(currState == State.PATCH) {
 			setSugarAmount(random.nextInt(maxSugar));
 		}
-		else{
+		else {
 			setAgentCarbs(random.nextInt(agentMaxCarbs - agentMinCarbs) + agentMinCarbs);
 		}
 		updateColor();
 	}
 	
-	public void setAgentMovedPatch(){
+	/**
+	 * 
+	 */
+	public void setAgentMovedPatch() {
 		this.currState = State.PATCH;
 		setSugarAmount(0);
 		updateColor();
 	}
 	
-	public void setMovedAgent(int origCarbs, int newSugar){
+	/**
+	 * @param origCarbs
+	 * @param newSugar
+	 */
+	public void setMovedAgent(int origCarbs, int newSugar) {
 		this.currState = State.AGENT;
 		this.agentCarbs = origCarbs;
 		this.agentCarbs += newSugar;
-		burnAgentCalories();
 		updateColor();
 	}
 	
-	public int getSugarAmount(){
+	/**
+	 * @return
+	 */
+	public int getSugarAmount() {
 		return sugarAmt;
 	}
 	
-	public void setSugarAmount(int sugarAmount){
+	/**
+	 * @param sugarAmount
+	 */
+	public void setSugarAmount(int sugarAmount) {
 		sugarAmt = sugarAmount;
 	}
 	
-	public void growSugarBack(){
-		if(sugarAmt < maxSugar){
+	/**
+	 * 
+	 */
+	public void growSugarBack() {
+		if(sugarAmt < maxSugar) {
 			sugarAmt += growback;
 		}
 		updateColor();
 	}
 	
-	public void setAgentCarbs(int agentPasta){
+	/**
+	 * @param agentPasta
+	 */
+	public void setAgentCarbs(int agentPasta) {
 		agentCarbs = agentPasta;
 	}
 	
-	public int getAgentCarbs(){
+	/**
+	 * @return
+	 */
+	public int getAgentCarbs() {
 		return agentCarbs;
 	}
 	
+	/**
+	 * @param agentVision
+	 */
 	public void setAgentVision(int agentVision) {
 		vision = agentVision;
 	}
 	
-	public int getAgentVision(){
+	/**
+	 * @return
+	 */
+	public int getAgentVision() {
 		return vision;
 	}
 	
-	public void burnAgentCalories(){
-		agentCarbs -= metabRate;
+	/**
+	 * @param distanceMoved
+	 */
+	public void burnAgentCalories(int distanceMoved) {
+		agentCarbs -= (metabRate * distanceMoved);
 		if(agentCarbs < 0) killAgent();
 	}
 	
-	private void killAgent(){
-		System.out.println("agent killed");
+	/**
+	 * 
+	 */
+	private void killAgent() {
 		setSugarAmount(0);
 		setState(State.PATCH);
 	}
@@ -124,7 +173,4 @@ public class SugarScapeCell extends Cell {
 			setColor(Color.BLACK);
 		}
 	}
-
-
-
 }

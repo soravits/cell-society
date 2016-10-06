@@ -44,7 +44,7 @@
 		<diffusionRatio>10.0</diffusionRatio>
 	</Simulation>
 	<Simulation SimulationType="SugarScape">
-		<sugarGridSize>51</sugarGridSize>
+		<sugarGridSize>20</sugarGridSize>
 		<maxSugarPerPatch>4</maxSugarPerPatch>
 		<totalAgents>30</totalAgents>
 		<growBackRate>1</growBackRate>
@@ -52,5 +52,6 @@
 		<agentMinCarbs>5</agentMinCarbs>
 		<agentMetabRate>1</agentMetabRate>
 		<agentVision>4</agentVision>
+		<preset>1</preset>
 	</Simulation>
 </Simulation>

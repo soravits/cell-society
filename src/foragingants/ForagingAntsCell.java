@@ -8,58 +8,74 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
-public class ForagingAntsCell extends Cell{
+public class ForagingAntsCell extends Cell {
 
-    private double homePheromoneCount;
-    private double foodPheromoneCount;
-    private int antCount;
-    /**
-     * @param sizeOfCell
-     * @param rootElement
-     * @param xCoord
-     * @param yCoord
-     * @param gridLength
-     * @param type
-     */
-    public ForagingAntsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, int gridLength, Simulation.CellType type) {
-        super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
-    }
+	private double homePheromoneCount;
+	private double foodPheromoneCount;
+	private int antCount;
 
-    public double getFoodPheromoneCount() {
-        return foodPheromoneCount;
-    }
+	/**
+	 * @param sizeOfCell The size of the cell
+	 * @param rootElement The JavaFX pane
+	 * @param xCoord The x location of the cell
+	 * @param yCoord The y location of the cell
+	 * @param gridLength The length of the sides of the entire grid
+	 * @param type The shape of the cell
+	 */
+	public ForagingAntsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
+			int gridLength, Simulation.CellType type) {
+		super(sizeOfCell, rootElement, xCoord, yCoord, gridLength, type);
+	}
 
-    public double getHomePheromoneCount() {
-        return homePheromoneCount;
-    }
+	/**
+	 * @return The amount of food pheromones in the current cell
+	 */
+	public double getFoodPheromoneCount() {
+		return foodPheromoneCount;
+	}
 
-    public double getAntCount() {
-        return antCount;
-    }
+	/**
+	 * @return The amount of home pheromones in the current cell
+	 */
+	public double getHomePheromoneCount() {
+		return homePheromoneCount;
+	}
 
-    public void incrementAntCount() {
-        antCount++;
-    }
+	/**
+	 * @return The number of ants in the cell
+	 */
+	public double getAntCount() {
+		return antCount;
+	}
 
-    public void decrementAntCount() {
-        antCount--;
-    }
+	/**
+	 * Increments the current number of ants
+	 */
+	public void incrementAntCount() {
+		antCount++;
+	}
 
-    public void setHomePheromoneCount(double homePheromoneCount){
-        this.homePheromoneCount = homePheromoneCount;
-    }
+	/**
+	 * Decrements the current number of ants
+	 */
+	public void decrementAntCount() {
+		antCount--;
+	}
 
-    public void setFoodPheromoneCount(double foodPheromoneCount){
-        this.foodPheromoneCount = foodPheromoneCount;
-    }
+	/**
+	 * @param homePheromoneCount The desired home pheromone count
+	 */
+	public void setHomePheromoneCount(double homePheromoneCount) {
+		this.homePheromoneCount = homePheromoneCount;
+	}
 
-    public void evaporateHomePheromones(double evapRate){
-        setFoodPheromoneCount(homePheromoneCount * evapRate);
-    }
+	/**
+	 * @param foodPheromoneCount The desired food pheromone count
+	 */
+	public void setFoodPheromoneCount(double foodPheromoneCount) {
+		this.foodPheromoneCount = foodPheromoneCount;
+	}
 
-    public void evaporateFoodPheromones(double evapRate){
-        setFoodPheromoneCount(foodPheromoneCount * evapRate);
-    }
 }

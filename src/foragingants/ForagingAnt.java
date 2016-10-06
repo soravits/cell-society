@@ -3,65 +3,93 @@ package foragingants;
 import base.Location;
 
 /**
- * Created by Soravit on 10/2/2016.
+ * @author Soravit
  */
 public class ForagingAnt {
 
-    private int row;
-    private int col;
-
+    private Location location;
     private int orientation = 0;
-
     private ForagingAntsGrid myGrid;
-
     private boolean hasFood;
+    private int life;
 
-    public ForagingAnt(int row, int col, ForagingAntsGrid myGrid){
-        this.row = row;
-        this.col = col;
+    /**
+     * @param location
+     * @param myGrid
+     */
+    public ForagingAnt(Location location, int life, ForagingAntsGrid myGrid) {
+        this.location = location;
+        this.life = life;
         this.myGrid = myGrid;
     }
 
+    /**
+     *
+     * @return The current life of the ant
+     */
+    public int getLife(){
+        return life;
+    }
+
+    /**
+     * Decrements the life on the ant
+     */
+    public void decrementLife(){
+        life --;
+    }
+
+    /**
+     * @return The direction that the the ant is facing (0 to 7)
+     */
     public int getOrientation() {
         return orientation;
     }
 
+    /**
+     * @param orientation The desired orientation of the ant
+     */
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
 
-    public int getRow() {
-        return row;
+    /**
+     * @return The location of the ant
+     */
+
+    public Location getLocation() {
+        return location;
     }
 
-    public void setRow(int row){
-        this.row = row;
+    /**
+     *
+     * @param location The desired location of the ant
+     */
+    public void setLocation(Location location){
+        this.location = location;
     }
 
-    public int getColumn() {
-        return col;
-    }
-
-    public Location getLocation(){
-        return new Location(row, col);
-    }
-
-    public void setCol(int col){
-        this.col = col;
-    }
-
+    /**
+     *
+     * @return Whether or not the ant is carrying food
+     */
     public boolean hasFood() {
         return hasFood;
     }
 
-    public void setHasFood(boolean hasFood){
+    /**
+     * @param hasFood The desired state of whether the ant is carrying food
+     */
+    public void setHasFood(boolean hasFood) {
         this.hasFood = hasFood;
     }
 
-    public void move(Location location){
-            myGrid.getCell(row, col).decrementAntCount();
-            setRow(location.getRow());
-            setCol(location.getColumn());
-            myGrid.getCell(location.getRow(), location.getColumn()).incrementAntCount();
+    /**
+     * @param location the desired destination
+     * Moves the ant from the current location to the specified location and adjusts ant counts for these cells
+     */
+    public void move(Location location) {
+        myGrid.getCell(this.location).decrementAntCount();
+        setLocation(location);
+        myGrid.getCell(location).incrementAntCount();
     }
 }

@@ -30,6 +30,8 @@ public class SlimeMoldsCell extends Cell {
      * @param rootElement
      * @param xCoord
      * @param yCoord
+     * @param gridLength
+     * @param type
      */
     public SlimeMoldsCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
     		int gridLength, CellType type) {

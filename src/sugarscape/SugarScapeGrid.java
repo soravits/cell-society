@@ -10,6 +10,7 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 /**
+ * This is the grid class for the SugarScape simulation.
  * @author Delia
  *
  */
@@ -18,13 +19,13 @@ public class SugarScapeGrid extends Grid {
 	private CellType type;
 
 	/**
-	 * @param gridLength
-	 * @param sizeOfCell
-	 * @param rootElement
-	 * @param initialX
-	 * @param initialY
-	 * @param edgeType
-	 * @param sim
+	 * @param gridLength	int, number of cells along a side of the grid
+	 * @param sizeOfCell	int, just read the var name
+	 * @param rootElement	Pane, where nodes will be added
+	 * @param initialX		int, x coordinate where the grid begins
+	 * @param initialY		int, y ''
+	 * @param edgeType		gridEdgeType, describing whether edges are finite or toroidal
+	 * @param sim			SugarScapeSimulation, the simulation containing this grid
 	 */
 	public SugarScapeGrid(int gridLength, int sizeOfCell, Pane rootElement,
 			int initialX, int initialY, gridEdgeType edgeType, SugarScapeSimulation sim) {
@@ -53,7 +54,6 @@ public class SugarScapeGrid extends Grid {
 					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
 					if(i % 2 == 0){
 						horizontalOffset = getInitialX() + getSizeOfCell();
-
 					}
 				}
 				SugarScapeCell gridCell = new SugarScapeCell(getSizeOfCell(), getRootElement(), 
@@ -68,8 +68,8 @@ public class SugarScapeGrid extends Grid {
 		}      
 	}
 
-	//fix agent state change later
 	/**
+	 * Set each cell so that it'll change states when clicked
 	 * @param gridCell
 	 */
 	private void setUpListener(SugarScapeCell gridCell) {
@@ -87,12 +87,10 @@ public class SugarScapeGrid extends Grid {
 	}
 
 	/**
-	 * Switches two cells on the grid.
-	 * Stores the destination color as local Paint object
-	 * Sets destination color with color of moving cell
-	 * Updates original position of mover with stored destination color
-	 * @param p1	coordinates of point that is moving
-	 * @param p2	coordinates of point that is destination
+	 * Relocates agent to a patch on the grid, updates data for the agent
+	 * and the cell it left behind
+	 * @param p1	coordinates of agent that is moving
+	 * @param p2	coordinates of patch that is destination
 	 */
 	public void moveAgent(Point p1, Point p2) {
 		Location p1location = new Location(p1.x, p1.y);
@@ -109,6 +107,7 @@ public class SugarScapeGrid extends Grid {
 	}
 
 	/**
+	 * update state of a cell at a certain location
 	 * @param location
 	 * @param cellState
 	 */

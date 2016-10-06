@@ -12,15 +12,15 @@ import waterworld.WaTorWorldCell.State;
 public class WaTorWorldGrid extends Grid {
 	private WaTorWorldSimulation sim;
 	/**
-	 * @param rowLength
+	 * @param gridLength
 	 * @param sizeOfCell
 	 * @param rootElement
 	 * @param initialX
 	 * @param initialY
 	 */
-	public WaTorWorldGrid(int rowLength, int sizeOfCell, Pane rootElement,
+	public WaTorWorldGrid(int gridLength, int sizeOfCell, Pane rootElement,
 			int initialX, int initialY, gridEdgeType edgeType, WaTorWorldSimulation sim) {
-		super(rowLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
+		super(gridLength, sizeOfCell, rootElement, initialX, initialY, edgeType);
 		this.sim = sim;
 	}
 
@@ -54,7 +54,7 @@ public class WaTorWorldGrid extends Grid {
 	}
 
 	/**
-	 * @param gridCell
+	 * @param gridCell The cell to be set as a mouse listener
 	 */
 	private void setUpListener(WaTorWorldCell gridCell) {
 		gridCell.getBlock().setOnMousePressed(event -> {
@@ -75,8 +75,8 @@ public class WaTorWorldGrid extends Grid {
 	}
 	
 	/**
-	 * @param location
-	 * @return
+	 * @param location The desired location
+	 * @return The WatorWorldCell at the desired location
 	 */
 	public WaTorWorldCell getCell(Location location) {
 		return (WaTorWorldCell) super.getCell(location);

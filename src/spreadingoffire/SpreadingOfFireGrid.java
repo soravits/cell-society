@@ -53,7 +53,6 @@ public class SpreadingOfFireGrid extends Grid {
 					verticalShift = CellShape.verticalOffsetHexagon * getSizeOfCell();
 					if(i % 2 == 0){
 						horizontalOffset= getInitialX() + getSizeOfCell();
-
 					}
 				}
 				SpreadingOfFireCell gridCell = new SpreadingOfFireCell(getSizeOfCell(), getRootElement(),

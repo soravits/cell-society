@@ -33,6 +33,7 @@ public class SlimeMoldsGrid extends Grid {
 	 * @param initialX
 	 * @param initialY
 	 * @param sim
+	 * Constructor for grid
 	 */
 	public SlimeMoldsGrid(int gridLength, int sizeOfCell, Pane rootElement, int initialX, 
 			int initialY, SlimeMoldsSimulation sim) {
@@ -82,6 +83,7 @@ public class SlimeMoldsGrid extends Grid {
 	 * @param location
 	 * @param state
 	 * @param threshold
+	 * Updates UI for cell depending on simulation behavior
 	 */
 	public void updateCell(Location location, MoldStatus state, double threshold) {
 		SlimeMoldsCell cell = getCell(location);

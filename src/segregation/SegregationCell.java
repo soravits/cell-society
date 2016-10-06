@@ -28,6 +28,7 @@ public class SegregationCell extends Cell {
 
 	/**
 	 * @param currState
+	 * Sets current state of cell
 	 */
 	public void setState (State currState) {
 		this.currState = currState;
@@ -35,7 +36,7 @@ public class SegregationCell extends Cell {
 	}
 
 	/**
-	 * 
+	 * Changes color of cell depending on state
 	 */
 	public void updateColor() {
 		if(currState == State.EMPTY) {
@@ -50,7 +51,7 @@ public class SegregationCell extends Cell {
 	}
 
 	/**
-	 * @return
+	 * @return Current state of cell
 	 */
 	public State getState() {
 		return this.currState;

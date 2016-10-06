@@ -4,8 +4,6 @@ import org.w3c.dom.Element;
 
 /**
  * @author Brian
- *MAKE SURE ERROR MESSAGES DONT SAY PERCENTAGE A
- *
  */
 public class SlimeXMLFactory extends SimulationXMLFactory{
 
@@ -45,7 +43,7 @@ public class SlimeXMLFactory extends SimulationXMLFactory{
     }
     
     /**
-     * @return
+     * @return Percent of grid that will be mold cells
      */
     public double getProbMold() {
     	double probMold = 0.05;
@@ -66,7 +64,7 @@ public class SlimeXMLFactory extends SimulationXMLFactory{
     }
 
     /**
-     * @return percentage of inhabited cells that will be type A
+     * @return returns amount of spores that will spread form each center point
      */
     public double getDiffusionAmt() {
     	double diffusionAmt = 0.7; //default value if xml is wrong
@@ -87,7 +85,7 @@ public class SlimeXMLFactory extends SimulationXMLFactory{
     	return diffusionAmt;
     }
     /**
-     * @return percentage of inhabited cells that will be type A
+     * @return Amount of spores that are left when a Mold touches a square
      */
     public double getStepAmt() {
     	double stepAmt = 0.7; //default value if xml is wrong
@@ -108,6 +106,9 @@ public class SlimeXMLFactory extends SimulationXMLFactory{
     	return stepAmt;
     }
     
+    /**
+     * @return Amount of spores that leave each square per step cycle
+     */
     public double getDissipateAmt() {
     	double dissipateAmt = 0.7; //default value if xml is wrong
     	try{

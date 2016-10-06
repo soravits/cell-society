@@ -95,8 +95,7 @@ public class SlimeMoldsGrid extends Grid {
 		else if(cell.getChemicalAmount() >= (threshold / 2)) {
 			getCell(location).setColor(Color.GREEN);
 		}
-		else if((cell.getChemicalAmount() >= (threshold / 4)) 
-				&& (cell.getChemicalAmount() > 0) ) {
+		else if(cell.getChemicalAmount() > 0) {
 			getCell(location).setColor(Color.LIGHTGREEN);
 		}
 		else {

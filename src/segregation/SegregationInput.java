@@ -29,7 +29,7 @@ public class SegregationInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Select percentage of grid to be empty
 	 */
 	public void selectPercEmpty() {
 		percEmptySpinner = new Spinner<>(0.05, 0.95, 0.3, 0.05); 
@@ -39,7 +39,7 @@ public class SegregationInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Select percentage of grid to be color B
 	 */
 	public void selectPercA() {
 		//lowest, highest, default value, increment size
@@ -50,7 +50,7 @@ public class SegregationInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Select percentage of grid to be color B
 	 */
 	public void selectPercB() {
 		percBSpinner = new Spinner<>(0.05, 1 - percASpinner.getValue(), 0.5, 0.05);
@@ -60,7 +60,7 @@ public class SegregationInput extends UserInput{
 	}
 
 	/**
-	 * 
+	 * Sets Percent for a cell to be satisfied
 	 */
 	public void selectSatisfyThresh() {
 		threshSpinner = new Spinner<>(0.1, 0.95, 0.4, 0.05);

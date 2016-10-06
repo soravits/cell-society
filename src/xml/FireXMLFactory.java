@@ -24,7 +24,7 @@ public class FireXMLFactory extends SimulationXMLFactory {
     }
 
     /**
-     * @return
+     * @return XML stated probability of catching fire
      */
     public double getProbCatch() {
     	double probCatch = 0.5;

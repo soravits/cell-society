@@ -25,20 +25,20 @@ public class GameOfLifeCell extends Cell {
 	}
 	
 	/**
-	 * 
+	 * Sets cell to dead state
 	 */
 	public void killCell() {
 		this.states = States.DEAD;
 	}
 	
 	/**
-	 * 
+	 * Sets cell to alive state
 	 */
 	public void reviveCell() {
 		this.states = States.ALIVE;
 	}
 	/**
-	 * @return
+	 * @return State of cell
 	 */
 	public States getState() {
 		return this.states;

@@ -33,12 +33,10 @@ public class GameOfLifeSimulation extends Simulation {
 	private XYChart.Series aliveLine;
 	private int stepCount = 0;
 	private double percentageAlive;
-	private static final Text numDeadText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)+ MARGIN_BOX_TOP * 3,
-			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - 2 * MARGIN_BOX_TOP, dead);
-	private static final Text numAliveText = new Text(
-			SIMULATION_WINDOW_WIDTH - (2 * DIMENSIONS_OF_CELL_COUNTER)+ MARGIN_BOX_TOP * 3,
-			0 + (7 / 5 * DIMENSIONS_OF_CELL_COUNTER) - MARGIN_BOX_TOP, alive);
+	
+	
+	private static final Text numDeadText = new Text(textPositionHorizontal,textPositionVertical,dead);
+	private static final Text numAliveText = new Text(textPositionHorizontal,textPositionVertical + MARGIN_BOX_TOP,alive);
 	private GameOfLifeGrid myGrid;
 	private boolean[][] deadOrAlive;
 	
@@ -50,14 +48,18 @@ public class GameOfLifeSimulation extends Simulation {
 		this.type = type;
 		this.percentageAlive = percentageAlive;
 	}
-	/* (non-Javadoc)
-	 * @see base.Simulation#init(javafx.stage.Stage)
+	
+	/** 
+	 * Initialize Game Of Life
 	 */
 	public Scene init(Stage s, CellType type) {
 		super.init(s, type);
 		return getMyScene();
 	}
 
+	/** 
+	 * Set Up Grid for GOL Simulation
+	 */
 	public Grid instantiateGrid(){
 		this.myGrid = new GameOfLifeGrid(getGridLength(), getCellSize(), getRootElement(),
 				getLeftMargin(), getTopMargin(), Grid.gridEdgeType.finite, this);
@@ -81,6 +83,9 @@ public class GameOfLifeSimulation extends Simulation {
 		lineChart.setLegendSide(Side.RIGHT);
 	}
 	
+	/**
+	 * Create the counter at top right that shows current amount of each cell present in simulation
+	 */
 	@Override
 	public void createCellCounter() {
 		Rectangle cellCounter = new Rectangle(
@@ -97,16 +102,9 @@ public class GameOfLifeSimulation extends Simulation {
 		getRootElement().getChildren().add(numAliveText);
 	}
 	
-	/**
-	 * 
-	 */
-	private void updateText() {
-		numDeadText.setText(dead + numberDead);
-		numAliveText.setText(alive + numberAlive);
-	}
 	
 	/**
-	 * 
+	 * Updates graph with new values
 	 */
 	public void updateGraph() {
 		deadLine.getData().add(new XYChart.Data(stepCount, numberAlive));
@@ -122,6 +120,9 @@ public class GameOfLifeSimulation extends Simulation {
 		stepCount++;
 	}
 
+	/**
+	 * Sets up grid, background boolean grid, and initial environment/first step of simulation
+	 */
 	public void setInitialEnvironment() {
 		numberAlive = 0;
 		numberDead = (int) Math.pow(getGridLength(), 2) - numberAlive;
@@ -145,7 +146,7 @@ public class GameOfLifeSimulation extends Simulation {
 	}
 	
 	/**
-	 * 
+	 * Every step cycle this runs and modifies states of simulation depending on rules
 	 */
 	public void updateCellUI() {
 		for(int i = 0; i < getGridLength(); i++) {
@@ -159,6 +160,69 @@ public class GameOfLifeSimulation extends Simulation {
 			}
 		}	
 	}
+	
+	
+	/**
+	 * @param location
+	 * @param aliveSurroundingCells
+	 * Establish rules for each state and whether or not it should die in next step
+	 */
+	public void updateCurrentCellState(Location location, int aliveSurroundingCells) {
+		if(isAlive(location)) {
+			if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
+				numberDead++;
+				numberAlive--;
+				deadOrAlive[location.getRow()][location.getColumn()] = false;
+			}
+		}
+		else {
+			if((aliveSurroundingCells == 3)) {
+				numberDead--;
+				numberAlive++;
+				deadOrAlive[location.getRow()][location.getColumn()] = true;
+			}
+		}
+	}
+	
+	/**
+	 * Creates on click ability to change classes depending on which cell was clicked
+	 */
+	public void updateStateOnClick() {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+                Location location = new Location(i, j);
+				if(manuallyModified(location)) {
+					if(isAlive(location)) {
+						noLongerModified(location);
+						deadOrAlive[i][j] = true;
+						numberDead--;
+						numberAlive++;
+					}
+					else {
+						noLongerModified(location);
+						numberDead++;
+						numberAlive--;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Iterates through and checks every location to see if nearby cells are doing anything
+	 */
+	public void updateStateOfCells() {
+		for(int i = 0; i < getGridLength(); i++) {
+			for(int j = 0; j < getGridLength(); j++) {
+				int aliveSurroundingCells = 0;
+                Location location = new Location(i, j);
+				aliveSurroundingCells += checkNearbyCells(location);
+				updateCurrentCellState(location, aliveSurroundingCells);
+			}
+		}
+	}
+	
+
 	
 	/**
 	 * @param location
@@ -186,27 +250,6 @@ public class GameOfLifeSimulation extends Simulation {
 	
 	/**
 	 * @param location
-	 * @param aliveSurroundingCells
-	 */
-	public void updateCurrentCellState(Location location, int aliveSurroundingCells) {
-		if(isAlive(location)) {
-			if((aliveSurroundingCells >= 3) || (aliveSurroundingCells < 2)) {
-				numberDead++;
-				numberAlive--;
-				deadOrAlive[location.getRow()][location.getColumn()] = false;
-			}
-		}
-		else {
-			if((aliveSurroundingCells == 3)) {
-				numberDead--;
-				numberAlive++;
-				deadOrAlive[location.getRow()][location.getColumn()] = true;
-			}
-		}
-	}
-	
-	/**
-	 * @param location
 	 * @return
 	 */
 	private boolean manuallyModified(Location location) {
@@ -220,43 +263,6 @@ public class GameOfLifeSimulation extends Simulation {
 		myGrid.getCell(location).noLongerManuallyModified();
 	}
 	
-	/**
-	 * 
-	 */
-	public void updateStateOnClick() {
-		for(int i = 0; i < getGridLength(); i++) {
-			for(int j = 0; j < getGridLength(); j++) {
-                Location location = new Location(i, j);
-				if(manuallyModified(location)) {
-					if(isAlive(location)) {
-						noLongerModified(location);
-						deadOrAlive[i][j] = true;
-						numberDead--;
-						numberAlive++;
-					}
-					else {
-						noLongerModified(location);
-						numberDead++;
-						numberAlive--;
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void updateStateOfCells() {
-		for(int i = 0; i < getGridLength(); i++) {
-			for(int j = 0; j < getGridLength(); j++) {
-				int aliveSurroundingCells = 0;
-                Location location = new Location(i, j);
-				aliveSurroundingCells += checkNearbyCells(location);
-				updateCurrentCellState(location, aliveSurroundingCells);
-			}
-		}
-	}
 	
 	/**
 	 * @param location
@@ -272,5 +278,12 @@ public class GameOfLifeSimulation extends Simulation {
         }
 		return aliveNearbyCells;
 	}
-
+	
+	/**
+	 * Updates text in cell counter with new values
+	 */
+	private void updateText() {
+		numDeadText.setText(dead + numberDead);
+		numAliveText.setText(alive + numberAlive);
+	}
 }

@@ -9,6 +9,8 @@ import base.Simulation.CellType;
 import base.UserInput;
 
 /**
+ * This class creates the userInput scenes and adds nodes if the user decides to 
+ * manually select parameters
  * @author Delia
  *
  */
@@ -23,7 +25,7 @@ public class SugarScapeInput extends UserInput {
 
 	/**
 	 * @param s
-	 * @param factory
+	 * @param factory	
 	 * @param mySim
 	 */
 	public SugarScapeInput(Stage s, SugarScapeXMLFactory factory, SugarScapeSimulation mySim) {
@@ -32,7 +34,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select maximum sugar a patch can hold
 	 */
 	public void selectMaxPatchSugar() {
 		maxSugarSpinner = new Spinner<>(1, 12, 4, 1);
@@ -42,7 +44,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select total agent population on the grid
 	 */
 	public void selectTotalAgents() {
 		totalAgentsSpinner = new Spinner<>(1, 400, 200, 10);
@@ -53,7 +55,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select rate that a patch grows sugar back
 	 */
 	public void selectGrowBack() {
 		growBackSpinner = new Spinner<>(1, 12, 1, 1);
@@ -64,7 +66,7 @@ public class SugarScapeInput extends UserInput {
 	}	
 
 	/**
-	 * 
+	 * Creates spinner for user to select the maximum carbs an agent can spawn with
 	 */
 	public void selectAgentMaxCarbs() {
 		maxCarbsSpinner = new Spinner<>(1, 35, 25, 1);
@@ -74,7 +76,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select the minimum carbs an agent can spawn with
 	 */
 	public void selectAgentMinCarbs() {
 		minCarbsSpinner = new Spinner<>(1, 20, 5, 1);
@@ -84,7 +86,8 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select the number of carbs agents lose for each unit
+	 * of distance moved
 	 */
 	public void selectAgentMetabRate() {
 		metabSpinner = new Spinner<>(1, 10, 1, 1);
@@ -94,7 +97,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select the distance an agent can move in a given direction
 	 */
 	public void selectAgentVision() {
 		visionSpinner = new Spinner<>(1, 20, 4, 1);
@@ -104,7 +107,7 @@ public class SugarScapeInput extends UserInput {
 	}
 
 	/**
-	 * 
+	 * Creates spinner for user to select which preset (1 or 2) of the simulation to run
 	 */
 	public void choosePreset() {
 		presetSpinner = new Spinner<>(1, 2, 1, 1);
@@ -113,22 +116,13 @@ public class SugarScapeInput extends UserInput {
 		getGrid().add(presetSpinner, 1, 7);
 	}
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#startXMLSimulation()
-	 */
 	@Override
 	public void startXMLSimulation() {
 		sugarScene = sugar.init(stage, CellType.SQUARE);
 		stage.setScene(sugarScene);
 		stage.show();
-
-
 	}
 
-
-	/* (non-Javadoc)
-	 * @see base.UserInput#startManualSimulation(base.Simulation.CellType)
-	 */
 	@Override
 	public void startManualSimulation(CellType cellType) {
 		sugar = new SugarScapeSimulation(GRIDSIZE, maxSugarSpinner.getValue(),
@@ -140,9 +134,6 @@ public class SugarScapeInput extends UserInput {
 		stage.show();
 	}
 
-	/* (non-Javadoc)
-	 * @see base.UserInput#generateNodes()
-	 */
 	@Override
 	public void generateNodes() {
 		choosePreset();
@@ -158,5 +149,4 @@ public class SugarScapeInput extends UserInput {
 		getGrid().add(beginTriangleButton(sugarName), 0, 9);
 		getGrid().add(beginSquareButton(sugarName), 0, 10);
 	}
-
 }

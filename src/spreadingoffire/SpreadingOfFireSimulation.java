@@ -239,7 +239,6 @@ public class SpreadingOfFireSimulation extends Simulation {
 
 
         //populating the series with data
-        //series.getData().add(new XYChart.Data(1, 23));
         lineChart.getData().add(fireLine);
         lineChart.getData().add(yellowLine);
         lineChart.getData().add(aliveLine);

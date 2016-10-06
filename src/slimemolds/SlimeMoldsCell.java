@@ -4,6 +4,16 @@ import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
+//This entire file, along with SlimeMoldsGrid is part of my masterpiece.
+//BRIAN ZHOU
+	/**
+	* This class's purpose is to extend out the superclass Cell and establish different enumerated states for the different conditions that each cell could be in. I'm proud of the enumerated
+	* states within the class as it both simplifies and clarifies the purpose of the cell, while combining all required information of the cell (required by controller) into one place. As a result,
+	* developing the back-end was easy because the enumerated types and status functions made it easy to keep track of each cell's individual state and spore amount, allowing the cells in the grid to be autonomous
+	* while letting the controller easily manage their states and check their statuses at each step (and thereby execute proper behavior).
+    */
+    
+
 /**
  * Represents a cell in the Slime Molds simulation
  * @author Brian

@@ -7,6 +7,10 @@ import javafx.scene.shape.Polygon;
 
 /**
  * @author Delia, Soravit, Brian
+ * This is the Cell superclass. It defines certain initial fields that are universal to every "Cell", and the constructor
+ * is inherited and used by the subclasses to define initial parameters. A cell is graphically represented
+ * as one of three shapes that have been implemented, a square, a triangle, and a hexagon. Apart from the constructor,
+ * the methods in this class are getters and setters, since Cell behavior is specific to the simulation.
  *
  */
 public class Cell {

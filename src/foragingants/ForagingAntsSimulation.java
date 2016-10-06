@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
+ * Defines behavior for the Foraging Ants simulation
  * @author Soravit
  */
 public class ForagingAntsSimulation extends Simulation {

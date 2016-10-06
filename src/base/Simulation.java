@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
+ * This is the Simulation superclass that defines various constants and private variables that a simulation
+ * needs to run. In addition to abstract methods that need to be implemented, the class provides methods for important
+ * functions such as starting the animation, instantiating the grid, and creating the graph.
  * @author Brian, Soravit, Delia
  */
 public abstract class Simulation {

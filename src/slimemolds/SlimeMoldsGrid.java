@@ -8,6 +8,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import slimemolds.SlimeMoldsCell.MoldStatus;
 
+/**
+ * The graphical representation of the Slime Molds simulation
+ * @author Brian
+ */
+
 public class SlimeMoldsGrid extends Grid {
 
 	private SlimeMoldsSimulation sim;

@@ -4,6 +4,7 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 /**
+ * Represents a cell in the Predator Prey simulation
  * @author Soravit
  *
  */

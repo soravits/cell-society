@@ -4,8 +4,8 @@ import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
 /**
+ * Represents a cell in the Game of Life grid.
  * @author Brian
- *
  */
 public class GameOfLifeCell extends Cell {
 	
@@ -15,8 +15,10 @@ public class GameOfLifeCell extends Cell {
 	/**
 	 * @param sizeOfCell
 	 * @param rootElement
-	 * @param d
+	 * @param xCoord
 	 * @param yCoord
+	 * @param gridLength
+	 * @param type
 	 */
 	public GameOfLifeCell(int sizeOfCell, Pane rootElement, double xCoord, double yCoord, 
 			int gridLength, CellType type) {

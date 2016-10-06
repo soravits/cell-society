@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import xml.SlimeXMLFactory;
 
 /**
+ * Defines input parameters for Slime Molds
  * @author Brian
  *
  */

@@ -8,6 +8,7 @@ import base.UserInput;
 import base.Simulation.CellType;
 
 /**
+ * Defines input parameters for Segregation
  * @author Delia
  *
  */

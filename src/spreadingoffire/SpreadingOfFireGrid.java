@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import spreadingoffire.SpreadingOfFireCell.States;
 /**
+ * This is the graphical representation of Spreading of Fire.
  * @author Soravit
  *
  */

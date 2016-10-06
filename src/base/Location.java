@@ -1,8 +1,8 @@
 package base;
 
 /**
+ * This class provides an abstract representation of location in the grid, parameterized by row and column.
  * @author Soravit
- *
  */
 public class Location {
 

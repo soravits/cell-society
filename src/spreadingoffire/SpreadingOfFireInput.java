@@ -11,6 +11,7 @@ import base.UserInput;
 import base.Simulation.CellType;
 
 /**
+ * Defines input parameters for Spreading of Fire.
  * @author Delia
  *
  */

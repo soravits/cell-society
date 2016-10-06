@@ -12,8 +12,11 @@ import javafx.scene.layout.Pane;
 
 
 /**
+ * This is the Grid super class. It is responsible for creating the graphical representation of a simulation. This
+ * class has both defined and abstract methods that the subclasses can use to develop an initial grid and modify
+ * it. This class also offers methods that allow access to the neighbors of cells in the grid. Buttons are defined
+ * here as well.
  * @author Soravit, Brian, Delia
- *
  */
 public abstract class Grid {
 

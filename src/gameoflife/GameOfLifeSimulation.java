@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
+ * This defines behavior for the Game Of Life simulation.
  * @author Brian
  *
  */

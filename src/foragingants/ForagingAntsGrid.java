@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 /**
+ * This is responsible for the graphical representation of the Foraging Ants simulation.
  * @author Soravit
  */
 public class ForagingAntsGrid extends Grid {

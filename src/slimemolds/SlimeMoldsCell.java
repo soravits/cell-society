@@ -4,6 +4,11 @@ import base.Cell;
 import base.Simulation.CellType;
 import javafx.scene.layout.Pane;
 
+/**
+ * Represents a cell in the Slime Molds simulation
+ * @author Brian
+ */
+
 public class SlimeMoldsCell extends Cell {
 	public enum MoldStatus{MOLD, EMPTY};
 	

@@ -1,7 +1,8 @@
 package foragingants;
 
 /**
- * Created by Soravit on 10/3/2016.
+ * Defines input parameters for Foraging Ants.
+ * @author Delia
  */
 
 import base.Simulation;

@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import waterworld.WaTorWorldCell.State;
 /**
+ * Defines behavior for the WaTor World Simulation
  * @author Soravit
  *
  */
